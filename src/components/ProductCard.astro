@@ -2,18 +2,25 @@
 interface Props {
   name: string;
   slug: string;
-  image: string;
+  images: string[]; // Cambiado de 'image' a 'images'
   price: number;
 }
 
-const { name, slug, image, price } = Astro.props as Props;
+const { name, slug, images, price } = Astro.props as Props;
+const image = images[0]; // Usamos la primera imagen para el card
 ---
-<div class="border rounded-lg overflow-hidden shadow hover:shadow-lg transition">
-  <a href={`/producto/${slug}`}>
-    <img src={image} alt={name} class="w-full h-48 object-cover" />
-    <div class="p-4">
+
+<div class="flex flex-col border rounded-lg overflow-hidden shadow hover:shadow-lg transition h-full">
+  <a href={`/producto/${slug}`} class="flex flex-col flex-1">
+    <img src={image} alt={name} class="w-full h-full object-cover" />
+    <div class="p-4 flex flex-col flex-1">
       <h3 class="text-xl font-semibold mb-2">{name}</h3>
-      <p class="text-lg text-gray-700">{price.toFixed(2)} €</p>
+      <p class="text-lg text-gray-700 mb-4">{price.toFixed(2)} €</p>
+      <div class="mt-auto">
+        <button class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
+          Ver Detalles
+        </button>
+      </div>
     </div>
   </a>
 </div>

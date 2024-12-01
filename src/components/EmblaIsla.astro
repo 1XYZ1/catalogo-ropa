@@ -1,0 +1,10 @@
+---
+// src/components/EmblaIsla.astro
+import EmblaCarousel from './EmblaCarousel.jsx';
+
+const { images, name } = Astro.props;
+---
+
+<div>
+  <EmblaCarousel images={images} name={name} client:load />
+</div>
