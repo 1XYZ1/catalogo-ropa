@@ -1,0 +1,52 @@
+---
+import type { AstroGlobal } from 'astro';
+import '../styles/global.css'; // Importamos el CSS global aquí
+
+
+// Definimos la interfaz de las props del layout
+interface Props {
+  title?: string;
+  description?: string;
+  lang?: string;
+}
+
+// Extraemos las props y establecemos valores por defecto
+const { title = 'Mi Sitio', description = '', lang = 'es' } = Astro.props as Props;
+---
+
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <!-- Importamos los estilos de Tailwind CSS -->
+    <link rel="stylesheet" href="/dist/global.css" />
+  </head>
+  <body class="font-sans bg-gray-100">
+    <!-- Cabecera del sitio -->
+    <header class="bg-white shadow">
+      <div class="container mx-auto px-4 py-4">
+        <h1 class="text-2xl font-bold">Mi Tienda de Ropa</h1>
+        <nav>
+          <ul class="flex space-x-4">
+            <li><a href="/" class="text-gray-700 hover:text-blue-500">Catálogo</a></li>
+            <li><a href="/contacto" class="text-gray-700 hover:text-blue-500">Contacto</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Contenido de la página -->
+    <main class="container mx-auto px-4 py-8">
+      <!-- Renderizamos el contenido de la página -->
+      <slot />
+    </main>
+
+    <!-- Pie de página -->
+    <footer class="bg-white shadow mt-8">
+      <div class="container mx-auto px-4 py-4 text-center">
+        <p>&copy; {new Date().getFullYear()} Mi Tienda de Ropa. Todos los derechos reservados.</p>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,77 +1,19 @@
 ---
-// src/pages/catalogo.astro
-
-// Importamos el componente ProductCard
+import BaseLayout from '../layouts/BaseLayout.astro';
 import ProductCard from '../components/ProductCard.astro';
-
-// Definimos la interfaz de un producto
-interface Product {
-  name: string;
-  image: string;
-  price: number;
-}
-
-// Creamos una lista de productos
-const products: Product[] = [
-  {
-    name: 'Polera gris manga larga',
-    image: '/images/GRIS/crest-grey-1.webp',
-    price: 25000,
-  },
-  {
-    name: 'Polera negra manga larga',
-    image: '/images/NEGRO/crest-negro-1.webp',
-    price: 25000,
-  },
-  {
-    name: 'Polera blanca manga larga',
-    image: '/images/BLANCO/crest-white-1.webp',
-    price: 25000,
-  },
-  // Agrega más productos según tus imágenes
-];
+import { products } from '../data/products';
 ---
 
-<!-- Página de Catálogo de Productos -->
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Catálogo de Ropa</title>
-    <!-- Estilos adicionales -->
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-      }
-
-      h1 {
-        text-align: center;
-        margin: 1em 0;
-      }
-
-      .product-gallery {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 16px;
-        padding: 0 2em;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Título de la página -->
-    <h1>Catálogo de Ropa</h1>
-
-    <!-- Galería de Productos -->
-    <div class="product-gallery">
-      <!-- Iteramos sobre los productos y renderizamos una tarjeta para cada uno -->
-      {products.map((product) => (
-        <ProductCard
-          name={product.name}
-          image={product.image}
-          price={product.price}
-        />
-      ))}
-    </div>
-  </body>
-</html>
+<BaseLayout title="Catálogo de Ropa">
+  <h2 class="text-3xl font-bold text-center my-8">Catálogo de Ropa</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    {products.map((product) => (
+      <ProductCard
+        name={product.name}
+        slug={product.slug}
+        image={product.image}
+        price={product.price}
+      />
+    ))}
+  </div>
+</BaseLayout>
