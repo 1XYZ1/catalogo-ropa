@@ -20,24 +20,30 @@ const { title = 'Mi Sitio', description = '', lang = 'es' } = Astro.props as Pro
     <title>{title}</title>
     <meta name="description" content={description} />
     <!-- Importamos los estilos de Tailwind CSS -->
-    <link rel="stylesheet" href="/dist/global.css" />
+    <link rel="stylesheet" href="../../styles/global.css" />
   </head>
-  <body class="font-sans bg-gray-100">
+  <body class="font-sans bg-gray-100 flex flex-col min-h-screen">
     <!-- Cabecera del sitio -->
     <header class="bg-white shadow">
       <div class="container mx-auto px-4 py-4">
-        <h1 class="text-2xl font-bold">Mi Tienda de Ropa</h1>
-        <nav>
-          <ul class="flex space-x-4">
-            <li><a href="/" class="text-gray-700 hover:text-blue-500">Catálogo</a></li>
-            <li><a href="/contacto" class="text-gray-700 hover:text-blue-500">Contacto</a></li>
+        <nav class="flex items-center justify-between">
+          <h1 class="text-3xl font-bold"><a href="/">Ropa Gymshark</a></h1>
+
+          <div class="flex-1 flex justify-center">
+            <ul class="flex space-x-10 items-center">
+            <li><a href="/" class="text-gray-700 hover:text-blue-500 text-xl">Catálogo</a></li>
+            <li><a href="/contacto" class="text-gray-700 hover:text-blue-500 text-xl">Contacto</a></li>
+            <li><a href="/contacto" class="text-gray-700 hover:text-blue-500 text-xl">Contacto</a></li>
+            <li><a href="/contacto" class="text-gray-700 hover:text-blue-500 text-xl">Contacto</a></li>
           </ul>
+        </div>
+
         </nav>
       </div>
     </header>
 
     <!-- Contenido de la página -->
-    <main class="container mx-auto px-4 py-8">
+    <main class="container mx-auto px-4 py-8 flex-1">
       <!-- Renderizamos el contenido de la página -->
       <slot />
     </main>

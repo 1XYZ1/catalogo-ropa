@@ -1,5 +1,5 @@
 {
-  "name": "nuevo-proyecto",
+  "name": "minimal",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -10,8 +10,13 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
+    "@astrojs/solid-js": "^4.4.4",
     "@astrojs/tailwind": "^5.1.2",
     "astro": "^4.16.16",
+    "embla-carousel": "^8.5.1",
+    "embla-carousel-react": "^8.5.1",
+    "embla-carousel-solid": "^8.5.1",
+    "solid-js": "^1.9.3",
     "tailwindcss": "^3.4.15",
     "typescript": "^5.7.2"
   }
