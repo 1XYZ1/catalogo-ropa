@@ -1,0 +1,56 @@
+---
+// src/components/ProductCard.astro
+
+// Definimos la interfaz de las propiedades que el componente recibirá
+interface Props {
+  name: string;
+  image: string;
+  price: number;
+}
+
+// Extraemos las propiedades usando Astro.props y TypeScript
+const { name, image, price } = Astro.props as Props;
+---
+
+<!-- Componente de Tarjeta de Producto -->
+<div class="product-card">
+  <!-- Imagen del producto -->
+  <img src={image} alt={name} />
+
+  <!-- Nombre del producto -->
+  <h2>{name}</h2>
+
+  <!-- Precio del producto -->
+  <p>${price.toFixed(0)}</p>
+</div>
+
+<!-- Estilos del componente -->
+<style>
+  .product-card {
+    border: 1px solid #ccc;
+    padding: 16px;
+    text-align: center;
+    border-radius: 8px;
+    transition: transform 0.2s;
+  }
+
+  .product-card:hover {
+    transform: scale(1.05);
+  }
+
+  .product-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  .product-card h2 {
+    font-size: 1.5em;
+    margin: 0.5em 0;
+  }
+
+  .product-card p {
+    font-size: 1.2em;
+    color: #555;
+  }
+</style>
