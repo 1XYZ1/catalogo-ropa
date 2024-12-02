@@ -10,6 +10,7 @@ export interface Product {
   stock: number;
   sizes: string[];
   measurements?: string;
+  link?: string
 }
 
 // Lista de productos
@@ -29,6 +30,7 @@ export const products: Product[] = [
     images: ['/images/GRIS/crest-grey-1.webp','/images/GRIS/crest-grey-2.webp' ],
     stock: 10,
     sizes: ['S', 'M', 'L', 'XL'],
+    link: 'https://www.gymshark.com/products/gymshark-crest-long-sleeve-t-shirt-light-grey-marl-aw23'
 
   },
   {

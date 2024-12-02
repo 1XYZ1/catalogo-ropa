@@ -31,19 +31,27 @@ function Navbar() {
         </button>
 
         {/* Menú de navegación para pantallas medianas y grandes */}
-        <div class="hidden md:flex md:items-center md:space-x-6">
-          <a href="/" class="text-gray-700 hover:text-blue-500 text-xl">Catálogo</a>
+
+
+        <div class="hidden md:flex md:flex-1 md:justify-center md:items-center md:space-x-10">
+          <a href="/" class="text-gray-700 hover:text-blue-500 text-xl">Inicio</a>
+          <a href="/reviews" class="text-gray-700 hover:text-blue-500 text-xl">Reseñas</a>
           <a href="/contacto" class="text-gray-700 hover:text-blue-500 text-xl">Contacto</a>
+          <a href="/contacto" class="text-gray-700 hover:text-blue-500 text-xl">Preguntas Frecuentes</a>
           {/* Añade más enlaces según sea necesario */}
         </div>
+
+
       </div>
 
       {/* Menú móvil de pantalla completa */}
       {menuOpen() && (
         <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10" onClick={toggleMenu}>
           <div class="bg-white w-3/4 h-3/4 rounded-lg p-4 flex flex-col items-center justify-center space-y-6" onClick={(e) => e.stopPropagation()}>
-            <a href="/" class="text-gray-700 hover:text-blue-500 text-3xl font-bold text-center" onClick={toggleMenu}>Catálogo</a>
+            <a href="/" class="text-gray-700 hover:text-blue-500 text-3xl font-bold text-center" onClick={toggleMenu}>Inicio</a>
+            <a href="/reviews" class="text-gray-700 hover:text-blue-500 text-3xl font-bold text-center" onClick={toggleMenu}>Reseñas</a>
             <a href="/contacto" class="text-gray-700 hover:text-blue-500 text-3xl font-bold text-center" onClick={toggleMenu}>Contacto</a>
+
             {/* Añade más enlaces según sea necesario */}
           </div>
         </div>

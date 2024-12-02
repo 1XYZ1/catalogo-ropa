@@ -4,6 +4,7 @@ import { products } from '../../data/products';
 import EmblaIsla from '../../components/EmblaIsla.astro';
 
 import { fade } from 'astro:transitions';
+import WhatsappButton from '../../components/buttons/WhatsappButton.astro';
 
 export async function getStaticPaths() {
   return products.map((product) => ({
@@ -16,11 +17,14 @@ const { product } = Astro.props;
 ---
 
 <BaseLayout title={`${product.name}`} description={product.description}>
-  <div class="max-w-5xl mx-auto px-4 py-6">
-    <h2 class="text-3xl font-bold mb-3 text-center">{product.name}</h2>
+  <div class="max-w-5xl mx-auto px-0 py-6 lg:mt-10">
+
 
     <!-- Contenedor flex responsivo -->
     <div class="flex flex-col lg:flex-row lg:space-x-8">
+
+
+
       <!-- Sección del carrusel de imágenes -->
       <div class="lg:w-1/2">
         <EmblaIsla
@@ -31,10 +35,10 @@ const { product } = Astro.props;
           showArrows={true}
         />
       </div>
-
       <!-- Sección de información del producto -->
       <div class="lg:w-1/2 mt-6 lg:mt-0">
-        <p class="text-2xl text-gray-800 mb-4">Precio: {product.price.toFixed(2)} €</p>
+        <h2 class="text-3xl font-bold mb-3 ">{product.name}</h2>
+        <p class="text-2xl text-gray-800 mb-4">Precio: ${product.price.toFixed(0)}</p>
 
         <!-- Sección de descripción expandible -->
         <details class="group border-t pt-4">
@@ -86,14 +90,21 @@ const { product } = Astro.props;
         </section>
 
         <!-- Botón de WhatsApp -->
+        <WhatsappButton title="Contactar por WhatsApp" name={product.name}/>
+
         <a
-          href={`https://wa.me/+56987866258?text=Estoy%20interesado%20en%20el%20producto%20${encodeURIComponent(product.name)}.`}
+          href={`${product.link}`}
           target="_blank"
           rel="noopener noreferrer"
-          class="block w-full text-center bg-green-500 text-white py-2 mt-6 rounded-lg hover:bg-green-600 transition-colors"
+          class="block w-full text-center bg-black text-white py-2 mt-3 rounded-lg active:bg-gray-800 transition-colors"
         >
-          Contactar por WhatsApp
+          Ir a Gymshark
         </a>
+
+        <!-- Enlace para volver -->
+      <a href="/" class="block text-blue-500 hover:underline mt-4 text-center">
+        ← Volver al Catálogo
+      </a>
       </div>
     </div>
   </div>

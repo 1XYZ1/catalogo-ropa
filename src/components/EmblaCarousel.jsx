@@ -49,7 +49,7 @@ function EmblaCarouselComponent(props) {
           {/* Flecha Anterior Minimalista */}
           <button
             ref={prevButtonRef}
-            class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-transparent text-white p-1 rounded-full focus:outline-none hover:bg-gray-700 transition"
+            class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-transparent text-white p-1 rounded-full focus:outline-none active:bg-gray-600 transition"
             aria-label="Anterior"
           >
             {/* Ícono SVG de flecha izquierda */}
@@ -61,7 +61,7 @@ function EmblaCarouselComponent(props) {
           {/* Flecha Siguiente Minimalista */}
           <button
             ref={nextButtonRef}
-            class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-transparent text-white p-1 rounded-full focus:outline-none hover:bg-gray-700 transition"
+            class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-transparent text-white p-1 rounded-full focus:outline-none active:bg-gray-600 transition"
             aria-label="Siguiente"
           >
             {/* Ícono SVG de flecha derecha */}
