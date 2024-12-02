@@ -1,6 +1,5 @@
 ---
 import { fade } from 'astro:transitions';
-import EmblaCarousel from './EmblaCarousel';
 
 interface Props {
   name: string;
@@ -10,21 +9,27 @@ interface Props {
 }
 
 const { name, slug, images, price } = Astro.props as Props;
-
+const image = images[0];
 ---
 
 <div class="flex flex-col border rounded-lg overflow-hidden shadow hover:shadow-lg transition h-full" id={slug}>
   <a href={`/producto/${slug}`} class="flex flex-col flex-1">
     <!-- Ocultar flechas en el catálogo -->
-    <EmblaCarousel transition:animate={fade({ duration: '0.4s' })} transition:name=`img-${slug}`images={images} name={name} showArrows={false} />
+    <!-- <EmblaCarousel  images={images} name={name} showArrows={true} /> -->
+
+    <img transition:animate={fade({ duration: '0.3s' })} transition:name=`img-${slug}` src={image} alt={name} class="w-full h-full object-cover" />
+  </a>
     <div class="p-4 flex flex-col flex-1">
       <h3 class="text-xl font-semibold mb-2 text-center">{name}</h3>
-      <p class="text-lg text-gray-700 mb-4 text-center">{price.toFixed(2)} €</p>
+      <p class="text-lg text-gray-700 mb-4 text-center">${price.toFixed(0)}</p>
       <div class="mt-auto flex justify-center">
-        <button class="w-64 bg-black text-white py-2 rounded-lg hover:bg-gray-800">
-          Ver Detalles
+        <a href={`/producto/${slug}`}>
+
+        <button  class="w-64 bg-black text-white py-2 rounded-lg hover:bg-gray-800">
+         Ver Detalles
         </button>
+      </a>
       </div>
     </div>
-  </a>
+
 </div>

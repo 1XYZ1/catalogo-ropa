@@ -12,84 +12,89 @@ export async function getStaticPaths() {
   }));
 }
 
-const { product, } = Astro.props;
+const { product } = Astro.props;
 ---
 
-<BaseLayout title={`${product.name} - Detalles`} description={product.description}>
-  <div class="max-w-2xl mx-auto px-4">
-    <h2 class="text-3xl font-bold mb-2 text-center pt-6">{product.name}</h2>
+<BaseLayout title={`${product.name}`} description={product.description}>
+  <div class="max-w-5xl mx-auto px-4 py-6">
+    <h2 class="text-3xl font-bold mb-3 text-center">{product.name}</h2>
 
-    <!-- Carrusel de imágenes -->
-    <EmblaIsla transition:animate={fade({ duration: '0.4s' })} transition:name={`img-${product.slug}`} images={product.images} name={product.name} showArrows={true} />
+    <!-- Contenedor flex responsivo -->
+    <div class="flex flex-col lg:flex-row lg:space-x-8">
+      <!-- Sección del carrusel de imágenes -->
+      <div class="lg:w-1/2">
+        <EmblaIsla
+          transition:animate={fade({ duration: '0.3s' })}
+          transition:name={`img-${product.slug}`}
+          images={product.images}
+          name={product.name}
+          showArrows={true}
+        />
+      </div>
 
-    <!-- Información del producto -->
-    <div class="mt-6">
-      <p class="text-2xl text-gray-800 mb-2">Precio: ${product.price.toFixed(0)}</p>
+      <!-- Sección de información del producto -->
+      <div class="lg:w-1/2 mt-6 lg:mt-0">
+        <p class="text-2xl text-gray-800 mb-4">Precio: {product.price.toFixed(2)} €</p>
 
-      <!-- Sección de descripción expandible -->
-      <details class="group border-t pt-4">
-        <summary class="flex justify-between items-center cursor-pointer">
-          <span class="text-lg font-semibold text-gray-700">Descripción</span>
-          <!-- Icono de flecha que rota al expandir -->
-          <svg
-            class="w-5 h-5 transition-transform duration-200 group-open:rotate-180"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
-        </summary>
-        <p class="mt-3 text-gray-700">
-          {product.description}
-        </p>
-      </details>
+        <!-- Sección de descripción expandible -->
+        <details class="group border-t pt-4">
+          <summary class="flex justify-between items-center cursor-pointer">
+            <span class="text-lg font-semibold text-gray-700">Descripción</span>
+            <!-- Icono de flecha que rota al expandir -->
+            <svg
+              class="w-5 h-5 transition-transform duration-200 group-open:rotate-180"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </summary>
+          <p class="mt-3 text-gray-700">
+            {product.description}
+          </p>
+        </details>
 
-      <!-- Sección de stock y tallas disponibles -->
-      <section aria-labelledby="availability-and-sizes" class="mt-6">
-        <h3 id="availability-and-sizes" class="sr-only">Disponibilidad y Tallas</h3>
-        <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
-          {/* Stock Disponible */}
-          <div>
-            <dt class="text-sm font-medium text-gray-500">Stock Disponible</dt>
-            <dd class="mt-1 text-sm text-gray-900">
-              {product.stock > 0 ? `${product.stock} unidades` : 'Agotado'}
-            </dd>
-          </div>
-          {/* Tallas Disponibles */}
-          <div>
-            <dt class="text-sm font-medium text-gray-500">Tallas Disponibles</dt>
-            <dd class="mt-1 text-sm text-gray-900">
-              {product.sizes.length > 0 ? product.sizes.join(', ') : 'No disponible'}
-            </dd>
-          </div>
-          {/* Medidas */}
-          <!-- <div>
-            <dt class="text-sm font-medium text-gray-500">Medidas</dt>
-            <dd class="mt-1 text-sm text-gray-900">
-              {product.measurements}
-            </dd>
-          </div> -->
-        </dl>
-      </section>
+        <!-- Sección de stock y tallas disponibles -->
+        <section aria-labelledby="availability-and-sizes" class="mt-6">
+          <h3 id="availability-and-sizes" class="sr-only">Disponibilidad y Tallas</h3>
+          <dl class="grid grid-cols-1 gap-x-4 gap-y-2">
+            <!-- Stock Disponible -->
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Stock Disponible</dt>
+              <dd class="mt-1 text-sm text-gray-900">
+                {product.stock > 0 ? `${product.stock} unidades` : 'Agotado'}
+              </dd>
+            </div>
+            <!-- Tallas Disponibles -->
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Tallas Disponibles</dt>
+              <dd class="mt-1 text-sm text-gray-900">
+                {product.sizes.length > 0 ? product.sizes.join(', ') : 'No disponible'}
+              </dd>
+            </div>
+            <!-- Medidas -->
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Medidas</dt>
+              <dd class="mt-1 text-sm text-gray-900">
+                {product.measurements}
+              </dd>
+            </div>
+          </dl>
+        </section>
 
-
-
-      <!-- Botón de WhatsApp -->
-      <a
-        href={`https://wa.me/+56987866258?text=Estoy%20interesado%20en%20el%20producto%20${encodeURIComponent(product.name)}`}
-        class="inline-flex items-center px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 mt-4 w-full justify-center"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Contactar por WhatsApp
-      </a>
-
-      <!-- Enlace para volver -->
-      <a href={`/#${product.slug}`} class="block text-blue-500 hover:underline mt-4 text-center">
-        ← Volver al Catálogo
-      </a>
+        <!-- Botón de WhatsApp -->
+        <a
+          href={`https://wa.me/+56987866258?text=Estoy%20interesado%20en%20el%20producto%20${encodeURIComponent(product.name)}.`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block w-full text-center bg-green-500 text-white py-2 mt-6 rounded-lg hover:bg-green-600 transition-colors"
+        >
+          Contactar por WhatsApp
+        </a>
+      </div>
     </div>
   </div>
 </BaseLayout>
