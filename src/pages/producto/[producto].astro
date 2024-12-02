@@ -1,8 +1,9 @@
-<!-- src/pages/producto/[producto].astro -->
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { products } from '../../data/products';
 import EmblaIsla from '../../components/EmblaIsla.astro';
+
+import { fade } from 'astro:transitions';
 
 export async function getStaticPaths() {
   return products.map((product) => ({
@@ -11,15 +12,15 @@ export async function getStaticPaths() {
   }));
 }
 
-const { product } = Astro.props;
+const { product, } = Astro.props;
 ---
 
 <BaseLayout title={`${product.name} - Detalles`} description={product.description}>
   <div class="max-w-2xl mx-auto px-4">
-    <h2 class="text-3xl font-bold mb-4 text-center">{product.name}</h2>
+    <h2 class="text-3xl font-bold mb-2 text-center pt-6">{product.name}</h2>
 
     <!-- Carrusel de imágenes -->
-    <EmblaIsla images={product.images} name={product.name} />
+    <EmblaIsla transition:animate={fade({ duration: '0.4s' })} transition:name={`img-${product.slug}`} images={product.images} name={product.name} showArrows={true} />
 
     <!-- Información del producto -->
     <div class="mt-6">
