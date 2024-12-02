@@ -1,3 +1,4 @@
+<!-- src/pages/producto/[producto].astro -->
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { products } from '../../data/products';
@@ -14,30 +15,37 @@ const { product } = Astro.props;
 ---
 
 <BaseLayout title={`${product.name} - Detalles`} description={product.description}>
-  <div class="max-w-6xl mx-auto flex flex-col md:flex-row gap-8">
+  <div class="max-w-2xl mx-auto px-4">
+    <h2 class="text-3xl font-bold mb-4 text-center">{product.name}</h2>
 
-    <!-- Foto del producto -->
-    <div class="flex-1">
-      <EmblaIsla images={product.images} name={product.name} />
-    </div>
+    <!-- Carrusel de imágenes -->
+    <EmblaIsla images={product.images} name={product.name} />
 
     <!-- Información del producto -->
-    <div class="flex-1">
-      <h2 class="text-3xl font-bold mb-4">{product.name}</h2>
+    <div class="mt-6">
       <p class="text-2xl text-gray-800 mb-2">Precio: {product.price.toFixed(2)} €</p>
       <p class="text-gray-700 mb-4">{product.description}</p>
+
+      <!-- Sección de stock y tallas disponibles -->
       <div class="mb-4">
         <p class="font-semibold">Stock Disponible: {product.stock}</p>
         <p class="font-semibold">Tallas Disponibles: {product.sizes.join(', ')}</p>
         <p class="font-semibold">Medidas: {product.measurements}</p>
       </div>
+
+      <!-- Botón de WhatsApp -->
       <a
         href={`https://wa.me/tu-numero-de-telefono?text=Estoy%20interesado%20en%20el%20producto%20${encodeURIComponent(product.name)}`}
-        class="inline-flex items-center px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 mt-4"
+        class="inline-flex items-center px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 mt-4 w-full justify-center"
         target="_blank"
         rel="noopener noreferrer"
       >
         Contactar por WhatsApp
+      </a>
+
+      <!-- Enlace para volver -->
+      <a href="/" class="block text-blue-500 hover:underline mt-4 text-center">
+        ← Volver al Catálogo
       </a>
     </div>
   </div>
