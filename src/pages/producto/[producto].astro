@@ -15,9 +15,10 @@ const { product } = Astro.props;
 
 <BaseLayout title={`${product.name} - Detalles`} description={product.description}>
   <div class="max-w-6xl mx-auto flex flex-col md:flex-row gap-8">
+
     <!-- Foto del producto -->
     <div class="flex-1">
-      <EmblaIsla images={product.images} name={product.name} client:load />
+      <EmblaIsla images={product.images} name={product.name} />
     </div>
 
     <!-- Información del producto -->
