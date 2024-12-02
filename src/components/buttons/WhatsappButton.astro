@@ -1,16 +1,19 @@
 ---
 
-const {name='', title } = Astro.props;
+const {name='', title, widthClass = 'w-auto' } = Astro.props;
 
 ---
 
 
 <!-- Botón de WhatsApp -->
-<a
-href={`https://wa.me/+56987866258?text=Estoy%20interesado%20en%20un%20producto%20${encodeURIComponent(name)}.`}
-target="_blank"
-rel="noopener noreferrer"
-class="block w-full text-center bg-green-500 text-white py-2 mt-6 rounded-lg active:bg-green-600 transition-colors"
->
-{title}
-</a>
+
+<div class="flex justify-center items-center">
+  <a
+  href={`https://wa.me/+56987866258?text=Estoy%20interesado%20en%20un%20producto%20${encodeURIComponent(name)}.`}
+  target="_blank"
+  rel="noopener noreferrer"
+  class={`inline-block px-4 text-center bg-green-500 text-white py-2 mt-6 rounded-lg active:bg-green-600 transition-colors ${widthClass}`}
+  >
+  {title}
+  </a>
+</div>

@@ -3,7 +3,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { products } from '../../data/products';
 import EmblaIsla from '../../components/EmblaIsla.astro';
 
-import { fade } from 'astro:transitions';
 import WhatsappButton from '../../components/buttons/WhatsappButton.astro';
 
 export async function getStaticPaths() {
@@ -28,12 +27,14 @@ const { product } = Astro.props;
       <!-- Sección del carrusel de imágenes -->
       <div class="lg:w-1/2">
         <EmblaIsla
-          transition:animate={fade({ duration: '0.3s' })}
-          transition:name={`img-${product.slug}`}
+          transition:persist
+          transition:name=`img-${product.slug}`
+          slug={product.slug}
           images={product.images}
           name={product.name}
           showArrows={true}
         />
+
       </div>
       <!-- Sección de información del producto -->
       <div class="lg:w-1/2 mt-6 lg:mt-0">
@@ -42,7 +43,7 @@ const { product } = Astro.props;
 
         <!-- Sección de descripción expandible -->
         <details class="group border-t pt-4">
-          <summary class="flex justify-between items-center cursor-pointer">
+          <summary class="flex justify-between items-center cursor-pointer list-none">
             <span class="text-lg font-semibold text-gray-700">Descripción</span>
             <!-- Icono de flecha que rota al expandir -->
             <svg
@@ -90,21 +91,25 @@ const { product } = Astro.props;
         </section>
 
         <!-- Botón de WhatsApp -->
-        <WhatsappButton title="Contactar por WhatsApp" name={product.name}/>
+        <WhatsappButton widthClass="w-64" title="Contactar por WhatsApp" name={product.name}/>
 
-        <a
+        <div class="flex justify-center items-start">
+          <a
           href={`${product.link}`}
           target="_blank"
           rel="noopener noreferrer"
-          class="block w-full text-center bg-black text-white py-2 mt-3 rounded-lg active:bg-gray-800 transition-colors"
+          class="block w-64 text-center bg-black text-white py-2 mt-3 rounded-lg active:bg-gray-800 transition-colors"
         >
           Ir a Gymshark
         </a>
 
-        <!-- Enlace para volver -->
+        </div>
+
+          <!-- Enlace para volver -->
       <a href="/" class="block text-blue-500 hover:underline mt-4 text-center">
         ← Volver al Catálogo
       </a>
+
       </div>
     </div>
   </div>

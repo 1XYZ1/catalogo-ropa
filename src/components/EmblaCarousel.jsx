@@ -3,6 +3,7 @@ import { onMount, onCleanup } from 'solid-js';
 import EmblaCarousel from 'embla-carousel';
 import './EmblaCarousel.css';
 
+
 function EmblaCarouselComponent(props) {
   let viewportRef;
   let prevButtonRef;
@@ -10,7 +11,7 @@ function EmblaCarouselComponent(props) {
   let emblaInstance;
 
   // Desestructurar props y establecer showArrows por defecto a true
-  const { images, name, showArrows = true } = props;
+  const { images, name, showArrows= true, slug  } = props;
 
   onMount(() => {
     emblaInstance = EmblaCarousel(viewportRef, { loop: false });

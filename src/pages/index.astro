@@ -8,9 +8,10 @@ import { products } from '../data/products';
 
 <BaseLayout title="Catálogo de Ropa">
   <h2 class="text-3xl font-bold text-center my-8">Catálogo de Ropa</h2>
-  <div class="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+  <div  class="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
     {products.map((product) => (
       <ProductCard
+        transition:name=`img-${product.slug}`
         name={product.name}
         slug={product.slug}
         images={product.images}

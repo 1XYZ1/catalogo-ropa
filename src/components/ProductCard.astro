@@ -1,5 +1,5 @@
 ---
-import { fade } from 'astro:transitions';
+
 
 interface Props {
   name: string;
@@ -17,7 +17,7 @@ const image = images[0];
     <!-- Ocultar flechas en el catálogo -->
     <!-- <EmblaCarousel  images={images} name={name} showArrows={true} /> -->
 
-    <img transition:animate={fade({ duration: '0.3s' })} transition:name=`img-${slug}` src={image} alt={name} class="w-full h-full object-cover" />
+    <img src={image} alt={name} class="w-full h-full object-cover" />
   </a>
     <div class="p-4 flex flex-col flex-1">
       <h3 class="text-xl font-semibold mb-2 text-center">{name}</h3>
