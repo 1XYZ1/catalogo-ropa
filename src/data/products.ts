@@ -18,7 +18,14 @@ export const products: Product[] = [
     name: 'Polera gris manga larga',
     price: 25000,
     slug: 'polera-gris-manga-larga',
-    description: 'Polera gris manga larga con el logo de la marca en el pecho.',
+    description: `Cómodamente constante y casualmente elegante, puedes usar Crest en cualquier lugar y combinarlo con todo.\n
+    Logo bordado duradero que resistirá cada uso\n
+    Tela de algodón suave y cómoda\n\n
+    TALLA Y AJUSTE\n
+    Ajuste regular\n
+    El modelo mide 1.85 m y usa talla M\n\n
+    MATERIALES Y CUIDADO\n
+    100% Algodón`,
     images: ['/images/GRIS/crest-grey-1.webp','/images/GRIS/crest-grey-2.webp' ],
     stock: 10,
     sizes: ['S', 'M', 'L', 'XL'],
