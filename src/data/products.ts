@@ -35,12 +35,12 @@ export const products: Product[] = [
   },
   {
     name: 'Polera negra manga larga',
-    price: 25000,
+    price: 24990,
     slug: 'polera-negra-manga-larga',
     description: 'Polera gris manga larga con el logo de la marca en el pecho.',
     images: ['/images/NEGRO/crest-negro-1.webp','/images/NEGRO/crest-negro-2.webp' ],
-    stock: 10,
-    sizes: ['S', 'M', 'L', 'XL'],
+    stock: 5,
+    sizes: ['M'],
     measurements: 'Medidas: S: 50x70cm, M: 53x72cm, L: 56x74cm, XL: 59x76cm'
   },
   {
@@ -53,5 +53,6 @@ export const products: Product[] = [
     sizes: ['S', 'M', 'L', 'XL'],
     measurements: 'Medidas: S: 50x70cm, M: 53x72cm, L: 56x74cm, XL: 59x76cm'
   },
+
   // Agrega más productos según tus imágenes
 ];

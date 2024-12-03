@@ -11,7 +11,7 @@ import { products } from '../data/products';
   <div  class="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
     {products.map((product) => (
       <ProductCard
-        transition:name=`img-${product.slug}`
+
         name={product.name}
         slug={product.slug}
         images={product.images}

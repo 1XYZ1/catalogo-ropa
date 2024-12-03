@@ -7,5 +7,5 @@ const { images, name, slug } = Astro.props;
 ---
 
 <div >
-  <EmblaCarousel transition:name={`img-${slug}`} images={images} name={name} client:load />
+  <EmblaCarousel slug={slug} images={images} name={name} client:load />
 </div>

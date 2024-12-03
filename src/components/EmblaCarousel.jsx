@@ -32,15 +32,18 @@ function EmblaCarouselComponent(props) {
   return (
     <div class="relative embla overflow-hidden p-0"> {/* Eliminamos el padding */}
       <div class="embla__viewport" ref={viewportRef}>
+
         <div class="embla__container flex p-0"> {/* Aseguramos que no haya padding */}
           {images.map((image, index) => (
-            <div class="mr- embla__slide flex-[0_0_100%]" key={index}>
+            <div class="embla__slide flex-[0_0_100%]" key={index}>
               <img
+                transition:name={`img-${slug}`}
                 src={image}
                 alt={`${name} - Imagen ${index + 1}`}
                 class="w-full h-full object-cover rounded-lg shadow-md"
               />
             </div>
+
           ))}
         </div>
       </div>

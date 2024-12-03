@@ -5,6 +5,8 @@ import EmblaIsla from '../../components/EmblaIsla.astro';
 
 import WhatsappButton from '../../components/buttons/WhatsappButton.astro';
 
+
+
 export async function getStaticPaths() {
   return products.map((product) => ({
     params: { producto: product.slug },
@@ -14,6 +16,7 @@ export async function getStaticPaths() {
 
 const { product } = Astro.props;
 ---
+
 
 <BaseLayout title={`${product.name}`} description={product.description}>
   <div class="max-w-5xl mx-auto px-0 py-6 lg:mt-10">
@@ -27,8 +30,6 @@ const { product } = Astro.props;
       <!-- Sección del carrusel de imágenes -->
       <div class="lg:w-1/2">
         <EmblaIsla
-          transition:persist
-          transition:name=`img-${product.slug}`
           slug={product.slug}
           images={product.images}
           name={product.name}
@@ -37,15 +38,11 @@ const { product } = Astro.props;
 
       </div>
       <!-- Sección de información del producto -->
-      <div class="lg:w-1/2 mt-6 lg:mt-0">
-        <h2 class="text-3xl font-bold mb-3 ">{product.name}</h2>
-        <p class="text-2xl text-gray-800 mb-4">Precio: ${product.price.toFixed(0)}</p>
+      <div class="lg:w-1/2 mt-6 lg:mt-0 px-8">
+        <h2 class="text-3xl font-bold mb-3" >{product.name}</h2>
+        <p class="text-2xl text-gray-800 mb-4">Precio: ${product.price.toLocaleString('es-ES')}</p>
 
-        <style>
-          summary::-webkit-details-marker {
-            display: none;
-          }
-        </style>
+
 
         <!-- Sección de descripción expandible -->
         <details class="group border-t pt-4">
@@ -112,11 +109,17 @@ const { product } = Astro.props;
         </div>
 
           <!-- Enlace para volver -->
-      <a href="/" class="block text-blue-500 hover:underline mt-4 text-center">
+      <a href="javascript:history.back()" class="block text-blue-500 hover:underline mt-4 text-center">
         ← Volver al Catálogo
       </a>
 
       </div>
     </div>
   </div>
+
+  <style>
+    summary::-webkit-details-marker {
+      display: none;
+    }
+  </style>
 </BaseLayout>
