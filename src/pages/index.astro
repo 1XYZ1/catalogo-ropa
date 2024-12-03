@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProductCard from '../components/ProductCard.astro';
 import { products } from '../data/products';
-
+import PreloadEmblaCarousel from '../components/Carousel/PreloadEmblaCarousel.jsx';
 
 ---
 
@@ -16,8 +16,9 @@ import { products } from '../data/products';
         slug={product.slug}
         images={product.images}
         price={product.price}
+
       />
     ))}
   </div>
-
+  <!-- <PreloadEmblaCarousel client:load /> -->
 </BaseLayout>

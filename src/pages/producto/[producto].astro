@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { products } from '../../data/products';
-import EmblaIsla from '../../components/EmblaIsla.astro';
+import EmblaIsla from '../../components/Carousel/EmblaIsla.astro';
 
 import WhatsappButton from '../../components/buttons/WhatsappButton.astro';
 
@@ -20,13 +20,8 @@ const { product } = Astro.props;
 
 <BaseLayout title={`${product.name}`} description={product.description}>
   <div class="max-w-5xl mx-auto px-0 py-6 lg:mt-10">
-
-
     <!-- Contenedor flex responsivo -->
     <div class="flex flex-col lg:flex-row lg:space-x-8">
-
-
-
       <!-- Sección del carrusel de imágenes -->
       <div class="lg:w-1/2">
         <EmblaIsla
@@ -41,8 +36,6 @@ const { product } = Astro.props;
       <div class="lg:w-1/2 mt-6 lg:mt-0 px-8">
         <h2 class="text-3xl font-bold mb-3" >{product.name}</h2>
         <p class="text-2xl text-gray-800 mb-4">Precio: ${product.price.toLocaleString('es-ES')}</p>
-
-
 
         <!-- Sección de descripción expandible -->
         <details class="group border-t pt-4">
@@ -109,9 +102,9 @@ const { product } = Astro.props;
         </div>
 
           <!-- Enlace para volver -->
-      <a href="javascript:history.back()" class="block text-blue-500 hover:underline mt-4 text-center">
+      <!-- <a href="javascript:history.back()" class="block text-blue-500 hover:underline mt-4 text-center" data-astro-prefetch>
         ← Volver al Catálogo
-      </a>
+      </a> -->
 
       </div>
     </div>
