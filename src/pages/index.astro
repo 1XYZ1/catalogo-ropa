@@ -1,24 +1,25 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ProductCard from '../components/ProductCard.astro';
+import ProductGrid from '../components/ProductGrid.astro';
 import { products } from '../data/products';
-import PreloadEmblaCarousel from '../components/Carousel/PreloadEmblaCarousel.jsx';
-
 ---
-
 <BaseLayout title="Catálogo de Ropa">
-  <h2 class="text-3xl font-bold text-center my-8">Catálogo de Ropa</h2>
-  <div  class="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-    {products.map((product) => (
-      <ProductCard
 
-        name={product.name}
-        slug={product.slug}
-        images={product.images}
-        price={product.price}
 
-      />
-    ))}
-  </div>
-  <!-- <PreloadEmblaCarousel client:load /> -->
+
+      <h2 class="text-3xl font-bold text-center my-8">Catálogo de Ropa</h2>
+
+    <!-- Controles de Filtrado -->
+    <div class="flex justify-center space-x-4 mb-8">
+      <a href="/" class="px-4 py-2 rounded font-semibold bg-blue-600 text-white hover:bg-blue-700">Todos</a>
+      <a href="/hombre" class="px-4 py-2 rounded font-semibold bg-gray-200 text-gray-800 hover:bg-blue-100">Hombre</a>
+      <a href="/mujer" class="px-4 py-2 rounded font-semibold bg-gray-200 text-gray-800 hover:bg-blue-100">Mujer</a>
+    </div>
+
+
+    <ProductGrid products={products}/>
+
+
+
+  <!-- Lista de Productos -->
 </BaseLayout>

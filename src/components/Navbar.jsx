@@ -12,7 +12,7 @@ function Navbar() {
     <nav class="bg-white shadow fixed w-full z-20 top-0 left-0">
       <div class="container mx-auto px-4 py-4 flex items-center justify-between">
         <h1 class="text-2xl md:text-3xl font-bold">
-          <a href="/">Ropa Gymshark</a>
+          <a href="/">Shark Import</a>
         </h1>
 
         {/* Botón de menú para móviles */}
@@ -37,7 +37,7 @@ function Navbar() {
           <a href="/" class="text-gray-700 hover:text-blue-500 text-xl">Inicio</a>
           <a href="/reviews" class="text-gray-700 hover:text-blue-500 text-xl">Reseñas</a>
           <a href="/contacto" class="text-gray-700 hover:text-blue-500 text-xl">Contacto</a>
-          <a href="/contacto" class="text-gray-700 hover:text-blue-500 text-xl">Preguntas Frecuentes</a>
+          <a href="/faqs" class="text-gray-700 hover:text-blue-500 text-xl">Preguntas Frecuentes</a>
           {/* Añade más enlaces según sea necesario */}
         </div>
 
@@ -51,6 +51,7 @@ function Navbar() {
             <a href="/" class="text-gray-700 hover:text-blue-500 text-3xl font-bold text-center" onClick={toggleMenu}>Inicio</a>
             <a href="/reviews" class="text-gray-700 hover:text-blue-500 text-3xl font-bold text-center" onClick={toggleMenu}>Reseñas</a>
             <a href="/contacto" class="text-gray-700 hover:text-blue-500 text-3xl font-bold text-center" onClick={toggleMenu}>Contacto</a>
+            <a href="/faqs" class="text-gray-700 hover:text-blue-500 text-3xl font-bold text-center" onClick={toggleMenu}>¿Preguntas?</a>
 
             {/* Añade más enlaces según sea necesario */}
           </div>

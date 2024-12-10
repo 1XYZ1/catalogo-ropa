@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar';
 import '../styles/global.css'; // Importamos el CSS global aquí
 
 
-// import { ViewTransitions} from 'astro:transitions';
+import { ViewTransitions} from 'astro:transitions';
 
 // Definimos la interfaz de las props del layout
 interface Props {
@@ -24,7 +24,9 @@ const { title = 'Mi Sitio', description = '', lang = 'es' } = Astro.props as Pro
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- <ViewTransitions /> -->
+
+
+    <ViewTransitions fallback="none" >
   </head>
   <body class="font-sans bg-gray-100 flex flex-col min-h-screen">
     <!-- Cabecera del sitio -->

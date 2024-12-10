@@ -8,8 +8,11 @@
     "dist"
   ],
   "compilerOptions": {
-    "jsx": "preserve",
-    "jsxImportSource": "solid-js",
-    "types": ["astro/client", "solid-js"]
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "types": [
+      "astro/client",
+      "solid-js"
+    ]
   }
 }

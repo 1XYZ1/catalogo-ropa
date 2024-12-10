@@ -1,5 +1,11 @@
 // src/data/products.ts
 
+
+// Interfaz para las tallas
+export interface Size {
+  size: string;
+  stock: number;
+}
 // Interfaz para los productos
 export interface Product {
   name: string;
@@ -8,16 +14,17 @@ export interface Product {
   price: number;
   description: string;
   stock: number;
-  sizes: string[];
+  sizes: Size[];
   measurements?: string;
   link?: string
+  gender?: 'male' | 'female' | 'unisex'
 }
 
 // Lista de productos
 export const products: Product[] = [
   {
     name: 'Polera gris manga larga',
-    price: 25000,
+    price: 29990,
     slug: 'polera-gris-manga-larga',
     description: `Cómodamente constante y casualmente elegante, puedes usar Crest en cualquier lugar y combinarlo con todo.\n
     Logo bordado duradero que resistirá cada uso\n
@@ -29,29 +36,50 @@ export const products: Product[] = [
     100% Algodón`,
     images: ['/images/GRIS/crest-grey-1.webp','/images/GRIS/crest-grey-2.webp' ],
     stock: 10,
-    sizes: ['S', 'M', 'L', 'XL'],
-    link: 'https://www.gymshark.com/products/gymshark-crest-long-sleeve-t-shirt-light-grey-marl-aw23'
+    sizes: [
+      { size: "S", stock: 5 },
+      { size: "M", stock: 10 },
+      { size: "L", stock: 2 },
+      { size: "XL", stock: 0 }
+    ],
+    measurements: "Largo: 70cm, Ancho: 50cm",
+    link: 'https://www.gymshark.com/products/gymshark-crest-long-sleeve-t-shirt-light-grey-marl-aw23',
+    gender: 'male'
 
   },
   {
     name: 'Polera negra manga larga',
-    price: 24990,
+    price: 29990,
     slug: 'polera-negra-manga-larga',
     description: 'Polera gris manga larga con el logo de la marca en el pecho.',
     images: ['/images/NEGRO/crest-negro-1.webp','/images/NEGRO/crest-negro-2.webp' ],
-    stock: 5,
-    sizes: ['M'],
-    measurements: 'Medidas: S: 50x70cm, M: 53x72cm, L: 56x74cm, XL: 59x76cm'
+    stock: 8,
+    sizes: [
+      { size: "S", stock: 5 },
+      { size: "M", stock: 10 },
+      { size: "L", stock: 2 },
+      { size: "XL", stock: 0 }
+    ],
+    measurements: "Largo: 70cm, Ancho: 50cm",
+    link: 'https://www.gymshark.com/products/gymshark-crest-long-sleeve-t-shirt-light-grey-marl-aw23',
+    gender: 'male'
   },
   {
     name: 'Polera blanca manga larga',
-    price: 25000,
+    price: 29990,
     slug: 'polera-blanca-manga-larga',
     description: 'Polera gris manga larga con el logo de la marca en el pecho.',
     images: ['/images/BLANCO/crest-white-1.webp','/images/BLANCO/crest-white-2.webp' ],
-    stock: 10,
-    sizes: ['S', 'M', 'L', 'XL'],
-    measurements: 'Medidas: S: 50x70cm, M: 53x72cm, L: 56x74cm, XL: 59x76cm'
+    stock: 2,
+    sizes: [
+      { size: "S", stock: 5 },
+      { size: "M", stock: 10 },
+      { size: "L", stock: 2 },
+      { size: "XL", stock: 0 }
+    ],
+    measurements: "Largo: 70cm, Ancho: 50cm",
+    link: 'https://www.gymshark.com/products/gymshark-crest-long-sleeve-t-shirt-light-grey-marl-aw23',
+    gender: 'female'
   },
 
   // Agrega más productos según tus imágenes
