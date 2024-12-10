@@ -73,9 +73,12 @@ export default function ProductDetail(props) {
             </dd>
           </div>
         </dl>
+
       </section>
 
 
     </div>
   );
+
+
 }

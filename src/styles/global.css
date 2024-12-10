@@ -5,3 +5,6 @@
 
 
 /* Tus estilos globales adicionales */
+summary::-webkit-details-marker {
+  display: none;
+}
