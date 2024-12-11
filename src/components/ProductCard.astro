@@ -17,33 +17,33 @@ const image = images[0]
 
 
 
-<div class="flex flex-col border rounded-lg overflow-hidden shadow hover:shadow-lg transition h-full" id={slug}>
-  <a href={`/producto/${slug}`} class="flex flex-col flex-1">
-    <!-- Ocultar flechas en el catálogo -->
-    <!-- <EmblaCarousel  images={images} name={name} showArrows={true} /> -->
-
-    <div class="w-full aspect-square bg-gray-200 animate-pulse">
+<div class="flex flex-col border rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 h-full" id={slug}>
+  <!-- Imagen del producto -->
+  <a href={`/producto/${slug}`} class="flex-1">
+    <picture>
       <img
+        width="400"
+        height="400"
         src={image}
         alt={name}
-        class="w-full h-full object-cover"
-        loading="lazy"
-        onload="this.parentNode.classList.remove('animate-pulse', 'bg-gray-200')"
+        class="w-full h-full object-cover opacity-0 scale-105 transition-all duration-300"
+        onload="this.classList.add('opacity-100'); this.classList.remove('scale-105') "
       />
-    </div>
-
-
+    </picture>
   </a>
-    <div class="p-4 flex flex-col flex-1">
-      <h3 class="text-xl font-semibold mb-2 text-center">{name}</h3>
-      <p class="text-lg text-gray-700 mb-4 text-center">${price.toLocaleString('es-ES')}</p>
-      <div class="mt-auto flex justify-center">
-        <a href={`/producto/${slug}`}>
 
-        <button  class="w-64 bg-black text-white py-2 rounded-lg hover:bg-gray-800">
-         Ver Detalles
+  <!-- Información del producto -->
+  <div class="p-4 flex flex-col flex-1">
+    <h3 class="text-lg font-medium text-center mb-2">{name}</h3>
+    <p class="text-base text-gray-700 text-center mb-4">${price.toLocaleString('es-ES')}</p>
+
+    <!-- Botón -->
+    <div class="mt-auto flex justify-center">
+      <a href={`/producto/${slug}`}>
+        <button class="w-64 bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition-colors duration-200">
+          Ver Detalles
         </button>
       </a>
-      </div>
     </div>
+  </div>
 </div>
