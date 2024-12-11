@@ -17,8 +17,8 @@ const {name='', title, widthClass = 'w-auto' } = Astro.props;
   {title}
   </a> -->
 
-  <a href={`https://wa.me/+56987866258?text=Estoy%20interesado%20en%20un%20producto%20${encodeURIComponent(name)}.`} class="group relative inline-block">
-    <button class="relative w-64 bg-gradient-to-t from-green-800 from-10% via-green-900 via-20% to-black to-80%  text-white py-3 px-6 mt-6 rounded-lg overflow-hidden transition-all duration-300 group-hover:scale-105">
+  <a href={`https://wa.me/+56987866258?text=Estoy%20interesado%20en%20un%20producto%20${encodeURIComponent(name)}.`} class="group relative inline-block" rel="noopener noreferrer">
+    <button class="relative w-64 bg-gradient-to-t from-gray-800 from-10% via-gray-900 via-20% to-black to-80%  text-white py-3 px-6 mt-6 rounded-lg overflow-hidden transition-all duration-300 group-hover:scale-105">
       <span class="absolute inset-0 w-full h-full bg-gradient-to-b from-green-900 from-20% via-gray-800 via-60% to-black to-80% opacity-0 group-hover:opacity-30 transition-opacity duration-500"></span>
       <span class="relative z-10 text-sm font-medium tracking-widest">
         Contactar por WhatsApp
