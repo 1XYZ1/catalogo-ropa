@@ -37,10 +37,11 @@ function EmblaCarouselComponent(props) {
           {images.map((image, index) => (
             <div class="embla__slide flex-[0_0_100%]" key={index}>
 
-                <div class="flex items-center justify-center w-full bg-gray-200">
+                <div class="flex items-center justify-center w-full bg-gray-200 rounded-xl">
 
 
                 <img
+                loading="lazy"
                 width="400"
                 height="400"
                 src={image}
