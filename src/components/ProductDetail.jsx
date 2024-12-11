@@ -54,13 +54,13 @@ export default function ProductDetail(props) {
               <div class="flex space-x-2">
                 {product.sizes.map((sz, i) => (
                   <button
-                    class={`px-3 py-1 rounded border transition-colors duration-200
-                    ${sz.size === selectedSize() ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-800 border-gray-300'}
-                    ${sz.stock === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-50 hover:border-blue-600'}`}
-                    onClick={() => sz.stock > 0 && setSelectedSize(sz.size)}
-                  >
-                    {sz.size}
-                  </button>
+                  class={`px-3 py-1 rounded border transition-colors duration-200
+                  ${sz.size === selectedSize() ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-800 border-gray-300'}
+                  ${sz.stock === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-50 hover:border-blue-600 active:bg-blue-700'}`}
+                  onClick={() => sz.stock > 0 && setSelectedSize(sz.size)}
+                >
+                  {sz.size}
+                </button>
                 ))}
               </div>
             </dd>

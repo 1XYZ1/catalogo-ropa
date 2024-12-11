@@ -36,13 +36,16 @@ function EmblaCarouselComponent(props) {
         <div class="embla__container flex p-0"> {/* Aseguramos que no haya padding */}
           {images.map((image, index) => (
             <div class="embla__slide flex-[0_0_100%]" key={index}>
-              <img
-                loading="lazy"
-                src={image}
-                alt={`${name} - Imagen ${index + 1}`}
-                class="w-full h-full object-cover rounded-lg shadow-md"
 
-              />
+
+                  <img
+
+                      src={image}
+                      alt={`${name} - Imagen ${index + 1}`}
+                      class="w-full h-full object-cover rounded-lg shadow-md "
+                      onload="this.parentNode.classList.remove('animate-pulse', 'bg-gray-200')"/>
+
+
             </div>
 
           ))}
