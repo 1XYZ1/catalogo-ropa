@@ -48,13 +48,15 @@ const { product } = Astro.props;
         <WhatsappButton widthClass="w-64" title="Contactar por WhatsApp" name={product.name}/>
 
         <div class="flex justify-center items-start">
-          <a
-            href={`${product.link}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="block w-64 text-center bg-black text-white py-2 mt-3 rounded-lg active:bg-gray-800 transition-colors"
-          >
-            Ver en Gymshark
+          <a href={product.link} target="_blank" class="group relative inline-block">
+            <button class="relative w-64 bg-gradient-to-t from-black from-10% via-green-900 via-80% to-green-800 to-90% text-white py-3 px-6 mt-3 rounded-lg overflow-hidden transition-all duration-300 group-hover:scale-105">
+              <span class="absolute inset-0 w-full h-full bg-gradient-to-t from-green-900 from-20% via-gray-800 via-40% to-black to-90% opacity-0 group-hover:opacity-30 transition-opacity duration-500"></span>
+              <span class="relative z-10 text-sm font-medium tracking-widest">
+                Ver en Gymshark
+              </span>
+              <!-- Efecto de borde animado -->
+              <span class="absolute -inset-0.5 border-2 border-transparent rounded-lg group-hover:border-gray-600 transition-all duration-300"></span>
+            </button>
           </a>
         </div>
 
