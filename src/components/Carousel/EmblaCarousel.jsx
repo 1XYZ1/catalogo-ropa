@@ -37,11 +37,11 @@ function EmblaCarouselComponent(props) {
           {images.map((image, index) => (
             <div class="embla__slide flex-[0_0_100%]" key={index}>
               <img
-
+                loading="lazy"
                 src={image}
                 alt={`${name} - Imagen ${index + 1}`}
                 class="w-full h-full object-cover rounded-lg shadow-md"
-                loading="eager"
+
               />
             </div>
 

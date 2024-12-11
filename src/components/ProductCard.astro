@@ -5,22 +5,32 @@ interface Props {
   name: string;
   slug: string;
   images: string[]; // Cambiado de 'image' a 'images'
-  price: number;
+  price?: number;
+
   gender?: 'male' | 'female' | 'unisex';
 }
 
-const { name, slug, images, price, gender } = Astro.props as Props;
-const image = images[0];
+const { name, slug, images, price = 0, gender } = Astro.props as Props;
+const image = images[0]
 ---
+
+
+
 
 <div class="flex flex-col border rounded-lg overflow-hidden shadow hover:shadow-lg transition h-full" id={slug}>
   <a href={`/producto/${slug}`} class="flex flex-col flex-1">
     <!-- Ocultar flechas en el catálogo -->
     <!-- <EmblaCarousel  images={images} name={name} showArrows={true} /> -->
 
-    <img loading="eager"
-    decoding="async"
-    src={image} alt={name} class="w-full h-full object-cover" />
+    <div class="w-full aspect-square bg-gray-200 animate-pulse">
+      <img
+        src={image}
+        alt={name}
+        class="w-full h-full object-cover"
+        loading="lazy"
+        onload="this.parentNode.classList.remove('animate-pulse', 'bg-gray-200')"
+      />
+    </div>
 
 
   </a>
@@ -36,5 +46,4 @@ const image = images[0];
       </a>
       </div>
     </div>
-
 </div>
