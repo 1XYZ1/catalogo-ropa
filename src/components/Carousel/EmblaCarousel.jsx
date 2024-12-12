@@ -11,7 +11,7 @@ function EmblaCarouselComponent(props) {
   let emblaInstance;
 
   // Desestructurar props y establecer showArrows por defecto a true
-  const { images, name, showArrows= true, slug  } = props;
+  const { images, name, showArrows= true  } = props;
 
   onMount(() => {
     emblaInstance = EmblaCarousel(viewportRef, { loop: false });

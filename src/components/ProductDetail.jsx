@@ -1,6 +1,5 @@
 // src/components/ProductDetail.jsx
 import { createSignal } from 'solid-js';
-import WhatsappButton from '../components/buttons/WhatsappButton.astro';
 export default function ProductDetail(props) {
   const { product } = props;
 
@@ -52,7 +51,7 @@ export default function ProductDetail(props) {
             <dt class="text-sm font-medium text-gray-500">Tallas Disponibles</dt>
             <dd class="mt-1 text-sm text-gray-900">
               <div class="flex space-x-2">
-                {product.sizes.map((sz, i) => (
+                {product.sizes.map((sz) => (
                   <button
                   class={`px-3 py-1 rounded border transition-colors duration-200
                   ${sz.size === selectedSize() ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-800 border-gray-300'}
