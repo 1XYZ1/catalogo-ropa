@@ -1,4 +1,8 @@
 ---
+import { Icon } from 'astro-icon/components';
+import IconType from './IconType.astro';
+import EmblaIsla from './Carousel/EmblaIsla.astro';
+
 
 
 interface Props {
@@ -6,11 +10,12 @@ interface Props {
   slug: string;
   images: string[]; // Cambiado de 'image' a 'images'
   price?: number;
+  type: string
+  discount: boolean
 
-  gender?: 'male' | 'female' | 'unisex';
 }
 
-const { name, slug, images, price = 0, gender } = Astro.props as Props;
+const { name, slug, images, price = 0, type, discount } = Astro.props as Props;
 const image = images[0]
 ---
 
@@ -18,30 +23,60 @@ const image = images[0]
 
 
 <div class="flex flex-col border rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 h-full" id={slug}>
-  <!-- Imagen del producto -->
-  <a href={`/producto/${slug}`} class="flex-1">
-    <picture>
-      <img
+
+  <div class="flex flex-row relative">
+
+    <a href={`/producto/${slug}`} class="flex-1">
+      <!-- <img
         loading="lazy"
         width="400"
         height="400"
         src={image}
         alt={name}
-        class="w-full h-full object-cover opacity-0 hover:scale-105 scale-105 transition-all duration-300"
-        onload="this.classList.add('opacity-100'); this.classList.remove('scale-105') "
-      />
-    </picture>
+        class="w-full h-full object-cover opacity-0 hover:scale-105 transition-all duration-300"
+        onload="this.classList.add('opacity-100')"
+      /> -->
+
+      <EmblaIsla
+          slug={slug}
+          images={images}
+          name={name}
+          showArrows={true}
+        />
   </a>
+  <div class="flex flex-row">
+
+    {(type) && (
+      <button class="absolute top-2 right-2">
+        <IconType type={type}></IconType>
+      </button>
+
+    )}
+
+    {(discount) && (
+      <button class="absolute top-2 right-12">
+        <IconType type='discount'></IconType>
+        </button>
+    )}
+  </div>
+
+
+
+  </div>
+  <!-- Imagen del producto -->
 
   <!-- Información del producto -->
   <div class="p-4 flex flex-col flex-1">
+
+
     <h3 class="text-xl font-bold text-center mb-2">{name}</h3>
-    <p class="text-sm text-gray-500 text-center mb-4">${price.toLocaleString('es-ES')}</p>
+    {discount ? (<p class="text-sm text-red-500 text-center mb-4">${price.toLocaleString('es-ES')}</p>) : (<p class="text-sm text-gray-500 text-center mb-4">${price.toLocaleString('es-ES')}</p>)}
+
 
     <!-- Botón -->
     <div class="mt-auto flex justify-center">
       <a href={`/producto/${slug}`} class="group relative inline-block">
-        <button class="relative w-64 bg-black text-white py-3 px-6 rounded-lg overflow-hidden transition-all duration-300 group-hover:scale-105">
+        <button class="relative w-64 bg-gradient-to-t from-black from-10% via-gray-900 via-80% to-gray-800 to-90% text-white py-3 px-6 rounded-lg overflow-hidden transition-all duration-300 group-hover:scale-105">
           <span class="absolute inset-0 w-full h-full bg-gradient-to-b from-green-900 from-20% via-gray-800 via-40% to-black to-90% opacity-0 group-hover:opacity-30 transition-opacity duration-500"></span>
           <span class="relative z-10 text-sm font-medium tracking-widest">
             Ver Detalles

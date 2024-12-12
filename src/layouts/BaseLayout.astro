@@ -1,7 +1,7 @@
 ---
+import { ViewTransitions } from 'astro:transitions';
 import Navbar from '../components/Navbar';
 import '../styles/global.css'; // CSS global
-// import { ViewTransitions } from 'astro:transitions';
 
 // Definimos la interfaz de las props del layout
 interface Props {
@@ -16,17 +16,21 @@ const { title = 'Mi Sitio', description = '', lang = 'es' } = Astro.props as Pro
 
 <html lang={lang}>
   <head>
+    <ViewTransitions />
     <meta charset="UTF-8" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- <ViewTransitions fallback="none" /> -->
+
+      <ViewTransitions />
+
   </head>
   <body class="font-sans bg-gray-100 flex flex-col min-h-screen">
 
 
     <!-- Cabecera del sitio -->
     <header class="bg-white shadow">
+
       <div class="container mx-auto px-4 py-4">
         <Navbar client:load />
       </div>

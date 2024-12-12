@@ -41,6 +41,7 @@ function EmblaCarouselComponent(props) {
 
 
                 <img
+
                 loading="lazy"
                 width="400"
                 height="400"

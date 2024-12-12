@@ -1,0 +1,21 @@
+---
+import { Icon } from 'astro-icon/components'
+
+interface Props {
+  type?:string
+}
+
+const {type} = Astro.props as Props;
+
+---
+
+
+
+  {
+    type && (
+          <a>
+
+            <Icon name={type} size={40} />
+          </a>
+    )
+  }

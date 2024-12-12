@@ -13,6 +13,7 @@
     "@astrojs/solid-js": "^4.4.4",
     "@astrojs/tailwind": "^5.1.2",
     "astro": "^4.16.16",
+    "astro-icon": "^1.1.4",
     "embla-carousel": "^8.5.1",
     "embla-carousel-solid": "^8.5.1",
     "solid-js": "^1.9.3",
