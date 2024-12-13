@@ -4,6 +4,9 @@ summary::-webkit-details-marker {
   display: none;
 }
 
+.custom-slide {
+  padding-left: 0 !important; /* Sobrescribimos el padding-left */
+}
 
 
 

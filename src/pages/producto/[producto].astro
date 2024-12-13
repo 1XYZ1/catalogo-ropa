@@ -26,7 +26,7 @@ const { product } = Astro.props;
 ---
 
 
-<BaseLayout title={`${product.name}`} description={product.description}>
+<BaseLayout title={`${product.name}`} description={product.shortDescription} image={product.images[0]}>
 
 
   <div class="max-w-5xl mx-auto px-0 py-6 lg:mt-10">

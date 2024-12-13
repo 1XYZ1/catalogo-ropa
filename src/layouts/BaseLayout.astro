@@ -2,26 +2,38 @@
 import { ViewTransitions } from 'astro:transitions';
 import Navbar from '../components/Navbar';
 import '../styles/global.css'; // CSS global
+import { siteInfo } from '../constantes/site-info';
 
 // Definimos la interfaz de las props del layout
 interface Props {
   title?: string;
   description?: string;
   lang?: string;
+  image?: string;
+  keywords?: string
 }
 
 // Extraemos las props y establecemos valores por defecto
-const { title = 'Mi Sitio', description = '', lang = 'es' } = Astro.props as Props;
+const { title = siteInfo.title, description = siteInfo.shortDescription, lang = 'es', keywords = siteInfo.keywords, image = siteInfo.image } = Astro.props as Props;
 ---
 
 <html lang={lang}>
   <head>
     <ViewTransitions />
     <meta charset="UTF-8" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content="AstroJS">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <!-- SEO -->
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+
+    <meta property="keywords" content={keywords}>
+    <meta name="author" content="Ramón Hernández">
+    <title>{title}</title>
+
       <ViewTransitions />
 
   </head>
