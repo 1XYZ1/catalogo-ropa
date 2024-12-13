@@ -20,8 +20,8 @@ export interface Product {
   sizes: Size[];
   measurements?: string;
   link?: string
-  gender?: 'male' | 'female' | 'unisex'
-  type?: 'long-shirt' | 'short-shirt' | 'shorts' | 'pants' | 'hoodie' | 'bra' | 'accessory',
+  gender?: 'hombre' | 'mujer' | 'unisex'
+  type?: 'inferior' | 'superior' | 'long-shirt' | 'short-shirt' | 'shorts' | 'pants' | 'hoodie' | 'bra' | 'accesorio',
   discount?: boolean
 }
 
@@ -49,8 +49,8 @@ export const products: Product[] = [
     ],
     measurements: "Largo: 70cm, Ancho: 50cm",
     link: 'https://www.gymshark.com/products/gymshark-crest-long-sleeve-t-shirt-light-grey-marl-aw23',
-    gender: 'male',
-    type: 'long-shirt',
+    gender: 'hombre',
+    type: 'accesorio',
     discount: true
 
   },
@@ -76,8 +76,8 @@ export const products: Product[] = [
     ],
     measurements: "Largo: 70cm, Ancho: 50cm",
     link: 'https://www.gymshark.com/products/gymshark-crest-long-sleeve-t-shirt-light-grey-marl-aw23',
-    gender: 'male',
-    type:'pants',
+    gender: 'hombre',
+    type:'superior',
     discount: true
   },
   {
@@ -102,8 +102,8 @@ export const products: Product[] = [
     ],
     measurements: "Largo: 70cm, Ancho: 50cm",
     link: 'https://www.gymshark.com/products/gymshark-crest-long-sleeve-t-shirt-light-grey-marl-aw23',
-    gender: 'male',
-    type:'hoodie'
+    gender: 'hombre',
+    type:'superior'
   },
 
   {
@@ -128,8 +128,8 @@ export const products: Product[] = [
     ],
     measurements: "Largo: 70cm, Ancho: 50cm",
     link: 'https://www.gymshark.com/products/gymshark-crest-long-sleeve-t-shirt-light-grey-marl-aw23',
-    gender: 'male',
-    type:'long-shirt'
+    gender: 'hombre',
+    type:'superior'
   },
   {
     name: 'Polera azul manga larga',
@@ -153,8 +153,8 @@ export const products: Product[] = [
     ],
     measurements: "Largo: 70cm, Ancho: 50cm",
     link: 'https://www.gymshark.com/products/gymshark-crest-long-sleeve-t-shirt-light-grey-marl-aw23',
-    gender: 'male',
-    type:'long-shirt'
+    gender: 'hombre',
+    type:'superior'
   },
   {
     name: 'Polera blanca manga larga',
@@ -178,8 +178,8 @@ export const products: Product[] = [
     ],
     measurements: "Largo: 70cm, Ancho: 50cm",
     link: 'https://www.gymshark.com/products/gymshark-crest-long-sleeve-t-shirt-light-grey-marl-aw23',
-    gender: 'male',
-    type:'long-shirt'
+    gender: 'mujer',
+    type:'inferior'
   },
 
   // Agrega más productos según tus imágenes

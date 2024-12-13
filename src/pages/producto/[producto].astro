@@ -27,9 +27,13 @@ const { product } = Astro.props;
 
 
 <BaseLayout title={`${product.name}`} description={product.description}>
+
+
   <div class="max-w-5xl mx-auto px-0 py-6 lg:mt-10">
+
     <!-- Contenedor flex responsivo -->
     <div class="flex flex-col lg:flex-row lg:space-x-8">
+
       <!-- Sección del carrusel de imágenes -->
       <div class="lg:w-1/2">
 
@@ -59,11 +63,11 @@ const { product } = Astro.props;
             </button>
           </a>
         </div>
-
         <a href="javascript:!document.referrer.includes(location.hostname)?location='/' : history.back()"
         rel="noopener noreferrer" class="block text-blue-500 hover:underline mt-4 text-center">
-          ← Volver al Catálogo
+          ← Regresar al Catalogo
         </a>
+
       </div>
 
     </div>
