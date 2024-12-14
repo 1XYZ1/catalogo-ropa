@@ -7,6 +7,7 @@ import EmblaIsla from '../../components/Carousel/EmblaIsla.astro';
 
 import ProductDetail from '../../components/ProductDetail';
 import WhatsappButton from '../../components/buttons/WhatsappButton.astro';
+import AddButton from '../../components/buttons/AddButton.astro';
 
 
 
@@ -49,6 +50,9 @@ const { product } = Astro.props;
 
       <div class="lg:w-1/2 mt-6 lg:mt-0 px-8">
         <ProductDetail product={product} client:load />
+
+        <AddButton product={product} />
+
         <WhatsappButton widthClass="w-64" title="Contactar por WhatsApp" name={product.name}/>
 
         <div class="flex justify-center items-start">

@@ -1,0 +1,11 @@
+---
+// src/components/EmblaIsla.astro
+import AddToLocalStorage from './AddToLocalStorage';
+
+const { product } = Astro.props;
+
+---
+
+<div>
+  <AddToLocalStorage client:visible product={product} />
+</div>

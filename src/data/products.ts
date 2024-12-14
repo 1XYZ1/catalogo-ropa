@@ -122,25 +122,8 @@ export const products: Product[] = [
     stock: 2,
     type: 'superior',
   },
-  {
-    description: 'Cómodamente constante y casualmente elegante, puedes usar Crest en cualquier lugar y combinarlo con todo. Logo bordado duradero que resistirá cada uso. Tela de algodón suave y cómoda. TALLA Y AJUSTE Ajuste regular. El modelo mide 1.85 m y usa talla M. MATERIALES Y CUIDADO 100% Algodón.',
-    gender: 'mujer',
-    images: ['/images/BLANCO/crest-white-1.webp', '/images/BLANCO/crest-white-2.webp'],
-    link: 'https://www.gymshark.com/products/gymshark-crest-long-sleeve-t-shirt-light-grey-marl-aw23',
-    measurements: 'Largo: 70cm, Ancho: 50cm',
-    name: 'Polera blanca manga larga',
-    price: 29990,
-    shortDescription: 'Polera blanca manga larga para mujer, elegante y cómoda para cualquier ocasión casual.',
-    sizes: [
-      { size: 'S', stock: 5 },
-      { size: 'M', stock: 10 },
-      { size: 'L', stock: 2 },
-      { size: 'XL', stock: 0 },
-    ],
-    slug: 'polera-blanca-manga-larga',
-    stock: 2,
-    type: 'inferior',
-  },
+
+
 
 
   // Estructura de producto
