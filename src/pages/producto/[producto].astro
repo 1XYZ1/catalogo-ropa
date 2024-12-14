@@ -51,13 +51,13 @@ const { product } = Astro.props;
       <div class="lg:w-1/2 mt-6 lg:mt-0 px-8">
         <ProductDetail product={product} client:load />
 
-        <AddButton product={product} />
 
+        <AddButton product={product} />
         <WhatsappButton widthClass="w-64" title="Contactar por WhatsApp" name={product.name}/>
 
         <div class="flex justify-center items-start">
           <a href={product.link} target="_blank" class="group relative inline-block">
-            <button class="relative w-64 bg-gradient-to-t from-black from-10% via-gray-900 via-80% to-gray-800 to-90% text-white py-3 px-6 mt-3 rounded-lg overflow-hidden transition-all duration-300 group-hover:scale-105">
+            <button class="relative w-64 bg-gradient-to-t from-black from-10% via-gray-900 via-80% to-gray-800 to-90% text-white py-3 px-6 mt-6 rounded-lg overflow-hidden transition-all duration-300 group-hover:scale-105">
               <span class="absolute inset-0 w-full h-full bg-gradient-to-t from-green-900 from-20% via-gray-800 via-40% to-black to-90% opacity-0 group-hover:opacity-30 transition-opacity duration-500"></span>
               <span class="relative z-10 text-sm font-medium tracking-widest">
                 Ver en Gymshark

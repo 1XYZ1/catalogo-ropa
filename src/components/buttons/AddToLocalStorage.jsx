@@ -1,59 +1,70 @@
 import { createSignal, onMount } from "solid-js";
 
 export default function AddToLocalStorage(props) {
-  // Estado para verificar si el producto ya está en favoritos
   const [isAdded, setIsAdded] = createSignal(false);
+  const [modalVisible, setModalVisible] = createSignal(false); // Controla las clases de animación
 
-  // Al cargar el componente, verificar si el producto ya está en favoritos
+  // Verificar si el producto ya está en favoritos al cargar el componente
   onMount(() => {
     const storedProducts = JSON.parse(localStorage.getItem("favorites")) || [];
-    // Actualizar el estado `isAdded` según si el producto ya está en favoritos
     setIsAdded(storedProducts.some((product) => product.id === props.product.id));
   });
 
-  // Manejar clics en el botón para agregar o eliminar del localStorage
+  // Alternar producto en localStorage (agregar/eliminar) y mostrar modal
   const toggleLocalStorage = (event) => {
     try {
-      // Obtener los productos guardados en `favorites` del localStorage
       const storedProducts = JSON.parse(localStorage.getItem("favorites")) || [];
 
       if (isAdded()) {
-        // Si el producto está agregado, eliminarlo de `favorites`
         const updatedProducts = storedProducts.filter(
           (product) => product.id !== props.product.id
         );
         localStorage.setItem("favorites", JSON.stringify(updatedProducts));
-        setIsAdded(false); // Cambiar estado a "no agregado"
+        setIsAdded(false);
       } else {
-        // Si el producto no está agregado, agregarlo a `favorites`
         storedProducts.push(props.product);
         localStorage.setItem("favorites", JSON.stringify(storedProducts));
-        setIsAdded(true); // Cambiar estado a "agregado"
+        setIsAdded(true);
       }
+
+      // Mostrar el modal con animación de entrada
+      setModalVisible(true);
+      setTimeout(() => setModalVisible(false), 2100); // Ocultar modal después de 2.5 segundos
 
       // Quitar el estado de foco después del clic
       event.target.blur();
-
-      // Eliminar cualquier clase de `hover` que pueda quedar activa en el botón
-      event.target.classList.remove("hover:bg-green-600", "hover:bg-red-700");
     } catch (error) {
-      console.error("Error al actualizar localStorage:", error); // Capturar errores en caso de que algo falle
+      console.error("Error al actualizar localStorage:", error);
     }
   };
 
   return (
-    <button
-      // Lógica para alternar entre agregar y eliminar al hacer clic
-      onClick={toggleLocalStorage}
-      // Clases dinámicas para manejar estilos según el estado
-      class={`group px-4 py-2 rounded min-w-[150px] text-center transition duration-300 focus:outline-none ${
-        isAdded()
-          ? "bg-red-600 text-white hover:bg-red-700" // Estado "agregado": fondo rojo
-          : "bg-gradient-to-t from-gray-800 from-10% via-gray-900 via-20% to-black to-80% text-white hover:bg-green-600" // Estado "no agregado": fondo negro
-      }`}
-    >
-      {/* Texto dinámico según el estado */}
-      {isAdded() ? "Eliminar Producto" : "Agregar Producto"}
-    </button>
+    <div class="relative">
+      {/* Botón */}
+      <button
+        onClick={toggleLocalStorage}
+        class={`group py-3 px-6 mt-6 rounded-lg w-64 text-center transition duration-300 focus:outline-none transform ${
+          isAdded()
+            ? "text-white bg-gradient-to-t from-red-500 via-red-600 to-red-700 md:hover:from-red-700 md:hover:via-red-800 md:hover:to-red-900 md:active:scale-95"
+            : "text-white bg-gradient-to-t from-gray-800 via-gray-900 to-black md:hover:from-green-700 md:hover:via-green-800 md:hover:to-green-900 md:active:scale-95"
+        }`}
+      >
+        {isAdded() ? "Eliminar Producto" : "Agregar Producto"}
+      </button>
+
+      {/* Modal Push Notification */}
+      <div
+        class={`fixed top-0 left-0 w-full ${isAdded() ? "bg-green-300" : "bg-red-300"} shadow-md rounded-b-md p-5 transform transition-transform duration-300 ${
+          modalVisible() ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
+        }`}
+        style="z-index: 1000;"
+      >
+        <p class="text-gray-800 font-medium text-center">
+          {isAdded()
+            ? "Producto agregado a favoritos 🎉"
+            : "Producto eliminado de favoritos ❌"}
+        </p>
+      </div>
+    </div>
   );
 }
