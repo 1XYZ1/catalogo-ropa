@@ -120,7 +120,7 @@ export const products: Product[] = [
     ],
     slug: 'polera-azul-manga-larga',
     stock: 2,
-    type: 'superior',
+    type: 'inferior',
   },
 
 

@@ -11,11 +11,6 @@ const currentUrl = Astro.url.pathname;
 const isGenderRoute = currentUrl.includes('/hombre') || currentUrl.includes('/mujer');
 const currentGender = currentUrl.includes('/hombre') ? 'hombre' : currentUrl.includes('/mujer') ? 'mujer' : '';
 
-// Función para verificar si una combinación de género y categoría existe en los productos
-const combinationExists = (gender: string | undefined, category: string | undefined) => {
-  return products.some(product => product.gender === gender && product.type === category);
-};
-
 // Función para verificar si un género existe en los productos
 const genderExists = (gender: string | undefined) => {
   return products.some(product => product.gender === gender);
@@ -28,14 +23,25 @@ const isTodosActive = !isGenderRoute && (currentUrl === '/' || currentCategory);
 
 <div class="flex justify-center space-x-4 mb-8">
   <a href="/" class={`px-4 py-2 rounded font-semibold ${isTodosActive ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-gray-200 text-gray-800 hover:bg-blue-100'}`}>Todos</a>
-  <a href="/categoria/hombre" class={`px-4 py-2 rounded font-semibold ${currentGender === 'hombre' ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-gray-200 text-gray-800 hover:bg-blue-100'} ${!genderExists('hombre') ? 'opacity-50 cursor-not-allowed' : ''}`} aria-disabled={!genderExists('hombre')}>Hombre</a>
-  <a href="/categoria/mujer" class={`px-4 py-2 rounded font-semibold ${currentGender === 'mujer' ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-gray-200 text-gray-800 hover:bg-blue-100'} ${!genderExists('mujer') ? 'opacity-50 cursor-not-allowed' : ''}`} aria-disabled={!genderExists('mujer')}>Mujer</a>
+
+  {['hombre', 'mujer'].map((gender) => {
+    const isDisabled = !genderExists(gender);
+    return isDisabled ? (
+      <button class={`px-4 py-2 rounded font-semibold bg-gray-200 text-gray-800 opacity-50 cursor-not-allowed`} disabled>
+        {gender.charAt(0).toUpperCase() + gender.slice(1)}
+      </button>
+    ) : (
+      <a href={`/categoria/${gender}`} class={`px-4 py-2 rounded font-semibold ${currentGender === gender ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-gray-200 text-gray-800 hover:bg-blue-100'}`}>
+        {gender.charAt(0).toUpperCase() + gender.slice(1)}
+      </a>
+    );
+  })}
 </div>
 
 <div class="flex justify-center space-x-4 mb-8">
   {categories.map((category) => {
     const isActive = currentUrl.endsWith(`/${category}`) || (!isGenderRoute && currentCategory === category);
-    const isDisabled = !combinationExists(currentGender, category) && isGenderRoute;
+    const isDisabled = !products.some(product => product.gender === currentGender && product.type === category) && isGenderRoute;
     const href = isDisabled ? '#' : isGenderRoute ? `/categoria/${currentGender}/${category}` : `/${baseRoute}/${category}`;
     return isDisabled ? (
       <button class={`px-4 py-2 rounded font-semibold bg-gray-200 text-gray-800 opacity-50 cursor-not-allowed`} disabled>
