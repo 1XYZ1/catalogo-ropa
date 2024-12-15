@@ -3,10 +3,24 @@ import { createSignal, onMount } from "solid-js";
 export default function FavoritesIcon() {
   const [favoritesCount, setFavoritesCount] = createSignal(0);
 
-  // Cargar los favoritos del localStorage al montar el componente
-  onMount(() => {
+  // Función para cargar los favoritos del localStorage
+  const loadFavorites = () => {
     const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
     setFavoritesCount(storedFavorites.length);
+  };
+
+  // Cargar favoritos al montar el componente
+  onMount(() => {
+    loadFavorites();
+
+    // Escuchar el evento personalizado "favorites-updated"
+    const handleFavoritesUpdated = () => loadFavorites();
+    window.addEventListener("favorites-updated", handleFavoritesUpdated);
+
+    // Limpieza del evento al desmontar el componente
+    return () => {
+      window.removeEventListener("favorites-updated", handleFavoritesUpdated);
+    };
   });
 
   return (
@@ -14,7 +28,7 @@ export default function FavoritesIcon() {
       class="relative inline-block cursor-pointer transform transition-transform duration-300 hover:scale-110"
       title={`Favoritos: ${favoritesCount()}`}
     >
-      {/* Corazón SVG */}
+      {/* Ícono de corazón */}
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"

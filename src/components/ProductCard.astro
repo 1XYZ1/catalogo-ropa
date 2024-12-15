@@ -1,7 +1,7 @@
 ---
 
 import IconType from './IconType.astro';
-import EmblaIsla from './Carousel/EmblaIsla.astro';
+// import EmblaIsla from './Carousel/EmblaIsla.astro';
 
 
 
@@ -12,11 +12,12 @@ interface Props {
   price?: number;
   type: string
   discount: boolean
+  carousel?: boolean
 
 }
 
-const { name, slug, images, price = 0, type, discount } = Astro.props as Props;
-// const image = images[0]
+const { name, slug, images, price = 0, type, discount, carousel = true } = Astro.props as Props;
+const image = images[0]
 ---
 
 
@@ -27,7 +28,7 @@ const { name, slug, images, price = 0, type, discount } = Astro.props as Props;
   <div class="flex flex-row relative">
 
     <a href={`/producto/${slug}`} class="flex-1">
-      <!-- <img
+      <img
         loading="lazy"
         width="400"
         height="400"
@@ -35,14 +36,27 @@ const { name, slug, images, price = 0, type, discount } = Astro.props as Props;
         alt={name}
         class="w-full h-full object-cover opacity-0 hover:scale-105 transition-all duration-300"
         onload="this.classList.add('opacity-100')"
-      /> -->
+      />
 
-      <EmblaIsla
+      <!-- {carousel ? (
+        <EmblaIsla
           slug={slug}
           images={images}
           name={name}
           showArrows={true}
         />
+      ) : (
+        <img
+          loading="lazy"
+          width="400"
+          height="400"
+          src={image}
+          alt={name}
+          class="w-full h-full object-cover opacity-0 hover:scale-105 transition-all duration-300"
+          onload="this.classList.add('opacity-100')"
+        />
+      )} -->
+
   </a>
   <div class="flex flex-row">
 

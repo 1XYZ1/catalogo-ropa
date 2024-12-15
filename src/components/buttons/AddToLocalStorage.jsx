@@ -4,10 +4,12 @@ export default function AddToLocalStorage(props) {
   const [isAdded, setIsAdded] = createSignal(false);
   const [modalVisible, setModalVisible] = createSignal(false); // Controla las clases de animación
 
-  // Verificar si el producto ya está en favoritos al cargar el componente
+  // Verificar si el producto actual está en favoritos usando el slug
   onMount(() => {
     const storedProducts = JSON.parse(localStorage.getItem("favorites")) || [];
-    setIsAdded(storedProducts.some((product) => product.id === props.product.id));
+    setIsAdded(
+      storedProducts.some((product) => product.slug === props.product.slug)
+    );
   });
 
   // Alternar producto en localStorage (agregar/eliminar) y mostrar modal
@@ -16,20 +18,39 @@ export default function AddToLocalStorage(props) {
       const storedProducts = JSON.parse(localStorage.getItem("favorites")) || [];
 
       if (isAdded()) {
+        // Eliminar producto del localStorage
         const updatedProducts = storedProducts.filter(
-          (product) => product.id !== props.product.id
+          (product) => product.slug !== props.product.slug // Filtrar por slug
         );
         localStorage.setItem("favorites", JSON.stringify(updatedProducts));
         setIsAdded(false);
       } else {
-        storedProducts.push(props.product);
+        // Obtener atributos seleccionados de talla y cantidad
+        const { talla, cantidad } = props.seleccion;
+
+        // Validar que los datos estén presentes
+        if (!talla || !cantidad) {
+          alert("Por favor selecciona talla y cantidad antes de agregar.");
+          return;
+        }
+
+        // Agregar producto al localStorage con los datos seleccionados
+        const productoConCompra = {
+          ...props.product,
+          compra: { talla, cantidad }, // Añadir atributos seleccionados
+        };
+        storedProducts.push(productoConCompra);
         localStorage.setItem("favorites", JSON.stringify(storedProducts));
         setIsAdded(true);
       }
 
+      // Emitir un evento personalizado para notificar el cambio
+      const eventFavoritesUpdated = new Event("favorites-updated");
+      window.dispatchEvent(eventFavoritesUpdated);
+
       // Mostrar el modal con animación de entrada
       setModalVisible(true);
-      setTimeout(() => setModalVisible(false), 2100); // Ocultar modal después de 2.5 segundos
+      setTimeout(() => setModalVisible(false), 1500); // Ocultar modal después de 1.5 segundos
 
       // Quitar el estado de foco después del clic
       event.target.blur();
@@ -54,7 +75,9 @@ export default function AddToLocalStorage(props) {
 
       {/* Modal Push Notification */}
       <div
-        class={`fixed top-0 left-0 w-full ${isAdded() ? "bg-green-300" : "bg-red-300"} shadow-md rounded-b-md p-5 transform transition-transform duration-300 ${
+        class={`fixed top-0 left-0 w-full ${
+          isAdded() ? "bg-green-300" : "bg-red-300"
+        } shadow-md rounded-b-md p-5 transform transition-transform duration-300 ${
           modalVisible() ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
         }`}
         style="z-index: 1000;"

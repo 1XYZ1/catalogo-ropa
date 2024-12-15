@@ -17,6 +17,7 @@ const { products = []} = Astro.props as Props;
           price={product.price}
           type={product.type || ''}
           discount={product.discount || false}
+          carousel={false}
 
         />
       ))}

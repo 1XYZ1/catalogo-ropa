@@ -34,7 +34,6 @@ const { title = siteInfo.title, description = siteInfo.shortDescription, lang = 
     <meta name="author" content="Ramón Hernández">
     <title>{title}</title>
 
-      <ViewTransitions />
 
   </head>
   <body class="font-sans bg-gray-100 flex flex-col min-h-screen">
@@ -44,7 +43,7 @@ const { title = siteInfo.title, description = siteInfo.shortDescription, lang = 
     <header class="bg-white shadow">
 
       <div class="container mx-auto px-4 py-4">
-        <Navbar client:load />
+        <Navbar client:idle />
       </div>
     </header>
 
