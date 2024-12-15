@@ -9,12 +9,12 @@ interface Props {
   title?: string;
   description?: string;
   lang?: string;
-  image?: string;
+  ogimage?: string;
   keywords?: string
 }
 
 // Extraemos las props y establecemos valores por defecto
-const { title = siteInfo.title, description = siteInfo.shortDescription, lang = 'es', keywords = siteInfo.keywords, image = siteInfo.image } = Astro.props as Props;
+const { title = siteInfo.title, description = siteInfo.shortDescription, lang = 'es', keywords = siteInfo.keywords, ogimage = siteInfo.image } = Astro.props as Props;
 ---
 
 <html lang={lang}>
@@ -32,7 +32,7 @@ const { title = siteInfo.title, description = siteInfo.shortDescription, lang = 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={image} />
+    <meta property="og:image" content={ogimage} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={Astro.url.href} />
     <title>{title}</title>

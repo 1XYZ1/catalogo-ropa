@@ -23,11 +23,11 @@ export async function getStaticPaths() {
 const { product } = Astro.props;
 
 
-const image = product.images[2]
+const image = product.ogimage
 ---
 
 
-<BaseLayout title={`${product.name}`} description={product.shortDescription} image={image}>
+<BaseLayout title={`${product.name}`} description={product.shortDescription} ogimage={image}>
 
 
   <div class="max-w-5xl mx-auto px-0 py-6 lg:mt-10">

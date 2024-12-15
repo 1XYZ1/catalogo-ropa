@@ -12,6 +12,7 @@ export interface Product {
   discount?: boolean;
   gender?: 'hombre' | 'mujer' | 'unisex';
   images: string[];
+  ogimage?: string;
   link?: string;
   measurements?: string;
   name: string;
@@ -30,6 +31,7 @@ export const products: Product[] = [
     discount: true,
     gender: 'hombre',
     images: ['/images/GRIS/crest-grey-1.webp', '/images/GRIS/crest-grey-2.webp'],
+    ogimage: '/images/GRIS/jpg/crest-grey-1.jpg',
     link: 'https://www.gymshark.com/products/gymshark-crest-long-sleeve-t-shirt-light-grey-marl-aw23',
     measurements: 'Largo: 70cm, Ancho: 50cm',
     name: 'Polera gris manga larga',
@@ -49,7 +51,8 @@ export const products: Product[] = [
     description: 'Cómodamente constante y casualmente elegante, puedes usar Crest en cualquier lugar y combinarlo con todo. Logo bordado duradero que resistirá cada uso. Tela de algodón suave y cómoda. TALLA Y AJUSTE Ajuste regular. El modelo mide 1.85 m y usa talla M. MATERIALES Y CUIDADO 100% Algodón.',
     discount: true,
     gender: 'hombre',
-    images: ['/images/NEGRO/crest-negro-1.webp', '/images/NEGRO/crest-negro-2.webp', '/images/NEGRO/jpg/crest-negro-1.jpg'],
+    images: ['/images/NEGRO/crest-negro-1.webp', '/images/NEGRO/crest-negro-2.webp'],
+    ogimage: '/images/NEGRO/jpg/crest-negro-1.jpg',
     link: 'https://www.gymshark.com/products/gymshark-crest-long-sleeve-t-shirt-light-grey-marl-aw23',
     measurements: 'Largo: 70cm, Ancho: 50cm',
     name: 'Polera negra manga larga',
@@ -69,6 +72,7 @@ export const products: Product[] = [
     description: 'Cómodamente constante y casualmente elegante, puedes usar Crest en cualquier lugar y combinarlo con todo. Logo bordado duradero que resistirá cada uso. Tela de algodón suave y cómoda. TALLA Y AJUSTE Ajuste regular. El modelo mide 1.85 m y usa talla M. MATERIALES Y CUIDADO 100% Algodón.',
     gender: 'hombre',
     images: ['/images/BLANCO/crest-white-1.webp', '/images/BLANCO/crest-white-2.webp'],
+    ogimage: '/images/BLANCO/jpg/crest-white-1.jpg',
     link: 'https://www.gymshark.com/products/gymshark-crest-long-sleeve-t-shirt-light-grey-marl-aw23',
     measurements: 'Largo: 70cm, Ancho: 50cm',
     name: 'Polera blanca manga larga',
@@ -88,6 +92,7 @@ export const products: Product[] = [
     description: 'Cómodamente constante y casualmente elegante, puedes usar Crest en cualquier lugar y combinarlo con todo. Logo bordado duradero que resistirá cada uso. Tela de algodón suave y cómoda. TALLA Y AJUSTE Ajuste regular. El modelo mide 1.85 m y usa talla M. MATERIALES Y CUIDADO 100% Algodón.',
     gender: 'mujer',
     images: ['/images/AZUL_MARINO/crest-navy-1.webp', '/images/AZUL_MARINO/crest-navy-2.webp'],
+    ogimage: '/images/AZUL_MARINO/jpg/crest-navy-1.jpg',
     link: 'https://www.gymshark.com/products/gymshark-crest-long-sleeve-t-shirt-light-grey-marl-aw23',
     measurements: 'Largo: 70cm, Ancho: 50cm',
     name: 'Polera navy manga larga',
@@ -107,6 +112,7 @@ export const products: Product[] = [
     description: 'Cómodamente constante y casualmente elegante, puedes usar Crest en cualquier lugar y combinarlo con todo. Logo bordado duradero que resistirá cada uso. Tela de algodón suave y cómoda. TALLA Y AJUSTE Ajuste regular. El modelo mide 1.85 m y usa talla M. MATERIALES Y CUIDADO 100% Algodón.',
     gender: 'hombre',
     images: ['/images/AZUL_CLARO/crest-blue-1.webp', '/images/AZUL_CLARO/crest-blue-2.webp'],
+    ogimage: '/images/AZUL_CLARO/jpg/crest-blue-1.jpg',
     link: 'https://www.gymshark.com/products/gymshark-crest-long-sleeve-t-shirt-light-grey-marl-aw23',
     measurements: 'Largo: 70cm, Ancho: 50cm',
     name: 'Polera azul manga larga',
