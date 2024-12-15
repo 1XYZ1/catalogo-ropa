@@ -17,6 +17,15 @@ export default function ProductDetail(props) {
     return sizeObj ? sizeObj.stock : 0;
   }
 
+  // Función para manejar la actualización de cantidad
+  const updateQuantity = (delta) => {
+    const newQuantity = Math.min(
+      Math.max(selectedQuantity() + delta, 1), // Mínimo 1
+      getSelectedStock() // Máximo según stock
+    );
+    setSelectedQuantity(newQuantity);
+  };
+
   return (
     <div>
       {/* Detalles del producto */}
@@ -87,17 +96,30 @@ export default function ProductDetail(props) {
           <div>
             <dt class="text-sm font-medium text-gray-500">Cantidad</dt>
             <dd class="mt-1 text-sm text-gray-900">
-              <input
-                type="number"
-                min="1"
-                max={getSelectedStock()}
-                value={selectedQuantity()}
-                class="w-20 border rounded-lg px-3 py-2 text-center"
-                onInput={(e) => {
-                  const value = Math.min(Math.max(parseInt(e.target.value, 10) || 1, 1), getSelectedStock());
-                  setSelectedQuantity(value);
-                }}
-              />
+              <div class="flex items-center space-x-2">
+                {/* Botón para disminuir */}
+                <button
+                  class="px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 active:bg-gray-400"
+                  onClick={() => updateQuantity(-1)}
+                  disabled={selectedQuantity() <= 1}
+                >
+                  -
+                </button>
+
+                {/* Cantidad actual */}
+                <span class="px-3 py-1 border rounded text-center w-12">
+                  {selectedQuantity()}
+                </span>
+
+                {/* Botón para aumentar */}
+                <button
+                  class="px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 active:bg-gray-400"
+                  onClick={() => updateQuantity(1)}
+                  disabled={selectedQuantity() >= getSelectedStock()}
+                >
+                  +
+                </button>
+              </div>
             </dd>
           </div>
 
@@ -110,7 +132,7 @@ export default function ProductDetail(props) {
       </section>
 
       {/* Botón para agregar a favoritos */}
-      <div class="mt-6">
+      <div class="flex justify-center items-start mt-10">
         <AddToLocalStorage
           product={product}
           seleccion={{ talla: selectedSize(), cantidad: selectedQuantity() }}

@@ -21,7 +21,8 @@ function Navbar() {
           {/* Ícono de favoritos en móviles */}
           {/* Ícono de favoritos en móviles */}
           <div class="w-10 h-10 flex items-center justify-center">
-            <FavoritesIcon />
+          <a href="/favorites"><FavoritesIcon /></a>
+
           </div>
 
           {/* Botón de menú para móviles */}
