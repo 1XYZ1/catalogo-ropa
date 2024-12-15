@@ -1,59 +1,33 @@
-import { createSignal, onMount } from "solid-js";
+import { createSignal } from "solid-js";
 
 export default function AddToLocalStorage(props) {
-  const [isAdded, setIsAdded] = createSignal(false);
-  const [modalVisible, setModalVisible] = createSignal(false); // Controla las clases de animación
+  const { product, seleccion, onAddToCart } = props;
+  const [modalVisible, setModalVisible] = createSignal(false);
 
-  // Verificar si el producto actual está en favoritos usando el slug
-  onMount(() => {
-    const storedProducts = JSON.parse(localStorage.getItem("favorites")) || [];
-    setIsAdded(
-      storedProducts.some((product) => product.slug === props.product.slug)
-    );
-  });
-
-  // Alternar producto en localStorage (agregar/eliminar) y mostrar modal
-  const toggleLocalStorage = (event) => {
+  const addToLocalStorage = () => {
     try {
       const storedProducts = JSON.parse(localStorage.getItem("favorites")) || [];
+      const storedProduct = storedProducts.find((p) => p.slug === product.slug);
 
-      if (isAdded()) {
-        // Eliminar producto del localStorage
-        const updatedProducts = storedProducts.filter(
-          (product) => product.slug !== props.product.slug // Filtrar por slug
-        );
-        localStorage.setItem("favorites", JSON.stringify(updatedProducts));
-        setIsAdded(false);
-      } else {
-        // Obtener atributos seleccionados de talla y cantidad
-        const { talla, cantidad } = props.seleccion;
+      if (storedProduct) {
+        const existingPurchase = storedProduct.compra.find((c) => c.talla === seleccion.talla);
 
-        // Validar que los datos estén presentes
-        if (!talla || !cantidad) {
-          alert("Por favor selecciona talla y cantidad antes de agregar.");
-          return;
+        if (existingPurchase) {
+          // Sumar cantidad seleccionada
+          existingPurchase.cantidad += seleccion.cantidad;
+        } else {
+          // Agregar nueva talla
+          storedProduct.compra.push(seleccion);
         }
-
-        // Agregar producto al localStorage con los datos seleccionados
-        const productoConCompra = {
-          ...props.product,
-          compra: { talla, cantidad }, // Añadir atributos seleccionados
-        };
-        storedProducts.push(productoConCompra);
-        localStorage.setItem("favorites", JSON.stringify(storedProducts));
-        setIsAdded(true);
+      } else {
+        storedProducts.push({ ...product, compra: [seleccion] });
       }
 
-      // Emitir un evento personalizado para notificar el cambio
-      const eventFavoritesUpdated = new Event("favorites-updated");
-      window.dispatchEvent(eventFavoritesUpdated);
+      localStorage.setItem("favorites", JSON.stringify(storedProducts));
+      onAddToCart(seleccion.talla, seleccion.cantidad);
 
-      // Mostrar el modal con animación de entrada
       setModalVisible(true);
-      setTimeout(() => setModalVisible(false), 1500); // Ocultar modal después de 1.5 segundos
-
-      // Quitar el estado de foco después del clic
-      event.target.blur();
+      setTimeout(() => setModalVisible(false), 1500);
     } catch (error) {
       console.error("Error al actualizar localStorage:", error);
     }
@@ -61,33 +35,22 @@ export default function AddToLocalStorage(props) {
 
   return (
     <div class="relative">
-      {/* Botón */}
       <button
-        onClick={toggleLocalStorage}
-        class={`group py-3 px-6 mt-6 rounded-lg w-64 text-center transition duration-300 focus:outline-none transform ${
-          isAdded()
-            ? "text-white bg-gradient-to-t from-red-500 via-red-600 to-red-700 md:hover:from-red-700 md:hover:via-red-800 md:hover:to-red-900 md:active:scale-95"
-            : "text-white bg-gradient-to-t from-gray-800 via-gray-900 to-black md:hover:from-green-700 md:hover:via-green-800 md:hover:to-green-900 md:active:scale-95"
-        }`}
+        onClick={addToLocalStorage}
+        class={`group py-3 px-6 mt-6 rounded-lg w-64 text-center transition duration-300 focus:outline-none transform bg-gradient-to-t from-gray-800 via-gray-900 to-black hover:from-green-700 hover:via-green-800 hover:to-green-900`}
       >
-        {isAdded() ? "Eliminar Producto" : "Agregar Producto"}
+        Agregar Producto
       </button>
-
-      {/* Modal Push Notification */}
-      <div
-        class={`fixed top-0 left-0 w-full ${
-          isAdded() ? "bg-green-300" : "bg-red-300"
-        } shadow-md rounded-b-md p-5 transform transition-transform duration-300 ${
-          modalVisible() ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
-        }`}
-        style="z-index: 1000;"
-      >
-        <p class="text-gray-800 font-medium text-center">
-          {isAdded()
-            ? "Producto agregado a favoritos 🎉"
-            : "Producto eliminado de favoritos ❌"}
-        </p>
-      </div>
+      {modalVisible() && (
+        <div
+          class={`fixed top-0 left-0 w-full bg-green-300 shadow-md rounded-b-md p-5 transform transition-transform duration-300 translate-y-0 opacity-100`}
+          style="z-index: 1000;"
+        >
+          <p class="text-gray-800 font-medium text-center">
+            Producto agregado correctamente 🎉
+          </p>
+        </div>
+      )}
     </div>
   );
 }
