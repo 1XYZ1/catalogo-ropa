@@ -1,7 +1,7 @@
 ---
 import { products } from '../../data/products';
 
-// Obtener todos los tipos únicos de productos
+// Obtener todos los tipos únicos de productos y ordenarlos alfabéticamente
 const categories = Array.from(new Set(products.map(product => product.type))).sort();
 
 const { baseRoute } = Astro.props;
@@ -19,7 +19,7 @@ const genderExists = (gender: string | undefined) => {
 // Determinar si la URL contiene una categoría específica
 const currentCategory = categories.find(category => currentUrl.includes(`/${category}`)) || '';
 const isTodosActive = !isGenderRoute && (currentUrl === '/' || currentCategory);
-const isCategoryActive = isGenderRoute && currentCategory;
+const isCategoryActive = currentCategory && (currentUrl.includes('/categoria/') || isGenderRoute);
 ---
 
 <div class="flex justify-center space-x-4 mb-8">
