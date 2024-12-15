@@ -16,10 +16,15 @@ const {gender="" } = Astro.props;
 // FILTRO SEGUN SEXO Y CATEGORIA
 
 const filteredProducts = products.filter(p =>  p.gender === gender);
+
+
 ---
 
 <BaseLayout title={`Catálogo de Ropa - ${gender}`}>
-  <h2 class="text-3xl font-bold text-center my-8">{`${gender.charAt(0).toUpperCase() + gender.slice(1)}`}</h2>
+
+  <h2 class="text-3xl font-bold text-center my-8 flex items-center justify-center">{`Ropa de ${gender.charAt(0).toUpperCase() + gender.slice(1)}`}
+    <span  style="height: 40px;"></span>
+  </h2>
 
   <FilterControls baseRoute="categoria" />
 

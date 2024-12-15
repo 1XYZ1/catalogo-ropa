@@ -1,5 +1,6 @@
 // Navbar.jsx
 import { createSignal } from 'solid-js';
+import FavoritesIcon from './buttons/FavoritesIcon.jsx';
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = createSignal(false);
@@ -33,7 +34,7 @@ function Navbar() {
         {/* Menú de navegación para pantallas medianas y grandes */}
 
 
-        <div class="hidden md:flex md:flex-1 md:justify-center md:items-center md:space-x-10">
+        <div class="hidden md:flex md:flex-1 md:justify-center md:items-center md:space-x-10 ">
           <a href="/" class="text-gray-700 hover:text-blue-500 text-xl">Inicio</a>
           <a href="/reviews" class="text-gray-700 hover:text-blue-500 text-xl">Reseñas</a>
           <a href="/contacto" class="text-gray-700 hover:text-blue-500 text-xl">Contacto</a>
@@ -41,7 +42,9 @@ function Navbar() {
           {/* Añade más enlaces según sea necesario */}
         </div>
 
-
+        <div class="hidden md:flex md:items-center md:mr-10">
+  <a href="#" class="text-gray-700 hover:text-blue-500 text-xl"><FavoritesIcon/></a>
+</div>
       </div>
 
       {/* Menú móvil de pantalla completa */}
