@@ -19,6 +19,7 @@ const genderExists = (gender: string | undefined) => {
 // Determinar si la URL contiene una categoría específica
 const currentCategory = categories.find(category => currentUrl.includes(`/${category}`)) || '';
 const isTodosActive = !isGenderRoute && (currentUrl === '/' || currentCategory);
+const isCategoryActive = isGenderRoute && currentCategory;
 ---
 
 <div class="flex justify-center space-x-4 mb-8">
@@ -40,7 +41,7 @@ const isTodosActive = !isGenderRoute && (currentUrl === '/' || currentCategory);
 
 <div class="flex justify-center space-x-4 mb-8">
   {categories.map((category) => {
-    const isActive = currentUrl.endsWith(`/${category}`) || (!isGenderRoute && currentCategory === category);
+    const isActive = currentUrl.endsWith(`/${category}`) || (isCategoryActive && currentCategory === category);
     const isDisabled = !products.some(product => product.gender === currentGender && product.type === category) && isGenderRoute;
     const href = isDisabled ? '#' : isGenderRoute ? `/categoria/${currentGender}/${category}` : `/${baseRoute}/${category}`;
     const buttonText = category === 'accesorio' ? 'Accesorios' : (category ?? '').charAt(0).toUpperCase() + (category ?? '').slice(1);
