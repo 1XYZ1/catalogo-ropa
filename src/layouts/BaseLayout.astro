@@ -24,16 +24,18 @@ const { title = siteInfo.title, description = siteInfo.shortDescription, lang = 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content="AstroJS">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <!-- SEO -->
+    <!-- SEO Dinámico -->
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <meta name="author" content="Ramón Hernández" />
 
+    <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={image} />
-
-    <meta property="keywords" content={keywords}>
-    <meta name="author" content="Ramón Hernández">
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url.href} />
     <title>{title}</title>
-
 
   </head>
   <body class="font-sans bg-gray-100 flex flex-col min-h-screen">
