@@ -49,7 +49,7 @@ export const products: Product[] = [
     description: 'Cómodamente constante y casualmente elegante, puedes usar Crest en cualquier lugar y combinarlo con todo. Logo bordado duradero que resistirá cada uso. Tela de algodón suave y cómoda. TALLA Y AJUSTE Ajuste regular. El modelo mide 1.85 m y usa talla M. MATERIALES Y CUIDADO 100% Algodón.',
     discount: true,
     gender: 'hombre',
-    images: ['/images/NEGRO/crest-negro-1.webp', '/images/NEGRO/crest-negro-2.webp'],
+    images: ['/images/NEGRO/crest-negro-1.webp', '/images/NEGRO/crest-negro-2.webp', '/images/NEGRO/jpg/crest-negro-1.jpg'],
     link: 'https://www.gymshark.com/products/gymshark-crest-long-sleeve-t-shirt-light-grey-marl-aw23',
     measurements: 'Largo: 70cm, Ancho: 50cm',
     name: 'Polera negra manga larga',
