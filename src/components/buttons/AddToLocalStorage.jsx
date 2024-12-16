@@ -1,35 +1,46 @@
+// AddToLocalStorage.jsx
 import { createSignal } from "solid-js";
 
 export default function AddToLocalStorage(props) {
-  const { product, seleccion, onAddToCart } = props;
+  const { product, seleccion, onAddToCart } = props; // Recibimos talla y cantidad desde el componente padre
   const [modalVisible, setModalVisible] = createSignal(false);
 
   const addToLocalStorage = () => {
     try {
+      const { talla, cantidad } = seleccion(); // Evaluar la función seleccion
       const storedProducts = JSON.parse(localStorage.getItem("favorites")) || [];
       const storedProduct = storedProducts.find((p) => p.slug === product.slug);
 
       if (storedProduct) {
-        const existingPurchase = storedProduct.compra.find((c) => c.talla === seleccion.talla);
+        const existingPurchase = storedProduct.compra.find((c) => c.talla === talla);
 
         if (existingPurchase) {
-          // Sumar cantidad seleccionada
-          existingPurchase.cantidad += seleccion.cantidad;
+          // Sumar cantidad seleccionada a la talla existente
+          existingPurchase.cantidad += cantidad;
         } else {
-          // Agregar nueva talla
-          storedProduct.compra.push(seleccion);
+          // Agregar nueva talla y cantidad
+          storedProduct.compra.push({ talla, cantidad });
         }
       } else {
-        storedProducts.push({ ...product, compra: [seleccion] });
+        // Producto nuevo con la talla y cantidad seleccionada
+        storedProducts.push({ ...product, compra: [{ talla, cantidad }] });
       }
 
+      // Actualizar el localStorage
       localStorage.setItem("favorites", JSON.stringify(storedProducts));
-      onAddToCart(seleccion.talla, seleccion.cantidad);
 
+      // Llamar al callback para actualizar el stock dinámico
+      onAddToCart(talla, cantidad);
+
+      // Emitir un evento para notificar cambios en favoritos
+      const event = new Event("favorites-updated");
+      window.dispatchEvent(event);
+
+      // Mostrar modal de confirmación
       setModalVisible(true);
       setTimeout(() => setModalVisible(false), 1500);
     } catch (error) {
-      console.error("Error al actualizar localStorage:", error);
+      console.error("Error al actualizar el localStorage:", error);
     }
   };
 

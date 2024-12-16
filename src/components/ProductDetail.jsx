@@ -1,20 +1,15 @@
+// ProductDetail.jsx
 import { createSignal, onMount } from "solid-js";
 import AddToLocalStorage from "./buttons/AddToLocalStorage";
 
 export default function ProductDetail(props) {
   const { product } = props;
 
-  // Estado para la talla seleccionada
   const initialSize = product.sizes.find((s) => s.stock > 0)?.size ?? product.sizes[0].size;
   const [selectedSize, setSelectedSize] = createSignal(initialSize);
-
-  // Estado para la cantidad seleccionada
   const [selectedQuantity, setSelectedQuantity] = createSignal(1);
-
-  // Estado para el stock dinámico basado en `localStorage`
   const [dynamicStock, setDynamicStock] = createSignal({});
 
-  // Calcular stock dinámico desde localStorage
   const calculateStockFromLocalStorage = () => {
     const storedProducts = JSON.parse(localStorage.getItem("favorites")) || [];
     const storedProduct = storedProducts.find((p) => p.slug === product.slug);
@@ -31,13 +26,19 @@ export default function ProductDetail(props) {
 
   onMount(() => {
     calculateStockFromLocalStorage();
+
+    // Actualizar el stock cuando el localStorage cambia
+    const handleStorageChange = () => calculateStockFromLocalStorage();
+    window.addEventListener("favorites-updated", handleStorageChange);
+
+    return () => window.removeEventListener("favorites-updated", handleStorageChange);
   });
 
   const getSelectedStock = () => dynamicStock()[selectedSize()] || 0;
 
   const handleSizeChange = (size) => {
     setSelectedSize(size);
-    setSelectedQuantity(1);
+    setSelectedQuantity(1); // Resetear cantidad al cambiar talla
   };
 
   const updateQuantity = (delta) => {
@@ -53,7 +54,28 @@ export default function ProductDetail(props) {
       <h1 class="text-3xl font-bold mb-3">{product.name}</h1>
       <p class="text-2xl text-gray-800 mb-4">Precio: ${product.price.toLocaleString("es-ES")}</p>
 
-      {/* Stock disponible */}
+      <details class="group border-t pt-4 mb-6">
+        <summary class="flex justify-between items-center cursor-pointer list-none">
+          <span class="text-lg font-semibold text-gray-700">Descripción</span>
+          <svg
+            class="w-5 h-5 transition-transform duration-200 group-open:rotate-180"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M19 9l-7 7-7-7"
+            ></path>
+          </svg>
+        </summary>
+        <p class="mt-3 text-gray-700">{product.description}</p>
+      </details>
+
       <div class="mb-6">
         <dt class="text-sm font-medium text-gray-500">Stock Disponible</dt>
         <dd class="mt-1 text-sm text-gray-900">
@@ -61,7 +83,6 @@ export default function ProductDetail(props) {
         </dd>
       </div>
 
-      {/* Tallas disponibles */}
       <div class="mb-6">
         <dt class="text-sm font-medium text-gray-500">Tallas Disponibles</dt>
         <dd class="mt-1 text-sm">
@@ -86,7 +107,6 @@ export default function ProductDetail(props) {
         </dd>
       </div>
 
-      {/* Cantidad */}
       <div class="mb-6">
         <dt class="text-sm font-medium text-gray-500">Cantidad</dt>
         <dd class="mt-1 text-sm">
@@ -110,11 +130,10 @@ export default function ProductDetail(props) {
         </dd>
       </div>
 
-      {/* Botones de acción */}
       <div class="flex justify-center items-center space-x-4 mt-10">
         <AddToLocalStorage
           product={product}
-          seleccion={{ talla: selectedSize(), cantidad: selectedQuantity() }}
+          seleccion={() => ({ talla: selectedSize(), cantidad: selectedQuantity() })}
           onAddToCart={(talla, cantidad) => {
             setDynamicStock((prevStock) => ({
               ...prevStock,

@@ -1,3 +1,4 @@
+// FavoritesIcon.jsx
 import { createSignal, onMount } from "solid-js";
 
 export default function FavoritesIcon() {
