@@ -12,6 +12,7 @@
     "@astrojs/check": "^0.9.4",
     "@astrojs/solid-js": "^4.4.4",
     "@astrojs/tailwind": "^5.1.2",
+    "@vercel/speed-insights": "^1.1.0",
     "astro": "^4.16.16",
     "astro-icon": "^1.1.4",
     "embla-carousel": "^8.5.1",

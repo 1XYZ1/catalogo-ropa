@@ -3,7 +3,7 @@ import { ViewTransitions } from 'astro:transitions';
 import Navbar from '../components/Navbar';
 import '../styles/global.css'; // CSS global
 import { siteInfo } from '../constantes/site-info';
-
+import  SpeedInsights  from "@vercel/speed-insights/astro"
 // Definimos la interfaz de las props del layout
 interface Props {
   title?: string;
@@ -55,6 +55,7 @@ const { title = siteInfo.title, description = siteInfo.shortDescription, lang = 
     <!-- Contenido de la página -->
     <main class="container mx-auto px-2 sm:px-4 py-8 flex-1">
       <slot />
+
     </main>
 
     <!-- Pie de página -->
@@ -64,7 +65,7 @@ const { title = siteInfo.title, description = siteInfo.shortDescription, lang = 
       </div>
     </footer>
 
-    <!-- Script para manejar el indicador de carga -->
 
+    <SpeedInsights />
   </body>
 </html>
