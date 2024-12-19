@@ -36,6 +36,9 @@ export default function FavoritesPage() {
     const updatedFavorites = favorites().filter((product) => product.slug !== slug);
     localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
     setFavorites(updatedFavorites);
+
+    const event = new Event("favorites-updated");
+    window.dispatchEvent(event);
   };
 
   // Actualizar cantidad de un producto
@@ -253,9 +256,10 @@ export default function FavoritesPage() {
         Total a pagar: $
         <span class="text-green-600">{summary().total.toLocaleString("es-ES")}</span>
       </p>
-
+      {console.log(summary().details)}
       <div class="mt-10 flex flex-col gap-4 exclude-from-pdf">
-        <SendToWhatsApp summary={summary()} />
+
+        <SendToWhatsApp summary={summary} />
         <GeneratePDF favorites={favorites} fileName="resumen_favoritos.pdf" title="Descargar PDF" />
 
       </div>
