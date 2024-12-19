@@ -10,7 +10,7 @@ function Navbar() {
   };
 
   return (
-    <nav class="bg-white shadow fixed w-full z-20 top-0 left-0">
+    <nav class="bg-white shadow fixed w-full z-50 top-0 left-0">
       <div class="container mx-auto px-4 py-4 flex items-center justify-between">
         <h1 class="text-2xl md:text-3xl font-bold">
           <a href="/">Shark Import</a>
