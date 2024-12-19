@@ -48,7 +48,7 @@ export default function AddToLocalStorage(props) {
     <div class="relative">
       <button
         onClick={addToLocalStorage}
-        class={`group py-3 px-6 mt-6 rounded-lg w-64 text-center transition duration-300 focus:outline-none transform bg-gradient-to-t from-gray-800 via-gray-900 to-black hover:from-green-700 hover:via-green-800 hover:to-green-900`}
+        class={` text-white group py-3 px-6 mt-6 rounded-lg w-64 text-center transition duration-300 focus:outline-none transform bg-gradient-to-t from-gray-800 via-gray-900 to-black hover:from-green-700 hover:via-green-800 hover:to-green-900`}
       >
         Agregar Producto
       </button>

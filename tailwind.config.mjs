@@ -4,5 +4,9 @@ export default {
 	theme: {
 		extend: {},
 	},
+	safelist: [
+		'bg-gray-50',
+		'bg-white',
+	],
 	plugins: [],
 }
