@@ -52,21 +52,8 @@ const image = product.ogimage
         <ProductDetail product={product} client:load />
 
 
-        <!-- <AddButton product={product} /> -->
-        <WhatsappButton widthClass="w-64" title="Contactar por WhatsApp" name={product.name}/>
 
-        <div class="flex justify-center items-start">
-          <a href={product.link} target="_blank" class="group relative inline-block">
-            <button class="relative w-64 bg-gradient-to-t from-black from-10% via-gray-900 via-80% to-gray-800 to-90% text-white py-3 px-6 mt-6 rounded-lg overflow-hidden transition-all duration-300 group-hover:scale-105">
-              <span class="absolute inset-0 w-full h-full bg-gradient-to-t from-green-900 from-20% via-gray-800 via-40% to-black to-90% opacity-0 group-hover:opacity-30 transition-opacity duration-500"></span>
-              <span class="relative z-10 text-sm font-medium tracking-widest">
-                Ver en Gymshark
-              </span>
-              <!-- Efecto de borde animado -->
-              <span class="absolute -inset-0.5 border-2 border-transparent rounded-lg group-hover:border-gray-600 transition-all duration-300"></span>
-            </button>
-          </a>
-        </div>
+
         <a href="javascript:!document.referrer.includes(location.hostname)?location='/' : history.back()"
         rel="noopener noreferrer" class="block text-blue-500 hover:underline mt-4 text-center">
           ← Regresar al Catalogo

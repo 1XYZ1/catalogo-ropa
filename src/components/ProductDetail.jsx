@@ -74,6 +74,10 @@ export default function ProductDetail(props) {
           </svg>
         </summary>
         <p class="mt-3 text-gray-700">{product.description}</p>
+        <a href={product.link} target="_blank"
+         class="block text-blue-500 hover:underline mt-4 text-center">
+          Ver en Gymshark
+        </a>
       </details>
 
       <div class="mb-6">
@@ -128,9 +132,11 @@ export default function ProductDetail(props) {
             </button>
           </div>
         </dd>
+
+
       </div>
 
-      <div class="flex justify-center items-center space-x-4 mt-10">
+      <div class="flex justify-center items-center space-x-4 mt-6">
         <AddToLocalStorage
           product={product}
           seleccion={() => ({ talla: selectedSize(), cantidad: selectedQuantity() })}
