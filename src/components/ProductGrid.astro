@@ -1,24 +1,24 @@
 ---
 import ProductCard from './ProductCard.astro';
+import ProductsWithSkeleton from './ProductsWithSkeleton.jsx';
 
 interface Props {
   products: import('../data/products').Product[];
-
 }
 
-const { products = []} = Astro.props as Props;
+const { products = [] } = Astro.props;
 ---
-<div class="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-  {products.map((product) => (
-        <ProductCard
-          name={product.name}
-          slug={product.slug}
-          images={product.images}
-          price={product.price}
-          type={product.type || ''}
-          discount={product.discount || false}
-          carousel={false}
 
-        />
-      ))}
-</div>
+<ProductsWithSkeleton client:visible>
+  {products.map((product) => (
+    <ProductCard
+  name={product.name}
+  slug={product.slug}
+  images={product.images}
+  price={product.price}
+  type={product.type || ''}
+  discount={product.discount || false}
+  sizes={product.sizes || ['S', 'M', 'L']}
+/>
+  ))}
+</ProductsWithSkeleton>

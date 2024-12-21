@@ -1,58 +1,181 @@
 ---
 import { products } from '../../data/products';
 
-// Obtener todos los tipos únicos de productos y ordenarlos alfabéticamente
-const categories = Array.from(new Set(products.map(product => product.type))).sort();
+// Interfaces
+interface Props {
+  baseRoute: string;
+}
 
+const categories = Array.from(new Set(products.map(p => p.type))).sort();
 const { baseRoute } = Astro.props;
 const currentUrl = Astro.url.pathname;
 
-// Determinar si la URL contiene un género específico
 const isGenderRoute = currentUrl.includes('/hombre') || currentUrl.includes('/mujer');
 const currentGender = currentUrl.includes('/hombre') ? 'hombre' : currentUrl.includes('/mujer') ? 'mujer' : '';
+const shouldBeOpen = currentUrl !== '/';
 
-// Función para verificar si un género existe en los productos
-const genderExists = (gender: string | undefined) => {
+const genderExists = (gender: string) => {
   return products.some(product => product.gender === gender);
 };
 
-// Determinar si la URL contiene una categoría específica
 const currentCategory = categories.find(category => currentUrl.includes(`/${category}`)) || '';
 const isTodosActive = !isGenderRoute && (currentUrl === '/' || currentCategory);
 const isCategoryActive = currentCategory && (currentUrl.includes('/categoria/') || isGenderRoute);
 ---
 
-<div class="flex justify-center space-x-4 mb-8">
-  <a href="/" class={`px-4 py-2 rounded font-semibold ${isTodosActive ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-gray-200 text-gray-800 hover:bg-blue-100'}`}>Todos</a>
+<div class="w-full max-w-4xl mx-auto my-4">
+  <details
+    class="group filter-details"
+    open={shouldBeOpen}
+  >
+    <summary class="flex items-center justify-center gap-3 px-6 py-3 mb-4 cursor-pointer list-none bg-neutral-50 hover:bg-neutral-100 rounded-lg transition-all duration-200 border border-neutral-200">
+      <svg
+        class="w-5 h-5 text-neutral-600 transition-transform duration-300 group-open:rotate-180"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.5"
+          d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414v6.586a1 1 0 01-1.414.914l-2-1A1 1 0 0110 19.414V13.707L3.293 7.293A1 1 0 013 6.586V4z"
+        />
+      </svg>
+      <span class="text-sm font-medium text-neutral-700">Filtrar Productos</span>
+      <svg
+        class="w-4 h-4 ml-2 text-neutral-500 transition-transform duration-300 group-open:rotate-180"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M19 9l-7 7-7-7"
+        />
+      </svg>
+    </summary>
 
-  {['hombre', 'mujer'].map((gender) => {
-    const isDisabled = !genderExists(gender);
-    return isDisabled ? (
-      <button class={`px-4 py-2 rounded font-semibold bg-gray-200 text-gray-800 opacity-50 cursor-not-allowed`} disabled>
-        {gender.charAt(0).toUpperCase() + gender.slice(1)}
-      </button>
-    ) : (
-      <a href={`/categoria/${gender}`} class={`px-4 py-2 rounded font-semibold ${currentGender === gender ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-gray-200 text-gray-800 hover:bg-blue-100'}`}>
-        {gender.charAt(0).toUpperCase() + gender.slice(1)}
-      </a>
-    );
-  })}
+    <nav class="filter-content">
+      <div class="flex flex-col gap-6">
+        <!-- Filtros Principales -->
+        <div class="flex flex-wrap items-center justify-center gap-3">
+
+           <a href="/"
+            class:list={[
+              'px-6 py-2.5 rounded-lg font-medium transition-all duration-200 hover:scale-105',
+              {
+                'bg-neutral-900 text-white hover:bg-neutral-800': isTodosActive,
+                'bg-neutral-100 text-neutral-600 hover:bg-neutral-200': !isTodosActive
+              }
+            ]}
+          >
+            Todos
+          </a>
+
+          {['hombre', 'mujer'].map((gender) => {
+            const isDisabled = !genderExists(gender);
+            return isDisabled ? (
+              <span
+                class="px-6 py-2.5 rounded-lg font-medium bg-neutral-100 text-neutral-400 opacity-50"
+                title="No hay productos disponibles"
+              >
+                {gender.charAt(0).toUpperCase() + gender.slice(1)}
+              </span>
+            ) : (
+
+               <a href={`/categoria/${gender}`}
+                class:list={[
+                  'px-6 py-2.5 rounded-lg font-medium transition-all duration-200 hover:scale-105',
+                  {
+                    'bg-neutral-900 text-white hover:bg-neutral-800': currentGender === gender,
+                    'bg-neutral-100 text-neutral-600 hover:bg-neutral-200': currentGender !== gender
+                  }
+                ]}
+              >
+                {gender.charAt(0).toUpperCase() + gender.slice(1)}
+              </a>
+            );
+          })}
+        </div>
+
+        <!-- Filtros por Categoría -->
+        <div class="flex flex-wrap justify-center gap-3 pb-2">
+          {categories.map((category) => {
+            const isActive = currentUrl.endsWith(`/${category}`) || (isCategoryActive && currentCategory === category);
+            const isDisabled = !products.some(product => product.gender === currentGender && product.type === category) && isGenderRoute;
+            const href = isDisabled ? '#' : isGenderRoute ? `/categoria/${currentGender}/${category}` : `/${baseRoute}/${category}`;
+
+            return isDisabled ? (
+              <span
+                class="px-6 py-2.5 rounded-lg font-medium bg-neutral-100 text-neutral-400 opacity-50"
+                title="No hay productos disponibles"
+              >
+                {(category ?? '').charAt(0).toUpperCase() + (category ?? '').slice(1)}
+              </span>
+            ) : (
+
+                 <a href={href}
+                class:list={[
+                  'px-6 py-2.5 rounded-lg font-medium transition-all duration-200 hover:scale-105',
+                  {
+                    'bg-neutral-900 text-white hover:bg-neutral-800': isActive,
+                    'bg-neutral-100 text-neutral-600 hover:bg-neutral-200': !isActive
+                  }
+                ]}
+              >
+                {(category ?? '').charAt(0).toUpperCase() + (category ?? '').slice(1)}
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </nav>
+  </details>
 </div>
 
-<div class="flex justify-center space-x-4 mb-8">
-  {categories.map((category) => {
-    const isActive = currentUrl.endsWith(`/${category}`) || (isCategoryActive && currentCategory === category);
-    const isDisabled = !products.some(product => product.gender === currentGender && product.type === category) && isGenderRoute;
-    const href = isDisabled ? '#' : isGenderRoute ? `/categoria/${currentGender}/${category}` : `/${baseRoute}/${category}`;
-    const buttonText = category === 'accesorio' ? 'Accesorios' : (category ?? '').charAt(0).toUpperCase() + (category ?? '').slice(1);
-    return isDisabled ? (
-      <button class={`px-4 py-2 rounded font-semibold bg-gray-200 text-gray-800 opacity-50 cursor-not-allowed`} disabled>
-        {buttonText}
-      </button>
-    ) : (
-      <a href={href} class={`px-4 py-2 rounded font-semibold ${isActive ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-gray-200 text-gray-800 hover:bg-blue-100'}`}>
-        {buttonText}
-      </a>
-    );
-  })}
-</div>
+<style>
+  .filter-details[open] .filter-content {
+    animation: slide-fade-down 0.3s ease-out forwards;
+  }
+
+  .filter-details:not([open]) .filter-content {
+    display: none;
+  }
+
+  @keyframes slide-fade-down {
+    0% {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  details > summary {
+    list-style: none;
+  }
+  details > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .filter-details summary:hover svg {
+    transform: scale(1.1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .filter-details[open] .filter-content {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .filter-details summary {
+      padding: 0.75rem 1rem;
+    }
+  }
+</style>

@@ -1,4 +1,3 @@
-import { Icon } from "astro-icon/components";
 import { createSignal, createEffect } from "solid-js";
 
 export default function SendToWhatsApp({ summary }) {

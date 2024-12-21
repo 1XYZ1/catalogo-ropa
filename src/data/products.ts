@@ -6,6 +6,13 @@ export interface Size {
   stock: number;
 }
 
+// Enum para tipos de productos
+export enum ProductType {
+  SUPERIOR = 'superior',
+  INFERIOR = 'inferior',
+  ACCESORIO = 'accesorio'
+}
+
 // Interfaz para los productos
 export interface Product {
   description: string;
@@ -21,7 +28,7 @@ export interface Product {
   sizes: Size[];
   slug: string;
   stock: number;
-  type?: 'inferior' | 'superior' | 'long-shirt' | 'short-shirt' | 'shorts' | 'pants' | 'hoodie' | 'bra' | 'accesorio';
+  type?: ProductType;
 }
 
 // Lista de productos
@@ -45,7 +52,7 @@ export const products: Product[] = [
     ],
     slug: 'polera-gris-manga-larga',
     stock: 10,
-    type: 'accesorio',
+    type: ProductType.ACCESORIO,
   },
   {
     description: 'Cómodamente constante y casualmente elegante, puedes usar Crest en cualquier lugar y combinarlo con todo. Logo bordado duradero que resistirá cada uso. Tela de algodón suave y cómoda. TALLA Y AJUSTE Ajuste regular. El modelo mide 1.85 m y usa talla M. MATERIALES Y CUIDADO 100% Algodón.',
@@ -66,7 +73,7 @@ export const products: Product[] = [
     ],
     slug: 'polera-negra-manga-larga',
     stock: 8,
-    type: 'superior',
+    type: ProductType.SUPERIOR,
   },
   {
     description: 'Cómodamente constante y casualmente elegante, puedes usar Crest en cualquier lugar y combinarlo con todo. Logo bordado duradero que resistirá cada uso. Tela de algodón suave y cómoda. TALLA Y AJUSTE Ajuste regular. El modelo mide 1.85 m y usa talla M. MATERIALES Y CUIDADO 100% Algodón.',
@@ -86,7 +93,7 @@ export const products: Product[] = [
     ],
     slug: 'polera-blanca-manga-larga',
     stock: 2,
-    type: 'superior',
+    type: ProductType.SUPERIOR,
   },
   {
     description: 'Cómodamente constante y casualmente elegante, puedes usar Crest en cualquier lugar y combinarlo con todo. Logo bordado duradero que resistirá cada uso. Tela de algodón suave y cómoda. TALLA Y AJUSTE Ajuste regular. El modelo mide 1.85 m y usa talla M. MATERIALES Y CUIDADO 100% Algodón.',
@@ -106,7 +113,7 @@ export const products: Product[] = [
     ],
     slug: 'polera-navy-manga-larga',
     stock: 2,
-    type: 'superior',
+    type: ProductType.SUPERIOR,
   },
   {
     description: 'Cómodamente constante y casualmente elegante, puedes usar Crest en cualquier lugar y combinarlo con todo. Logo bordado duradero que resistirá cada uso. Tela de algodón suave y cómoda. TALLA Y AJUSTE Ajuste regular. El modelo mide 1.85 m y usa talla M. MATERIALES Y CUIDADO 100% Algodón.',
@@ -126,7 +133,7 @@ export const products: Product[] = [
     ],
     slug: 'polera-azul-manga-larga',
     stock: 2,
-    type: 'inferior',
+    type: ProductType.INFERIOR,
   },
 
 

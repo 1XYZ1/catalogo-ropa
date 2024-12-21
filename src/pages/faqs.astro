@@ -2,17 +2,65 @@
 /* src/components/FAQContainer.astro */
 
 // Importamos las categorías desde el archivo faqs.ts
-import { faqCategories } from '../data/faqs';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
+const faqCategories = [
+  {
+    title: "Envíos",
+    faqs: [
+      {
+        question: "¿Dónde realizan entregas?",
+        answer: "Realizamos entregas presenciales en Mall Plaza Norte y envíos a través de Starken a nivel nacional.",
+      },
+      {
+        question: "¿Cuánto tarda en llegar mi pedido?",
+        answer: "Los tiempos de entrega dependen del servicio de Starken. Generalmente, toma entre 2 a 5 días hábiles.",
+      },
+    ],
+  },
+  {
+    title: "Pagos",
+    faqs: [
+      {
+        question: "¿Qué métodos de pago aceptan?",
+        answer: "Aceptamos pagos en efectivo y transferencias bancarias.",
+      },
+      {
+        question: "¿Puedo pagar al momento de la entrega?",
+        answer: "Sí, aceptamos pagos en efectivo durante la entrega presencial en Mall Plaza Norte.",
+      },
+    ],
+  },
+  {
+    title: "Devoluciones",
+    faqs: [
+      {
+        question: "¿Puedo devolver o cambiar un producto?",
+        answer: "No aceptamos devoluciones ni cambios. Nos aseguramos de que el cliente esté satisfecho al momento de la compra.",
+      },
+    ],
+  },
+  {
+    title: "Favoritos y Cotizaciones",
+    faqs: [
+      {
+        question: "¿Cómo puedo hacer una cotización?",
+        answer: "Añade los productos con su talla y cantidad a favoritos, luego utiliza el botón 'Enviar WhatsApp' para realizar tu cotización.",
+      },
+      {
+        question: "¿Dónde puedo ver el stock disponible?",
+        answer: "El stock se muestra actualizado en el catálogo de nuestra página web.",
+      },
+    ],
+  },
+];
 const { title = "Preguntas Frecuentes", description = "Encuentra respuestas a las dudas más comunes" } = Astro.props;
 ---
 
 <BaseLayout title={title} description={description}>
-
   <main class="max-w-3xl mx-auto px-4 my-8">
     <section class="mb-8">
-      <h1 class="text-2xl md:text-3xl font-bold text-center">{title}</h1>
+      <h1 class="text-3xl md:text-4xl font-bold text-center">{title}</h1>
       <p class="text-center text-gray-600 mt-2">{description}</p>
     </section>
 
@@ -20,7 +68,7 @@ const { title = "Preguntas Frecuentes", description = "Encuentra respuestas a la
     <section class="space-y-6">
       {faqCategories.map((category) => (
         <details
-          class="bg-white rounded-lg shadow-sm p-4 transition-colors hover:bg-gray-50"
+          class="bg-white rounded-lg shadow-md p-4 transition-colors hover:bg-gray-50"
           :key={category.title}
         >
           <summary class="text-lg font-semibold cursor-pointer outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-white">

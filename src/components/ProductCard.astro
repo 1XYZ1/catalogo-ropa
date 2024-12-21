@@ -1,105 +1,92 @@
 ---
-
 import IconType from './IconType.astro';
-// import EmblaIsla from './Carousel/EmblaIsla.astro';
 
-
+// src/components/ProductCard.astro
+interface SizeType {
+  size: string;
+  stock: number;
+}
 
 interface Props {
   name: string;
   slug: string;
-  images: string[]; // Cambiado de 'image' a 'images'
+  images: string[];
   price?: number;
-  type: string
-  discount: boolean
-  carousel?: boolean
-
+  type: string;
+  discount: boolean;
+  sizes?: SizeType[]; // Actualizado el tipo
 }
 
-const { name, slug, images, price = 0, type, discount, carousel = true } = Astro.props as Props;
-const image = images[0]
+const {
+  name,
+  slug,
+  images,
+  price = 0,
+  type,
+  discount,
+  sizes = []
+} = Astro.props;
+const image = images[0];
+const formattedPrice = price.toLocaleString('es-ES');
 ---
 
-
-
-
-<div class="flex flex-col border rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 h-full" id={slug}>
-
-  <div class="flex flex-row relative">
-
-    <a href={`/producto/${slug}`} class="flex-1">
+<article class="group bg-white rounded-lg overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
+  <div class="relative aspect-[1/1.2]">
+    <a href={`/producto/${slug}`} class="block h-full">
       <img
         loading="lazy"
+        decoding="async"
         width="400"
         height="400"
         src={image}
         alt={name}
-        class="w-full h-full object-cover opacity-0 hover:scale-105 transition-all duration-300"
-        onload="this.classList.add('opacity-100')"
+        class="w-full h-full object-contain transition-transform duration-300 group-hover:scale-102"
       />
+    </a>
 
-      <!-- {carousel ? (
-        <EmblaIsla
-          slug={slug}
-          images={images}
-          name={name}
-          showArrows={true}
-        />
-      ) : (
-        <img
-          loading="lazy"
-          width="400"
-          height="400"
-          src={image}
-          alt={name}
-          class="w-full h-full object-cover opacity-0 hover:scale-105 transition-all duration-300"
-          onload="this.classList.add('opacity-100')"
-        />
-      )} -->
-
-  </a>
-  <div class="flex flex-row">
-
-    {(type) && (
-      <button class="absolute top-2 right-2">
-        <IconType type={type}></IconType>
-      </button>
-
-    )}
-
-    {(discount) && (
-      <button class="absolute top-2 right-14" >
-        {/* <span class="text-2xl" >💲🤑</span> */}
-        <IconType type='discount'></IconType>
-        </button>
-    )}
-  </div>
-
-
-
-  </div>
-  <!-- Imagen del producto -->
-
-  <!-- Información del producto -->
-  <div class="p-4 flex flex-col flex-1">
-
-
-    <h3 class="text-xl font-bold text-center mb-2">{name}</h3>
-    {discount ? (<p class="text-sm text-red-500 text-center mb-4">${price.toLocaleString('es-ES')}</p>) : (<p class="text-sm text-gray-500 text-center mb-4">${price.toLocaleString('es-ES')}</p>)}
-
-
-    <!-- Botón -->
-    <div class="mt-auto flex justify-center">
-      <a href={`/producto/${slug}`} class="group relative inline-block">
-        <button class="relative w-64 bg-gradient-to-t from-black from-10% via-gray-900 via-80% to-gray-800 to-90% text-white py-3 px-6 rounded-lg overflow-hidden transition-all duration-300 group-hover:scale-105">
-          <span class="absolute inset-0 w-full h-full bg-gradient-to-b from-green-900 from-20% via-gray-800 via-40% to-black to-90% opacity-0 group-hover:opacity-30 transition-opacity duration-500"></span>
-          <span class="relative z-10 text-sm font-medium tracking-widest">
-            Ver Detalles
-          </span>
-          <!-- Efecto de borde animado -->
-          <span class="absolute -inset-0.5 border-2 border-transparent rounded-lg group-hover:border-gray-600 transition-all duration-300"></span>
-        </button>
-      </a>
+    <div class="absolute top-3 right-3 flex flex-row items-center gap-2">
+      {type && <IconType type={type} />}
+      {discount && <IconType type='discount' />}
     </div>
   </div>
-</div>
+
+  {/* Eliminamos la altura fija y añadimos padding adecuado */}
+  <div class="p-4 flex flex-col">
+    {/* Contenido centrado */}
+    <div class="space-y-3 text-center">
+      <h3 class="font-semibold text-gray-800 text-lg leading-tight line-clamp-2" title={name}>
+        {name}
+      </h3>
+
+      <p class={`text-xl font-bold ${discount ? 'text-red-500' : 'text-gray-900'}`}>
+        ${formattedPrice}
+      </p>
+
+      {/* Tallas centradas */}
+      {sizes.length > 0 && (
+        <div class="flex flex-wrap justify-center gap-2 mt-3">
+          {sizes.map(({ size, stock }) => (
+            <span
+              class={`inline-flex items-center justify-center w-9 h-9 rounded-full text-sm font-medium transition-colors
+                ${stock > 0
+                  ? 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                  : 'bg-gray-50 text-gray-400'}`}
+              title={stock > 0 ? `Stock: ${stock}` : 'Sin stock'}
+            >
+              {size}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+
+    {/* Añadimos margen superior al botón */}
+    <a
+      href={`/producto/${slug}`}
+      class="mt-6 w-full text-center py-3 px-4 bg-gray-900 text-white text-sm font-medium rounded-lg
+             hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+    >
+      Ver Detalles
+    </a>
+  </div>
+</article>
