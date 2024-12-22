@@ -15,6 +15,7 @@ interface Props {
   type: string;
   discount: boolean;
   sizes?: SizeType[]; // Actualizado el tipo
+  color?: string
 }
 
 const {
@@ -24,10 +25,15 @@ const {
   price = 0,
   type,
   discount,
-  sizes = []
+  sizes = [],
+  color = ''
 } = Astro.props;
 const image = images[0];
 const formattedPrice = price.toLocaleString('es-ES');
+
+const capitalizeFirstLetter = (str: string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
 ---
 
 <article
@@ -60,10 +66,12 @@ const formattedPrice = price.toLocaleString('es-ES');
     {/* Contenido centrado */}
     <div class="space-y-3 text-center">
       <h3
-        class="font-semibold text-gray-800 text-lg leading-tight line-clamp-2"
-        title={name}
-        transition:name={`title-${slug}`}
-      >
+  class="font-semibold text-gray-800 text-lg leading-tight line-clamp-2"
+  title={name}
+  transition:name={`title-${slug}`}
+>
+  {name} - {color && capitalizeFirstLetter(color)}
+</h3>
 
       <p
         class={`text-xl font-bold ${discount ? 'text-red-500' : 'text-gray-900'}`}

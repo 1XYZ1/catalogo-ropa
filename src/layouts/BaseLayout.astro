@@ -4,6 +4,24 @@ import Navbar from '../components/Navbar';
 import '../styles/global.css'; // CSS global
 import { siteInfo } from '../constantes/site-info';
 import  SpeedInsights  from "@vercel/speed-insights/astro"
+
+
+// Función helper para normalizar URLs
+const getAbsoluteUrl = (path: string) => {
+  if (!path) return siteInfo.image; // Fallback a imagen por defecto
+  if (path.startsWith('https://')) return path;
+
+  // En desarrollo usa URL relativa, en producción usa URL completa
+  if (import.meta.env.DEV) {
+    return path.startsWith('/') ? path : `/${path}`;
+  }
+
+  // En producción asegura HTTPS
+  const baseUrl = Astro.site?.href || 'https://gymsharkimport.com';
+  return new URL(path.startsWith('/') ? path.slice(1) : path, baseUrl).toString();
+};
+
+
 // Definimos la interfaz de las props del layout
 interface Props {
   title?: string;
@@ -25,35 +43,27 @@ const {
   type = 'website'
 } = Astro.props as Props;
 
-const absoluteOgImage = ogimage?.startsWith('http')
-  ? ogimage
-  : `${Astro.site}${ogimage?.startsWith('/') ? ogimage.slice(1) : ogimage}`;
+const absoluteOgImage = getAbsoluteUrl(ogimage);
 ---
 
 <html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <!-- Favicon -->
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <!-- ViewTransitions debe ir primero para optimizar el rendimiento -->
-    <ViewTransitions
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
 
-    />
 
 
+
+    <!-- SEO básico -->
     <title>{title}</title>
-
-    <link
-      rel="preload"
-      href={ogimage}
-      as="image"
-      type="image/webp"
-    />
-
-    <!-- Meta tags básicos -->
     <meta name="description" content={description} />
     <meta name="keywords" content={keywords} />
+    <link rel="canonical" href={Astro.url} />
 
     <!-- OpenGraph -->
     <meta property="og:title" content={title} />
@@ -69,10 +79,20 @@ const absoluteOgImage = ogimage?.startsWith('http')
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={absoluteOgImage} />
 
+    <link
+      rel="preload"
+      href={ogimage}
+      as="image"
+      type="image/webp"
+    />
+
     <!-- Product meta si aplica -->
     {type === 'product' && (
       <meta property="product:availability" content="in stock" />
     )}
+
+
+    <ViewTransitions fallback="animate"/>
   </head>
   <body class="font-sans bg-gray-100 flex flex-col min-h-screen relative">
 

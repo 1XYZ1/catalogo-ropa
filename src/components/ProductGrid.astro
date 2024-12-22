@@ -13,7 +13,7 @@ transition:animate="fade">
   {products.map((product, index) => (
     <div
       class="opacity-0 animate-fadeIn"
-      style={`animation-delay: ${index * 200}ms`}
+      style={`animation-delay: ${index * 250}ms`}
     >
       <ProductCard
         name={product.name}
@@ -23,6 +23,7 @@ transition:animate="fade">
         type={product.type || ''}
         discount={product.discount || false}
         sizes={product.sizes || ['S', 'M', 'L']}
+        color={product.color}
       />
     </div>
   ))}
