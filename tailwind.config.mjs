@@ -4,13 +4,23 @@ export default {
 	theme: {
     extend: {
       animation: {
-        'fadeIn': 'fadeIn 0.4s ease-in-out forwards'
+        fadeIn: 'fadeIn 0.3s ease-out forwards',
+        fadeInSlide: 'fadeInSlide 0.5s ease-out forwards'
       },
       keyframes: {
         fadeIn: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' }
-        }
+        },
+        fadeInSlide: {
+          '0%': {
+            opacity: '0',
+            transform: 'translateX(1rem)'
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateX(0)'
+          }}
       }
     }
   },

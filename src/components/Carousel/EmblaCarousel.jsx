@@ -5,54 +5,54 @@ import './EmblaCarousel.css';
 
 
 function EmblaCarouselComponent(props) {
+  const { images, name, slug } = props;
   let viewportRef;
+  let emblaInstance;
   let prevButtonRef;
   let nextButtonRef;
-  let emblaInstance;
-
-  // Desestructurar props y establecer showArrows por defecto a true
-  const { images, name, showArrows= true  } = props;
 
   onMount(() => {
-    emblaInstance = EmblaCarousel(viewportRef, { loop: false });
+    emblaInstance = EmblaCarousel(viewportRef, {
+      loop: false,
+      dragFree: false,
+      skipSnaps: false
+    });
 
-    if (showArrows) {
       const scrollPrev = () => emblaInstance.scrollPrev();
       const scrollNext = () => emblaInstance.scrollNext();
 
       prevButtonRef.addEventListener('click', scrollPrev);
       nextButtonRef.addEventListener('click', scrollNext);
-    }
-  });
 
-  onCleanup(() => {
-    if (emblaInstance) emblaInstance.destroy();
+    // Precarga de imágenes
+    images.forEach(url => {
+      const img = new Image();
+      img.src = url;
+    });
   });
 
   return (
-    <div class="relative embla overflow-hidden p-0"> {/* Eliminamos el padding */}
+    <div class="relative embla overflow-hidden rounded-lg" transition:name={`carousel-${slug}`}>
       <div class="embla__viewport" ref={viewportRef}>
-        <div class="embla__container flex p-0"> {/* Aseguramos que no haya padding */}
+        <div class="embla__container">
           {images.map((image, index) => (
-            <div class="embla__slide custom-slide flex-[0_0_100%]" key={index}>
-                <div class="flex items-center justify-center w-full bg-gray-200 rounded-xl">
-                <img
-                loading="lazy"
+            <div class="embla__slide" key={index}>
+              <img
+                loading={index === 0 ? 'eager' : 'lazy'}
+                decoding="async"
                 width="400"
                 height="400"
                 src={image}
                 alt={`${name} - Imagen ${index + 1}`}
-                class="w-full h-full object-cover rounded-lg shadow-md opacity-0 transform scale-105 transition-all duration-300"
-                onload="this.classList.add('opacity-100'); this.classList.remove('scale-105')" />
-                </div>
+                class="w-full h-full object-contain"
+                transition:name={index === 0 ? `image-${slug}` : `carousel-image-${slug}-${index}`}
+              />
             </div>
           ))}
         </div>
       </div>
 
-      {showArrows && (
-        <>
-          {/* Flecha Anterior Minimalista */}
+
           <button
             ref={prevButtonRef}
             class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-transparent text-white p-1 rounded-full focus:outline-none active:bg-gray-600 transition"
@@ -75,8 +75,8 @@ function EmblaCarouselComponent(props) {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
           </button>
-        </>
-      )}
+
+
     </div>
   );
 }

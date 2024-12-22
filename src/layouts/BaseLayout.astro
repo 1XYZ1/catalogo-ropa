@@ -36,9 +36,20 @@ const absoluteOgImage = ogimage?.startsWith('http')
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <!-- ViewTransitions debe ir primero para optimizar el rendimiento -->
-    <ViewTransitions />
+    <ViewTransitions
+
+
+    />
+
 
     <title>{title}</title>
+
+    <link
+      rel="preload"
+      href={ogimage}
+      as="image"
+      type="image/webp"
+    />
 
     <!-- Meta tags básicos -->
     <meta name="description" content={description} />
@@ -63,19 +74,18 @@ const absoluteOgImage = ogimage?.startsWith('http')
       <meta property="product:availability" content="in stock" />
     )}
   </head>
-  <body class="font-sans bg-gray-100 flex flex-col min-h-screen">
+  <body class="font-sans bg-gray-100 flex flex-col min-h-screen relative">
 
 
     <!-- Cabecera del sitio -->
-    <header class="bg-white shadow">
 
-      <div class="container mx-auto px-4 py-4">
+
+
         <Navbar client:idle />
-      </div>
-    </header>
+        <div class="h-8"></div>
 
-    <!-- Estilo para evitar movimientos de scroll -->
-    <style>html {overflow-y: scroll;}</style>
+
+
 
     <!-- Contenido de la página -->
     <main class="container mx-auto px-2 sm:px-4 py-6 flex-1">
@@ -94,3 +104,15 @@ const absoluteOgImage = ogimage?.startsWith('http')
     <SpeedInsights />
   </body>
 </html>
+
+<style is:global>
+  /* Aseguramos que todos los z-index funcionen correctamente */
+  * {
+    isolation: auto;
+  }
+
+  /* Cuando el menú está abierto */
+  html.menu-open {
+    overflow: hidden;
+  }
+</style>

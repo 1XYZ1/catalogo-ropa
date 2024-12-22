@@ -30,7 +30,10 @@ const image = images[0];
 const formattedPrice = price.toLocaleString('es-ES');
 ---
 
-<article class="group bg-white rounded-lg overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
+<article
+  class="group bg-white rounded-lg overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300"
+  transition:name={`card-${slug}`}
+>
   <div class="relative aspect-[1/1.2]">
     <a href={`/producto/${slug}`} class="block h-full">
       <img
@@ -41,6 +44,7 @@ const formattedPrice = price.toLocaleString('es-ES');
         src={image}
         alt={name}
         class="w-full h-full object-contain transition-transform duration-300 group-hover:scale-102"
+        transition:name={`image-${slug}`}
       />
     </a>
 
@@ -54,13 +58,16 @@ const formattedPrice = price.toLocaleString('es-ES');
   <div class="p-4 flex flex-col">
     {/* Contenido centrado */}
     <div class="space-y-3 text-center">
-      <h3 class="font-semibold text-gray-800 text-lg leading-tight line-clamp-2" title={name}>
-        {name}
-      </h3>
+      <h3
+        class="font-semibold text-gray-800 text-lg leading-tight line-clamp-2"
+        title={name}
+        transition:name={`title-${slug}`}
+      >
 
-      <p class={`text-xl font-bold ${discount ? 'text-red-500' : 'text-gray-900'}`}>
-        ${formattedPrice}
-      </p>
+      <p
+        class={`text-xl font-bold ${discount ? 'text-red-500' : 'text-gray-900'}`}
+        transition:name={`price-${slug}`}
+      >
 
       {/* Tallas centradas */}
       {sizes.length > 0 && (
