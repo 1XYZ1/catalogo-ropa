@@ -1,68 +1,133 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { products } from '../../data/products';
-// ISLAS
-
 import EmblaIsla from '../../components/Carousel/EmblaIsla.astro';
-
 import ProductDetail from '../../components/ProductDetail';
-import WhatsappButton from '../../components/buttons/WhatsappButton.astro';
-// import AddButton from '../../components/buttons/AddButton.astro';
+
+// Primero definimos los tipos base (opcional pero recomendado)
 
 
-
-
-
+// Exportamos la función getStaticPaths primero
 export async function getStaticPaths() {
-  return products.map((product) => ({
-    params: { producto: product.slug },
-    props: { product },
-  }));
+  // Filtramos productos válidos
+  const validProducts = products.filter(product =>
+    product &&
+    product.slug &&
+    product.name &&
+    product.images?.length > 0
+  );
+
+  // Para cada producto, encontramos sus relacionados
+  return validProducts.map((product) => {
+    // Encontrar productos relacionados aquí mismo
+    const relatedProducts = products.filter(p =>
+      p.type === product.type && // Mismo tipo
+      p.slug !== product.slug && // No es el mismo producto
+      p.gender === product.gender // Mismo género
+    ).slice(0, 4); // Limitamos a 4 productos
+
+    return {
+      params: { producto: product.slug },
+      props: {
+        product,
+        relatedProducts
+      }
+    };
+  });
 }
 
-const { product } = Astro.props;
+// Obtenemos las props
+const { product, relatedProducts } = Astro.props;
 
-
-const image = product.ogimage
+// Datos para SEO
+const seoData = {
+  title: product.name,
+  description: product.shortDescription,
+  ogimage: product.ogimage
+};
 ---
 
+<!-- Resto de tu código HTML igual que antes -->
+<BaseLayout {...seoData}>
 
-<BaseLayout title={`${product.name}`} description={product.shortDescription} ogimage={image}>
+
+  <main class="max-w-5xl mx-auto px-4 py-6 lg:mt-10" transition:animate="slide">
+
+    {/* Botón de regreso al inicio */}
+    <button
+      onclick="!document.referrer.includes(location.hostname)?location='/':history.back()"
+      class="group inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-200 mb-6 mt-6"
+    >
+      <svg
+        class="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-1"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M15 19l-7-7 7-7"
+        />
+      </svg>
+      <span class="text-sm font-medium">Regresar al Catálogo</span>
+    </button>
 
 
-  <div class="max-w-5xl mx-auto px-0 py-6 lg:mt-10">
-
-    <!-- Contenedor flex responsivo -->
-    <div class="flex flex-col lg:flex-row lg:space-x-8">
-
-      <!-- Sección del carrusel de imágenes -->
-      <div class="lg:w-1/2">
-
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div class="relative overflow-hidden rounded-xl" transition:name={`product-image-${product.slug}`}>
         <EmblaIsla
           slug={product.slug}
           images={product.images}
           name={product.name}
           showArrows={true}
+
+        />
+      </div>
+
+      <div class="flex flex-col">
+        <ProductDetail
+          product={product}
+          client:load
         />
 
-      </div>
-      <!-- Sección de información del producto -->
-
-      <div class="lg:w-1/2 mt-6 lg:mt-0 px-8">
-        <ProductDetail product={product} client:load />
-
-
-
-
-        <a href="javascript:!document.referrer.includes(location.hostname)?location='/' : history.back()"
-        rel="noopener noreferrer" class="block text-blue-500 hover:underline mt-4 text-center">
-          ← Regresar al Catalogo
-        </a>
 
       </div>
-
     </div>
-  </div>
 
+    {relatedProducts.length > 0 && (
+      <section class="mt-16">
+        <h2 class="text-2xl font-bold mb-6">Productos Similares</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {relatedProducts.map(related => (
 
+              <a href={`/producto/${related.slug}`}
+              class="group hover:scale-105 transition-all duration-300"
+              transition:name={`product-card-${related.slug}`}
+            >
+              <img
+                src={related.images[0]}
+                alt={related.name}
+                class="rounded-lg object-cover aspect-square mb-2"
+                loading="lazy"
+              />
+              <h3 class="text-sm font-medium group-hover:text-blue-600 transition-colors">
+                {related.name}
+              </h3>
+              <p class="text-sm text-gray-500">
+                ${related.price.toLocaleString('es-ES')}
+              </p>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+  </main>
 </BaseLayout>
+
+<style>
+  img {
+    content-visibility: auto;
+  }
+</style>

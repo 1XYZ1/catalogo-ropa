@@ -9,9 +9,17 @@ export default function AddToLocalStorage(props) {
 
   // Verificar si hay stock disponible para la talla seleccionada
   const isStockAvailable = createMemo(() => {
-    const { talla, cantidad } = seleccion(); // Obtener talla seleccionada
+    const { talla, cantidad } = seleccion();
+    // Si no hay talla seleccionada, retornamos false
+    if (!talla) return false;
     const selectedSize = currentStock().find((size) => size.size === talla);
     return selectedSize ? selectedSize.stock >= cantidad : false;
+  });
+
+  const getButtonText = createMemo(() => {
+    const { talla } = seleccion();
+    if (!talla) return "Selecciona una talla";
+    return isStockAvailable() ? "Agregar Producto" : "Talla agotada:(";
   });
 
   const addToLocalStorage = () => {
@@ -80,60 +88,109 @@ export default function AddToLocalStorage(props) {
     <div class="relative">
       <button
         onClick={addToLocalStorage}
-        disabled={!isStockAvailable()} // Desactivar si no hay stock
-        class={`text-white group py-3 px-6 mt-6 rounded-lg w-64 text-center transition duration-300 focus:outline-none transform bg-gradient-to-t from-gray-800 via-gray-900 to-black ${
+        disabled={!isStockAvailable()}
+        class={`text-white group py-3 px-6 mt-6 rounded-lg w-64 text-center transition-all duration-300 focus:outline-none transform ${
           isStockAvailable()
-            ? "hover:from-green-700 hover:via-green-800 hover:to-green-900"
-            : "opacity-50 cursor-not-allowed"
+            ? "bg-black hover:bg-gray-900 active:scale-95"
+            : "bg-gray-400 cursor-not-allowed"
         }`}
       >
-        {isStockAvailable() ? "Agregar Producto" : "Talla agotada:("}
+        {getButtonText()}
       </button>
+
+      {/* Overlay con blur */}
+      {modalVisible() && (
+        <div class="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 transition-opacity duration-300"
+          onClick={() => {
+            setFadeOut(true);
+            setTimeout(() => {
+              setModalVisible(false);
+              setFadeOut(false);
+            }, 300);
+          }}
+        />
+      )}
+
+      {/* Modal Mejorado */}
       {modalVisible() && (
         <div
-          class={`fixed top-5 left-1/2 transform -translate-x-1/2 bg-white shadow-lg rounded-lg p-4 w-11/12 max-w-sm z-50 transition-all duration-300 ${
-            fadeOut() ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"
+          class={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+          bg-white shadow-2xl rounded-2xl w-11/12 max-w-md z-50
+          transition-all duration-300 ${
+            fadeOut()
+              ? "opacity-0 scale-95"
+              : "opacity-100 scale-100"
           }`}
         >
-          <div class="flex justify-between items-center">
-            <h2 class="text-lg font-bold text-gray-800">Producto Agregado 🎉</h2>
-            <button
-              class="text-gray-500 hover:text-gray-800 focus:outline-none"
-              onClick={() => {
-                setFadeOut(true);
-                setTimeout(() => {
-                  setModalVisible(false);
-                  setFadeOut(false);
-                }, 300);
-              }}
-            >
-              ✕
-            </button>
+          {/* Header */}
+          <div class="p-6 border-b border-gray-100">
+            <div class="flex justify-between items-center">
+              <div class="flex items-center gap-3">
+                <div class="bg-green-100 p-2 rounded-full">
+                  <svg class="w-6 h-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h2 class="text-xl font-bold text-gray-900">¡Agregado al carrito!</h2>
+              </div>
+              <button
+                class="text-gray-400 hover:text-gray-600 p-1 rounded-full hover:bg-gray-100 transition-colors"
+                onClick={() => {
+                  setFadeOut(true);
+                  setTimeout(() => {
+                    setModalVisible(false);
+                    setFadeOut(false);
+                  }, 300);
+                }}
+              >
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
           </div>
-          <div class="mt-4">
-            <p class="text-gray-700 font-semibold">{product.name}</p>
-            <p class="text-gray-500">Talla: {seleccion().talla}</p>
-            <p class="text-gray-500">Cantidad: {seleccion().cantidad}</p>
+
+          {/* Contenido */}
+          <div class="p-6">
+            <div class="flex gap-4">
+              <img
+                src={product.images[0]}
+                alt={product.name}
+                class="w-20 h-20 object-cover rounded-lg"
+              />
+              <div class="flex-1">
+                <h3 class="font-medium text-gray-900">{product.name}</h3>
+                <div class="mt-1 space-y-1">
+                  <p class="text-sm text-gray-500">Talla: <span class="font-medium text-gray-900">{seleccion().talla}</span></p>
+                  <p class="text-sm text-gray-500">Cantidad: <span class="font-medium text-gray-900">{seleccion().cantidad}</span></p>
+                  <p class="text-sm text-gray-500">Precio: <span class="font-medium text-gray-900">${product.price.toLocaleString('es-ES')}</span></p>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="mt-4 flex justify-end gap-4">
-            <button
-              class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
-              onClick={() => (window.location.href = "/favorites")}
-            >
-              Ir a Favoritos
-            </button>
-            <button
-              class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition"
-              onClick={() => {
-                setFadeOut(true);
-                setTimeout(() => {
-                  setModalVisible(false);
-                  setFadeOut(false);
-                }, 300);
-              }}
-            >
-              Aceptar
-            </button>
+
+          {/* Acciones */}
+          <div class="p-6 bg-gray-50 rounded-b-2xl">
+            <div class="flex gap-3 justify-end">
+              <button
+                class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                onClick={() => {
+                  setFadeOut(true);
+                  setTimeout(() => {
+                    setModalVisible(false);
+                    setFadeOut(false);
+                  }, 300);
+                }}
+              >
+                Aceptar
+              </button>
+              <button
+                class="px-4 py-2 text-sm font-medium text-white bg-black rounded-lg hover:bg-gray-900 transition-colors"
+                onClick={() => (window.location.href = "/favorites")}
+              >
+                Ver favoritos
+              </button>
+            </div>
           </div>
         </div>
       )}

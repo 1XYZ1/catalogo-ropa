@@ -1,6 +1,6 @@
 import { createSignal, createEffect } from "solid-js";
 
-export default function SendToWhatsApp({ summary }) {
+export default function SendToWhatsApp({ summary, class: className }) {
   const [whatsappMessage, setWhatsappMessage] = createSignal(""); // Mensaje dinámico
   const [isButtonDisabled, setIsButtonDisabled] = createSignal(true); // Estado del botón
 
@@ -49,13 +49,14 @@ export default function SendToWhatsApp({ summary }) {
   return (
     <button
       onClick={sendTextToWhatsApp}
-      disabled={isButtonDisabled()} // Botón dinámico
-      class={`px-6 py-3 h-12 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-all ${
-        isButtonDisabled() ? "opacity-50 cursor-not-allowed" : ""
-      }`}
+      disabled={isButtonDisabled()}
+      class={`w-full px-4 py-3 rounded-lg transition-all duration-200 font-medium
+        ${isButtonDisabled()
+          ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+          : "bg-black text-white hover:bg-gray-900 active:bg-gray-800"
+        } ${className || ""}`}
     >
-      Enviar a WhatsApp
+      Cotizar por WhatsApp
     </button>
-
   );
 }

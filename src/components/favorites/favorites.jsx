@@ -244,51 +244,97 @@ export default function FavoritesPage() {
         {/* Resumen del Pago */}
         <div id="summary-content" class="md:col-span-1 lg:col-span-2 rounded-lg p-4 sm:p-6">
 
-          <div class="bg-white shadow rounded-lg p-6 md:p-4 lg:p-6 sm:p-6">
-          <h2 id="pdf-title" class="text-2xl font-bold text-center border-b pb-6">Resumen de Favoritos</h2>
-          <div class="w-full ">
-            <table class="w-full border-collapse text-center bg-white">
-              <thead class="bg-gray-200">
-                <tr>
-                  <th class="py-2 px-2 md:px-1 lg:px-2 text-gray-700 font-semibold border-b">Producto</th>
-                  <th class="py-2 px-2 md:px-1 lg:px-2 text-gray-700 font-semibold border-b">Talla</th>
-                  <th class="py-2 px-2 md:px-1 lg:px-2 text-gray-700 font-semibold border-b">Cantidad</th>
-                  <th class="py-2 px-2 md:px-1 lg:px-2 text-gray-700 font-semibold border-b">Subtotal</th>
-                </tr>
-              </thead>
-              <tbody>
-                {summary().details.map((detail) =>
-                  detail.compra.map((compra, index) => (
-                    <tr
-                      key={`${detail.name}-${compra.talla}`}
-                      class={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"}`}
-                    >
-                      <td class="py-2 px-2 md:px-0 lg:px-2 text-gray-800 font-medium border-b">{detail.name}</td>
-                      <td class="py-2 px-2 md:px-0 lg:px-2 text-gray-700 border-b">{compra.talla}</td>
-                      <td class="py-2 px-2 md:px-0 lg:px-2 text-gray-700 border-b">{compra.cantidad}</td>
-                      <td class="py-2 px-2 md:px-0 lg:px-2 text-gray-800 font-bold border-b">
-                        ${(compra.cantidad * detail.price).toLocaleString("es-ES")}
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+        <div class="bg-white shadow rounded-lg p-6">
+  <h2 class="text-2xl font-bold text-center mb-6">Resumen de Favoritos</h2>
 
-          {/* <hr class="my-6" /> */}
-          <p class="text-xl font-bold text-center pt-6">
-            Total a pagar: $
-            <span class="text-green-600">{summary().total.toLocaleString("es-ES")}</span>
-          </p>
+  {/* Versión Desktop */}
+  <div class="hidden md:block overflow-x-auto">
+    <table class="w-full">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900">Producto</th>
+          <th class="px-4 py-3 text-center text-sm font-semibold text-gray-900">Talla</th>
+          <th class="px-4 py-3 text-center text-sm font-semibold text-gray-900">Cantidad</th>
+          <th class="px-4 py-3 text-right text-sm font-semibold text-gray-900">Subtotal</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        {summary().details.map((detail) =>
+          detail.compra.map((compra) => (
+            <tr class="hover:bg-gray-50 transition-colors">
+              <td class="px-4 py-3 text-sm text-gray-900">{detail.name}</td>
+              <td class="px-4 py-3 text-sm text-gray-900 text-center">{compra.talla}</td>
+              <td class="px-4 py-3 text-sm text-gray-900 text-center">{compra.cantidad}</td>
+              <td class="px-4 py-3 text-sm font-medium text-gray-900 text-right">
+                ${(compra.cantidad * detail.price).toLocaleString("es-ES")}
+              </td>
+            </tr>
+          ))
+        )}
+      </tbody>
+    </table>
+  </div>
 
-          <div class="mt-10 flex flex-col gap-4 exclude-from-pdf">
-            <SendToWhatsApp summary={summary} />
-            <GeneratePDF favorites={() => favorites} fileName="resumen_favoritos.pdf" title="Descargar PDF" />
-          </div>
+  {/* Versión Mobile: Cards */}
+  <div class="md:hidden space-y-3">
+    {summary().details.map((detail) =>
+      detail.compra.map((compra) => (
+        <div class="bg-gray-50 rounded-lg p-3">
+          <div class="space-y-2">
+            {/* Nombre del producto con line-clamp */}
+            <h3 class="font-medium text-gray-900 line-clamp-2 leading-tight">
+              {detail.name}
+            </h3>
+
+            <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+              <div class="flex items-center gap-1 text-gray-500">
+                <span>Talla:</span>
+                <span class="font-medium text-gray-900">{compra.talla}</span>
+              </div>
+              <div class="flex items-center gap-1 text-gray-500">
+                <span>Cant:</span>
+                <span class="font-medium text-gray-900">{compra.cantidad}</span>
+              </div>
+            </div>
+
+            <div class="flex justify-end">
+              <span class="font-bold text-gray-900">
+                ${(compra.cantidad * detail.price).toLocaleString("es-ES")}
+              </span>
+            </div>
           </div>
         </div>
-      </div>
+      ))
+    )}
+  </div>
+
+  {/* Total  */}
+
+  <div class="mt-6 pt-6 border-t border-gray-200 space-y-6">
+    <div class="flex justify-between items-center">
+      <span class="text-base font-semibold text-gray-900">Total a pagar</span>
+      <span class="text-2xl font-bold text-green-600">
+        ${summary().total.toLocaleString("es-ES")}
+      </span>
     </div>
+
+      {/* Botones  */}
+    <div class="flex flex-col gap-3">
+      <SendToWhatsApp
+        summary={summary}
+        class="w-full"
+      />
+      <GeneratePDF
+        favorites={() => favorites}
+        fileName="resumen_favoritos.pdf"
+        class="w-full"
+      />
+    </div>
+  </div>
+</div>
+</div>
+        </div>
+      </div>
+
   );
 }
