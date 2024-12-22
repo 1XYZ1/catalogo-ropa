@@ -31,9 +31,10 @@ const formattedPrice = price.toLocaleString('es-ES');
 ---
 
 <article
-  class="group bg-white rounded-lg overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300"
+  class="group bg-white rounded-lg overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 will-change-transform"
   transition:name={`card-${slug}`}
 >
+
   <div class="relative aspect-[1/1.2]">
     <a href={`/producto/${slug}`} class="block h-full">
       <img
@@ -67,7 +68,7 @@ const formattedPrice = price.toLocaleString('es-ES');
       <p
         class={`text-xl font-bold ${discount ? 'text-red-500' : 'text-gray-900'}`}
         transition:name={`price-${slug}`}
-      >
+      > ${formattedPrice}</p>
 
       {/* Tallas centradas */}
       {sizes.length > 0 && (

@@ -1,6 +1,5 @@
 ---
 import ProductCard from './ProductCard.astro';
-import ProductsWithSkeleton from './ProductsWithSkeleton.jsx';
 
 interface Props {
   products: import('../data/products').Product[];
@@ -9,16 +8,21 @@ interface Props {
 const { products = [] } = Astro.props;
 ---
 
-<ProductsWithSkeleton client:visible>
-  {products.map((product) => (
-    <ProductCard
-  name={product.name}
-  slug={product.slug}
-  images={product.images}
-  price={product.price}
-  type={product.type || ''}
-  discount={product.discount || false}
-  sizes={product.sizes || ['S', 'M', 'L']}
-/>
+<div class="col-span-full grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 auto-rows-fr">
+  {products.map((product, index) => (
+    <div
+      class="opacity-0 animate-fadeIn"
+      style={`animation-delay: ${index * 200}ms`}
+    >
+      <ProductCard
+        name={product.name}
+        slug={product.slug}
+        images={product.images}
+        price={product.price}
+        type={product.type || ''}
+        discount={product.discount || false}
+        sizes={product.sizes || ['S', 'M', 'L']}
+      />
+    </div>
   ))}
-</ProductsWithSkeleton>
+</div>

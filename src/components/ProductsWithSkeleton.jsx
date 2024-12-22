@@ -35,7 +35,7 @@ export default function ProductsWithSkeleton(props) {
   onMount(() => {
     setTimeout(() => {
       setIsLoading(false);
-    }, 1000);
+    }, 400);
   });
 
   return (

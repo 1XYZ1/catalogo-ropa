@@ -51,7 +51,7 @@ export const products: Product[] = [
     ],
     slug: 'polera-gris-manga-larga',
     stock: 2,
-    type: ProductType.ACCESORIO,
+    type: ProductType.SUPERIOR,
   },
   {
     description: 'Cómodamente constante y casualmente elegante, puedes usar Crest en cualquier lugar y combinarlo con todo. Logo bordado duradero que resistirá cada uso. Tela de algodón suave y cómoda. TALLA Y AJUSTE Ajuste regular. El modelo mide 1.85 m y usa talla M. MATERIALES Y CUIDADO 100% Algodón.',
