@@ -33,8 +33,8 @@ const titleText = `${isAccessory ? '' : 'Ropa'} ${type.charAt(0).toUpperCase() +
 
   <!-- <h2 class="text-3xl font-bold text-center my-8">{`Ropa ${type.charAt(0).toUpperCase() + type.slice(1)} para Todos`}</h2> -->
 
-  <FilterControls baseRoute="categoria" />
+  <FilterControls baseRoute="categoria" client:visible/>
 
   <!-- Lista de Productos Filtrados -->
-  <ProductGrid products={filteredProducts} />
+  <ProductGrid products={filteredProducts}  />
 </BaseLayout>
