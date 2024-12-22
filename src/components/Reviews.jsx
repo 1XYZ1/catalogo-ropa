@@ -1,5 +1,5 @@
 // src/components/Reviews.jsx
-import { createSignal, onMount, createEffect } from 'solid-js';
+import { createSignal, onMount } from 'solid-js';
 import ReviewSkeleton from './ReviewSkeleton';
 
 export default function Reviews({ reviews }) {
