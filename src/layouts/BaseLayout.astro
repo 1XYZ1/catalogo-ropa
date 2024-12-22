@@ -10,33 +10,58 @@ interface Props {
   description?: string;
   lang?: string;
   ogimage?: string;
-  keywords?: string
+  keywords?: string;
+  type?: 'website' | 'article' | 'product';
+  children?: any; // Añadimos children a la interfaz
 }
 
 // Extraemos las props y establecemos valores por defecto
-const { title = siteInfo.title, description = siteInfo.shortDescription, lang = 'es', keywords = siteInfo.keywords, ogimage = siteInfo.image } = Astro.props as Props;
+const {
+  title = siteInfo.title,
+  description = siteInfo.shortDescription,
+  lang = 'es',
+  keywords = siteInfo.keywords,
+  ogimage = siteInfo.image,
+  type = 'website'
+} = Astro.props as Props;
+
+const absoluteOgImage = ogimage?.startsWith('http')
+  ? ogimage
+  : `${Astro.site}${ogimage?.startsWith('/') ? ogimage.slice(1) : ogimage}`;
 ---
 
 <html lang={lang}>
   <head>
-    <ViewTransitions />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="generator" content="AstroJS">
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <!-- SEO Dinámico -->
-    <meta name="description" content={description} />
-    <meta name="keywords" content={keywords} />
-    <meta name="author" content="Ramón Hernández" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Open Graph -->
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogimage} />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={Astro.url.href} />
+    <!-- ViewTransitions debe ir primero para optimizar el rendimiento -->
+    <ViewTransitions />
+
     <title>{title}</title>
 
+    <!-- Meta tags básicos -->
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+
+    <!-- OpenGraph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={absoluteOgImage} />
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:site_name" content={siteInfo.title} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={absoluteOgImage} />
+
+    <!-- Product meta si aplica -->
+    {type === 'product' && (
+      <meta property="product:availability" content="in stock" />
+    )}
   </head>
   <body class="font-sans bg-gray-100 flex flex-col min-h-screen">
 

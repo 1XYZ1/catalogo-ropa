@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { products } from '../../data/products';
 import EmblaIsla from '../../components/Carousel/EmblaIsla.astro';
 import ProductDetail from '../../components/ProductDetail';
+import { siteInfo } from '../../constantes/site-info';
 
 // Primero definimos los tipos base (opcional pero recomendado)
 
@@ -39,11 +40,11 @@ export async function getStaticPaths() {
 // Obtenemos las props
 const { product, relatedProducts } = Astro.props;
 
-// Datos para SEO
 const seoData = {
-  title: product.name,
-  description: product.shortDescription,
-  ogimage: product.ogimage
+  title: `${product.name} | ${siteInfo.title}`,
+  description: product.shortDescription || `${product.name} - ${product.description?.slice(0, 155)}...`,
+  ogimage: product.ogimage,
+  type: 'product' as const // Tipado explícito
 };
 ---
 
