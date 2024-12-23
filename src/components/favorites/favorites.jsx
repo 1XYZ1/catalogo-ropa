@@ -4,10 +4,16 @@ import SendToWhatsApp from "../buttons/SendToWhatsapp";
 import GeneratePDF from "../buttons/GeneratePdf";
 
 export default function FavoritesPage() {
+
+
   // Reemplazamos el createSignal por createStore para favorites
   const [favorites, setFavorites] = createStore([]);
   const [selectedSize, setSelectedSize] = createSignal({});
   const [quantities, setQuantities] = createSignal({});
+
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
 
   // Cargar favoritos y establecer señales iniciales
   const loadFavorites = () => {
@@ -112,6 +118,7 @@ export default function FavoritesPage() {
         acc.total += totalPerProduct;
         acc.details.push({
           name: product.name,
+          color:product.color,
           compra: product.compra,
           price: product.price,
         });
@@ -159,7 +166,7 @@ export default function FavoritesPage() {
                   </button>
                 </div>
                 <div class="p-4 flex flex-col flex-1">
-                  <h3 class="text-lg font-bold text-center mb-2">{product.name}</h3>
+                  <h3 class="text-lg font-bold text-center mb-2">{product.name} - {capitalizeFirstLetter(product.color)}</h3>
                   <p
                     class={`text-sm text-center mb-4 ${
                       product.discount ? "text-red-500" : "text-gray-500"
@@ -252,20 +259,24 @@ export default function FavoritesPage() {
     <table class="w-full">
       <thead class="bg-gray-50">
         <tr>
-          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900">Producto</th>
-          <th class="px-4 py-3 text-center text-sm font-semibold text-gray-900">Talla</th>
-          <th class="px-4 py-3 text-center text-sm font-semibold text-gray-900">Cantidad</th>
-          <th class="px-4 py-3 text-right text-sm font-semibold text-gray-900">Subtotal</th>
+          <th class="px-1 py-3 text-left text-sm font-semibold text-gray-900">Producto</th>
+          <th class="px-1 py-3 text-left text-sm font-semibold text-gray-900">Color</th>
+          <th class="px-2 py-3 text-center text-sm font-semibold text-gray-900">Talla</th>
+          <th class="px-2 py-3 text-center text-sm font-semibold text-gray-900">Cantidad</th>
+          <th class="px-2 py-3 text-right text-sm font-semibold text-gray-900">Subtotal</th>
         </tr>
       </thead>
       <tbody class="divide-y divide-gray-200">
         {summary().details.map((detail) =>
           detail.compra.map((compra) => (
+
             <tr class="hover:bg-gray-50 transition-colors">
-              <td class="px-4 py-3 text-sm text-gray-900">{detail.name}</td>
-              <td class="px-4 py-3 text-sm text-gray-900 text-center">{compra.talla}</td>
-              <td class="px-4 py-3 text-sm text-gray-900 text-center">{compra.cantidad}</td>
-              <td class="px-4 py-3 text-sm font-medium text-gray-900 text-right">
+
+              <td class="px-1 py-3 text-sm text-gray-900">{detail.name} </td>
+              <td class="px-1 py-3 text-sm text-gray-900">{capitalizeFirstLetter(detail.color)} </td>
+              <td class="px-2 py-3 text-sm text-gray-900 text-center">{compra.talla}</td>
+              <td class="px-2 py-3 text-sm text-gray-900 text-center">{compra.cantidad}</td>
+              <td class="px-2 py-3 text-sm font-medium text-gray-900 text-right">
                 ${(compra.cantidad * detail.price).toLocaleString("es-ES")}
               </td>
             </tr>
@@ -290,11 +301,18 @@ export default function FavoritesPage() {
               <div class="flex items-center gap-1 text-gray-500">
                 <span>Talla:</span>
                 <span class="font-medium text-gray-900">{compra.talla}</span>
+
+              </div>
+
+              <div class="flex items-center gap-1 text-gray-500">
+                <span>Color:</span>
+                <span class="font-medium text-gray-900">{capitalizeFirstLetter(detail.color)}</span>
               </div>
               <div class="flex items-center gap-1 text-gray-500">
                 <span>Cant:</span>
                 <span class="font-medium text-gray-900">{compra.cantidad}</span>
               </div>
+
             </div>
 
             <div class="flex justify-end">

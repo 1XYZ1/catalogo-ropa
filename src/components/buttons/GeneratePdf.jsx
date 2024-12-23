@@ -27,8 +27,9 @@ export default function GeneratePDF({ favorites, fileName = "document.pdf", titl
       doc.setFillColor(240); // Fondo gris claro
       doc.rect(margin, cursorY - 8, doc.internal.pageSize.width - 2 * margin, 12, "F");
       doc.text("Producto", margin + 5, cursorY);
-      doc.text("Talla", margin + 100, cursorY);
-      doc.text("Cantidad", margin + 125, cursorY);
+      doc.text("Color", margin + 90, cursorY);
+      doc.text("Talla", margin + 110, cursorY);
+      doc.text("Cantidad", margin + 130, cursorY);
       doc.text("Subtotal", margin + 160, cursorY);
       cursorY += 18;
 
@@ -47,11 +48,13 @@ export default function GeneratePDF({ favorites, fileName = "document.pdf", titl
           const productName = product.name.length > 30
             ? doc.splitTextToSize(product.name, 70)
             : product.name;
+          const color = product.color
 
           doc.setFont("helvetica", "normal");
           doc.text(productName, margin + 20, cursorY);
-          doc.text(compra.talla, margin + 105, cursorY);
-          doc.text(String(compra.cantidad), margin + 135, cursorY);
+          doc.text(color, margin + 95, cursorY);
+          doc.text(compra.talla, margin + 115, cursorY);
+          doc.text(String(compra.cantidad), margin + 140, cursorY);
           doc.setFont("helvetica", "bold");
           doc.text(`$${subtotal.toLocaleString("es-ES")}`, margin + 160, cursorY);
 
