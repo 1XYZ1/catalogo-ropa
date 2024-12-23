@@ -12,7 +12,7 @@ const { products = [] } = Astro.props;
 >
   {products.map((product, index) => (
     <div
-      class="opacity-0 animate-fadeIn"
+      class="opacity-0 animate-fadeIn h-full"
       style={`animation-delay: ${index * 250}ms`}
     >
       <ProductCard
@@ -28,3 +28,15 @@ const { products = [] } = Astro.props;
     </div>
   ))}
 </div>
+
+<style>
+  .grid {
+    display: grid;
+    gap: 1.5rem;
+    line-height: 0; /* Elimina espacio extra */
+  }
+
+  .animate-fadeIn {
+    display: flex; /* Asegura altura completa */
+  }
+</style>

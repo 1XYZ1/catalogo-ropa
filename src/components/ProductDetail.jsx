@@ -83,55 +83,20 @@ export default function ProductDetail(props) {
   };
 
   return (
-    <div class="flex flex-col space-y-6 w-full px-4 sm:px-0">
 
 
 
-      <div class="text-center">
-        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">{product.name} - {capitalizeFirstLetter(product.color)}</h1>
-        <p class="text-xl sm:text-2xl font-medium text-gray-800 mt-2">
-          ${product.price.toLocaleString("es-ES")}
-        </p>
-      </div>
 
-      {/* Descripción sin hover en el summary */}
-      <details class="group w-full">
-        <summary class="flex justify-between items-center cursor-pointer list-none p-4 bg-gray-50 rounded-lg">
-          <span class="text-lg font-semibold text-gray-700">Descripción</span>
-          <svg
-            class="w-5 h-5 transition-transform duration-200 group-open:rotate-180"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-          </svg>
-        </summary>
-        <div class="mt-4 px-4">
-          <p class="text-gray-700 leading-relaxed">{product.description}</p>
-          <a
-            href={product.link}
-            target="_blank"
-            class="inline-block mt-4 text-blue-600 hover:text-blue-800 hover:underline transition-colors"
-          >
-            Ver en Gymshark
-          </a>
-        </div>
-      </details>
+<div class="space-y-6">
+  {/* Encabezado */}
+  <header class="space-y-2 text-center">
+    <h1 class="text-2xl font-bold">{product.name} - {capitalizeFirstLetter(product.color)}</h1>
+    <p class="text-2xl font-medium text-gray-900">${product.price.toLocaleString("es-ES")}</p>
+  </header>
 
-      {/* Stock disponible con texto condicional para unidades */}
-      <div class="bg-gray-50 p-4 rounded-lg">
-        <p class="text-sm font-medium text-gray-700">Stock Disponible</p>
-        <p class="mt-1 text-sm font-semibold text-gray-900">
-          {selectedSize()
-            ? `${getSelectedStock()} ${getSelectedStock() === 1 ? 'unidad' : 'unidades'}`
-            : "Selecciona una talla"
-          }
-        </p>
-      </div>
-
-      {/* Mostrar el color actual y variantes */}
-      <div class="mt-6 flex flex-col items-center justify-center">
+    {/* Mostrar el color actual y variantes */}
+    <section class="space-y-3">
+    <div class="mt-6 flex flex-col items-center justify-center">
     <p class="text-sm font-medium text-gray-700 mb-3">
       {totalColors === 1 ? 'Color disponible' : 'Colores disponibles'}
     </p>
@@ -180,9 +145,49 @@ export default function ProductDetail(props) {
         />
       ))}
   </div>
-  </div>
+    </div>
+    </section>
+
+      {/* Descripción sin hover en el summary */}
+    <details class="group">
+        <summary class="flex justify-between items-center cursor-pointer list-none p-4 bg-gray-50 rounded-lg">
+          <span class="text-lg font-semibold text-gray-700">Descripción</span>
+          <svg
+            class="w-5 h-5 transition-transform duration-200 group-open:rotate-180"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="mt-4 px-4">
+          <p class="text-gray-700 leading-relaxed">{product.description}</p>
+          <a
+            href={product.link}
+            target="_blank"
+            class="inline-block mt-4 text-blue-600 hover:text-blue-800 hover:underline transition-colors"
+          >
+            Ver en Gymshark
+          </a>
+        </div>
+    </details>
+
+      {/* Stock disponible con texto condicional para unidades */}
+    <section class="space-y-6">
+
+      <div class="bg-gray-50 p-4 rounded-lg">
+        <p class="text-sm font-medium text-gray-700">Stock Disponible</p>
+        <p class="mt-1 text-sm font-semibold text-gray-900">
+          {selectedSize()
+            ? `${getSelectedStock()} ${getSelectedStock() === 1 ? 'unidad' : 'unidades'}`
+            : "Selecciona una talla"
+          }
+        </p>
+      </div>
 
       {/* Selector de tallas centrado */}
+      <div>
       <div class="w-full text-center">
         <p class="text-sm font-medium text-gray-700 mb-3">Tallas</p>
         <div class="flex flex-wrap justify-center gap-3">
@@ -204,7 +209,7 @@ export default function ProductDetail(props) {
           ))}
         </div>
       </div>
-
+      </div>
       {/* Selector de cantidad centrado */}
       {selectedSize() && (
         <div class="w-full text-center">
@@ -228,6 +233,15 @@ export default function ProductDetail(props) {
           </div>
         </div>
       )}
+    </section>
+
+
+
+
+
+
+
+
 
       <div class="w-full flex justify-center">
         <AddToLocalStorage

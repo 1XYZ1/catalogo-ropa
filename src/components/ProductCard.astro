@@ -41,8 +41,8 @@ const capitalizeFirstLetter = (str: string) => {
 
 >
 
-  <div class="relative aspect-[1/1.2]">
-    <a href={`/producto/${slug}`} class="block h-full">
+  <div class="relative line-height-0">
+    <a href={`/producto/${slug}`} class="block w-full h-full">
       <img
         loading="lazy"
         decoding="async"
@@ -51,7 +51,7 @@ const capitalizeFirstLetter = (str: string) => {
         src={image}
         alt={name}
         class="w-full h-full object-contain transition-transform duration-300 hover:scale-105"
-
+        style="display: block; margin: 0; line-height: 0;"
       />
     </a>
 

@@ -52,12 +52,11 @@ const seoData = {
 <BaseLayout {...seoData}>
 
 
-  <main class="max-w-5xl mx-auto px-4 py-6 lg:mt-10" >
-
-    {/* Botón de regreso al inicio */}
+  <main class="max-w-6xl mx-auto px-4 py-6">
+    {/* Navegación y breadcrumbs */}
     <button
       onclick="!document.referrer.includes(location.hostname)?location='/':history.back()"
-      class="group inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-200 mb-6 mt-6"
+      class="group inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-200 mb-6"
     >
       <svg
         class="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-1"
@@ -75,54 +74,65 @@ const seoData = {
       <span class="text-sm font-medium">Regresar al Catálogo</span>
     </button>
 
-
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 max-w-[1920px] mx-auto">
-      <div class="relative overflow-hidden rounded-xl lg:sticky lg:top-24 lg:h-[calc(100vh-100px)]">
-        <EmblaIsla
-          slug={product.slug}
-          images={product.images}
-          name={product.name}
-          showArrows={true}
-        />
+    {/* Grid principal usando CSS Grid */}
+     {/* Grid principal */}
+     <div class="grid lg:grid-cols-[1fr,400px] gap-8 items-start">
+      {/* Columna izquierda */}
+      <div class="space-y-8">
+        <div class="sticky top-24 bg-white rounded-xl overflow-hidden">
+          <EmblaIsla
+            slug={product.slug}
+            images={product.images}
+            name={product.name}
+            showArrows={true}
+          />
+        </div>
       </div>
 
-      <div class="flex flex-col">
-        <ProductDetail
-          product={product}
-          client:load
-        />
-
-
+      {/* Columna derecha: Detalles del producto y Productos Relacionados */}
+      {/* Columna derecha */}
+      <div class="space-y-8">
+        <div class="bg-white rounded-xl p-6">
+          <ProductDetail product={product} client:load />
+        </div>
       </div>
     </div>
 
+        {/* Productos Relacionados - Sección independiente */}
     {relatedProducts.length > 0 && (
-      <section class="mt-16">
-        <h2 class="text-2xl font-bold mb-6">Productos Similares</h2>
+      <section class="mt-12 bg-white rounded-xl p-6 text-center">
+        <h2 class="text-xl font-bold mb-6 ">Productos Similares</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
           {relatedProducts.map(related => (
 
-              <a href={`/producto/${related.slug}`}
-              class="group hover:scale-105 transition-all duration-300"
-
+             <a href={`/producto/${related.slug}`}
+              class="group space-y-2"
+              transition:name={`product-card-${related.slug}`}
             >
-              <img
-                src={related.images[0]}
-                alt={related.name}
-                class="rounded-lg object-cover aspect-square mb-2"
-                loading="lazy"
-              />
-              <h3 class="text-sm font-medium group-hover:text-blue-600 transition-colors">
-                {related.name}
-              </h3>
-              <p class="text-sm text-gray-500">
-                ${related.price.toLocaleString('es-ES')}
-              </p>
+              <div class=" overflow-hidden rounded-lg">
+                <img
+                  src={related.images[0]}
+                  alt={related.name}
+                  class="w-full h-full object-cover transition duration-300 hover:scale-110"
+                  loading="lazy"
+                  transition:name={`product-image-${related.slug}`}
+                />
+              </div>
+              <div class="space-y-1">
+                <h3 class="text-sm font-medium line-clamp-2 group-hover:text-blue-600 transition-colors">
+                  {related.name}
+                </h3>
+                <p class="text-sm font-medium text-gray-900">
+                  ${related.price.toLocaleString('es-ES')}
+                </p>
+              </div>
             </a>
           ))}
         </div>
       </section>
-    )}
+        )}
+      </div>
+
   </main>
 </BaseLayout>
 

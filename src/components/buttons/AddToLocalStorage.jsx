@@ -78,7 +78,7 @@ export default function AddToLocalStorage(props) {
           setModalVisible(false);
           setFadeOut(false);
         }, 300);
-      }, 2000);
+      }, 3000);
     } catch (error) {
       console.error("Error al actualizar el localStorage:", error);
     }
