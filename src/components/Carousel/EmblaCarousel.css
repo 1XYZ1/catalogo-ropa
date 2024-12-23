@@ -1,23 +1,31 @@
 .embla {
+  width: 100%;
+  height: 100%;
   overflow: hidden;
+  position: relative;
 }
 
 .embla__viewport {
-  overflow: hidden;
   width: 100%;
+  height: 100%;
 }
 
 .embla__container {
   display: flex;
-  user-select: none;
-  -webkit-touch-callout: none;
-  -webkit-tap-highlight-color: transparent;
+  height: 100%;
 }
 
 .embla__slide {
+  flex: 0 0 100%;
+  height: 100%;
   position: relative;
-  min-width: 100%;
-  padding-left: 10px;
+}
+
+.embla__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 0;
 }
 
 .embla__button {

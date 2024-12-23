@@ -7,5 +7,5 @@ const { images, name, slug } = Astro.props;
 ---
 
 <div>
-  <EmblaCarousel slug={slug} images={images} name={name} client:visible />
+  <EmblaCarousel slug={slug} images={images} name={name} client:load />
 </div>

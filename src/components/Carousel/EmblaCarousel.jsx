@@ -13,30 +13,45 @@ function EmblaCarouselComponent(props) {
 
   onMount(() => {
     emblaInstance = EmblaCarousel(viewportRef, {
-      loop: false,
+      loop: true,
       dragFree: false,
-      skipSnaps: false
+      containScroll: 'keepSnaps',
+      skipSnaps: false,
+      inViewThreshold: 0.7,
+      speed: 8,
+      align: 'center'
     });
 
-      const scrollPrev = () => emblaInstance.scrollPrev();
-      const scrollNext = () => emblaInstance.scrollNext();
+    const preloadImages = () => {
+      const currentIndex = emblaInstance.selectedScrollSnap();
+      const nextIndex = (currentIndex + 1) % images.length;
+      const prevIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
 
-      prevButtonRef.addEventListener('click', scrollPrev);
-      nextButtonRef.addEventListener('click', scrollNext);
+      [prevIndex, currentIndex, nextIndex].forEach(index => {
+        const img = new Image();
+        img.src = images[index];
+      });
+    };
 
-    // Precarga de imágenes
-    images.forEach(url => {
-      const img = new Image();
-      img.src = url;
-    });
+    emblaInstance.on('select', preloadImages);
+    preloadImages(); // Carga inicial
+
+
+    const scrollPrev = () => emblaInstance.scrollPrev();
+    const scrollNext = () => emblaInstance.scrollNext();
+    prevButtonRef.addEventListener('click', scrollPrev);
+    nextButtonRef.addEventListener('click', scrollNext);
+
+
+
   });
 
   return (
-    <div class="relative embla overflow-hidden rounded-lg" transition:name={`carousel-${slug}`}>
-      <div class="embla__viewport" ref={viewportRef}>
+    <div class="relative w-full h-full overflow-hidden rounded-lg" >
+      <div class="embla w-full h-full" ref={viewportRef}>
         <div class="embla__container">
           {images.map((image, index) => (
-            <div class="embla__slide" key={index}>
+            <div class="embla__slide min-w-full relative" key={index}>
               <img
                 loading={index === 0 ? 'eager' : 'lazy'}
                 decoding="async"
@@ -44,8 +59,8 @@ function EmblaCarouselComponent(props) {
                 height="400"
                 src={image}
                 alt={`${name} - Imagen ${index + 1}`}
-                class="w-full h-full object-contain"
-                transition:name={index === 0 ? `image-${slug}` : `carousel-image-${slug}-${index}`}
+                class="w-full h-full object-cover md:object-contain"
+
               />
             </div>
           ))}

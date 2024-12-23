@@ -52,7 +52,7 @@ const seoData = {
 <BaseLayout {...seoData}>
 
 
-  <main class="max-w-5xl mx-auto px-4 py-6 lg:mt-10" transition:animate="slide">
+  <main class="max-w-5xl mx-auto px-4 py-6 lg:mt-10" >
 
     {/* Botón de regreso al inicio */}
     <button
@@ -76,14 +76,13 @@ const seoData = {
     </button>
 
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      <div class="relative overflow-hidden rounded-xl" transition:name={`product-image-${product.slug}`}>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 max-w-[1920px] mx-auto">
+      <div class="relative overflow-hidden rounded-xl lg:sticky lg:top-24 lg:h-[calc(100vh-100px)]">
         <EmblaIsla
           slug={product.slug}
           images={product.images}
           name={product.name}
           showArrows={true}
-
         />
       </div>
 
@@ -105,7 +104,7 @@ const seoData = {
 
               <a href={`/producto/${related.slug}`}
               class="group hover:scale-105 transition-all duration-300"
-              transition:name={`product-card-${related.slug}`}
+
             >
               <img
                 src={related.images[0]}

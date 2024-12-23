@@ -179,7 +179,7 @@ export default function AddToLocalStorage(props) {
                   setTimeout(() => {
                     setModalVisible(false);
                     setFadeOut(false);
-                  }, 300);
+                  }, 500);
                 }}
               >
                 Aceptar
