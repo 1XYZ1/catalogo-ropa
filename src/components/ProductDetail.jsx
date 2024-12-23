@@ -32,18 +32,10 @@ export default function ProductDetail(props) {
 
 
   const handleColorChange = (variant) => {
-    // Guardar posición
-    sessionStorage.setItem('scrollPosition', window.scrollY.toString());
-
-    // Agregar clase para animación de salida
-    document.body.classList.remove('opacity-100');
-    document.body.classList.add('opacity-0', 'transition-opacity', 'duration-300');
-
-    // Navegar después de la animación
-    setTimeout(() => {
-      window.location.href = `/producto/${variant.slug}`;
-    }, 100);
-  };
+  // Eliminar animación innecesaria del body
+  sessionStorage.setItem('scrollPosition', window.scrollY.toString());
+  window.location.href = `/producto/${variant.slug}`;
+};
 
   const getAllProductColors = (currentProduct, allProducts) => {
     return allProducts
@@ -108,57 +100,62 @@ export default function ProductDetail(props) {
 
 
 
-<div class="space-y-6">
+<div class="space-y-6 min-h-[400px]">
   {/* Encabezado */}
   <header class="space-y-2 text-center">
-    <h1 class="text-2xl font-bold">{product.name} - {capitalizeFirstLetter(product.color)}</h1>
+    <h1 class="text-2xl font-bold">{product.name}</h1>
     <p class="text-2xl font-medium text-gray-900">${product.price.toLocaleString("es-ES")}</p>
   </header>
 
     {/* Mostrar el color actual y variantes */}
-    <section class="space-y-3">
-      <div class="mt-6 flex flex-col items-center justify-center">
-        <p class="text-sm font-medium text-gray-700 mb-3">
-          {allColors.length === 1 ? 'Color disponible' : 'Colores disponibles'}
-        </p>
+    <section class="space-y-3 min-h-[100px]">
+    <div class="mt-6 flex flex-col items-center justify-center">
+  <div class="flex items-center justify-center gap-2 mb-3">
+    <p class="text-sm font-medium text-gray-700">
+      {allColors.length === 1 ? 'Color disponible' : 'Colores disponibles'}
+    </p>
+    <span class="text-sm font-medium text-gray-500">
+      • {capitalizeFirstLetter(product.color)}
+    </span>
+  </div>
 
-        <div class="flex items-center justify-center gap-3">
-          {allColors.map((colorVariant) => (
-            <button
-              onClick={() => handleColorChange(colorVariant)}
-              class={`w-8 h-8 rounded-full transition-all relative
-                ${colorVariant.slug === product.slug
-                  ? `border-2 ${isBlack(colorVariant.colorHex) ? 'border-white' : 'border-neutral-900'}`
-                  : 'border border-neutral-900/20'
-                }
-                hover:scale-110`}
-              style={{ "background-color": colorVariant.colorHex }}
-              title={`Ver en color ${capitalizeFirstLetter(colorVariant.color)}`}
-            >
-              {colorVariant.slug === product.slug && (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  class="absolute inset-0 m-auto"
-                >
-                  <g
-                    fill="none"
-                    stroke={isBlack(colorVariant.colorHex) ? '#fff' : '#000'}
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.5"
-                  >
-                    <path d="M7.4 7H4.6a.6.6 0 0 0-.6.6v8.8a.6.6 0 0 0 .6.6h2.8a.6.6 0 0 0 .6-.6V7.6a.6.6 0 0 0-.6-.6m12 0h-2.8a.6.6 0 0 0-.6.6v8.8a.6.6 0 0 0 .6.6h2.8a.6.6 0 0 0 .6-.6V7.6a.6.6 0 0 0-.6-.6"/>
-                    <path d="M1 14.4V9.6a.6.6 0 0 1 .6-.6h1.8a.6.6 0 0 1 .6.6v4.8a.6.6 0 0 1-.6.6H1.6a.6.6 0 0 1-.6-.6m22 0V9.6a.6.6 0 0 0-.6-.6h-1.8a.6.6 0 0 0-.6.6v4.8a.6.6 0 0 0 .6.6h1.8a.6.6 0 0 0 .6-.6M8 12h8"/>
-                  </g>
-                </svg>
-              )}
-            </button>
-          ))}
-        </div>
-      </div>
+  <div class="flex items-center justify-center gap-3">
+    {allColors.map((colorVariant) => (
+      <button
+      onClick={() => handleColorChange(colorVariant)}
+      class={`w-8 h-8 rounded-full transition-all relative
+        ${colorVariant.slug === product.slug
+          ? `border-2 ${isBlack(colorVariant.colorHex) ? 'border-white' : 'border-neutral-900'}`
+          : 'border border-neutral-900/20'
+        }
+        hover:scale-110`}
+      style={{ "background-color": colorVariant.colorHex }}
+      title={`Ver en color ${capitalizeFirstLetter(colorVariant.color)}`}
+    >
+      {colorVariant.slug === product.slug && (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          class="absolute inset-0 m-auto"
+        >
+          <g
+            fill="none"
+            stroke={isBlack(colorVariant.colorHex) ? '#fff' : '#000'}
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+          >
+            <path d="M7.4 7H4.6a.6.6 0 0 0-.6.6v8.8a.6.6 0 0 0 .6.6h2.8a.6.6 0 0 0 .6-.6V7.6a.6.6 0 0 0-.6-.6m12 0h-2.8a.6.6 0 0 0-.6.6v8.8a.6.6 0 0 0 .6.6h2.8a.6.6 0 0 0 .6-.6V7.6a.6.6 0 0 0-.6-.6"/>
+            <path d="M1 14.4V9.6a.6.6 0 0 1 .6-.6h1.8a.6.6 0 0 1 .6.6v4.8a.6.6 0 0 1-.6.6H1.6a.6.6 0 0 1-.6-.6m22 0V9.6a.6.6 0 0 0-.6-.6h-1.8a.6.6 0 0 0-.6.6v4.8a.6.6 0 0 0 .6.6h1.8a.6.6 0 0 0 .6-.6M8 12h8"/>
+          </g>
+        </svg>
+      )}
+    </button>
+    ))}
+  </div>
+</div>
     </section>
 
       {/* Descripción sin hover en el summary */}
@@ -187,7 +184,7 @@ export default function ProductDetail(props) {
     </details>
 
       {/* Stock disponible con texto condicional para unidades */}
-    <section class="space-y-6">
+    <section class="space-y-6 min-h-[50px]">
 
       <div class="bg-gray-50 p-4 rounded-lg">
         <p class="text-sm font-medium text-gray-700">Stock Disponible</p>

@@ -55,10 +55,6 @@ const seoData = {
     window.scrollTo(0, parseInt(savedPosition));
     sessionStorage.removeItem('scrollPosition');
   }
-
-  // Animar entrada con Tailwind
-  document.body.classList.remove('opacity-0');
-  document.body.classList.add('opacity-100', 'transition-opacity', 'duration-300');
 </script>
 
 <!-- Resto de tu código HTML igual que antes -->
@@ -67,49 +63,51 @@ const seoData = {
 
   <main class="max-w-6xl mx-auto px-4 py-6">
     {/* Navegación y breadcrumbs */}
-    <button
-      onclick="!document.referrer.includes(location.hostname)?location='/':history.back()"
-      class="group inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-200 mb-6"
-    >
-      <svg
-        class="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-1"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
+    <div class="h-[46px] mb-6"> {/* Altura fija para prevenir saltos */}
+      <button
+        onclick="!document.referrer.includes(location.hostname)?location='/':history.back()"
+        class="group inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-200"
       >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M15 19l-7-7 7-7"
-        />
-      </svg>
-      <span class="text-sm font-medium">Regresar al Catálogo</span>
-    </button>
+        <svg
+          class="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-1"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+        <span class="text-sm font-medium">Regresar</span>
+      </button>
+    </div>
 
     {/* Grid principal usando CSS Grid */}
      {/* Grid principal */}
      <div class="grid lg:grid-cols-[1fr,400px] gap-8 items-start">
-      {/* Columna izquierda */}
-      <div class="space-y-8">
-        <div class="sticky top-24 bg-white rounded-xl overflow-hidden">
-          <EmblaIsla
-            slug={product.slug}
-            images={product.images}
-            name={product.name}
-          />
-        </div>
+    <!-- Carrusel en móvil -->
+    <div class="relative w-full">
+      <div class="md:sticky md:top-24 bg-transparent md:bg-white rounded-xl overflow-hidden
+        min-h-[400px] sm:min-h-[500px] md:min-h-[600px] lg:min-h-[700px]
+        max-h-[500px] sm:max-h-[600px] md:max-h-[700px] lg:max-h-[750px]
+        h-full mx-auto lg:max-w-[800px]">
+        <EmblaIsla
+          slug={product.slug}
+          images={product.images}
+          name={product.name}
 
-      </div>
-
-      {/* Columna derecha: Detalles del producto y Productos Relacionados */}
-      {/* Columna derecha */}
-      <div class="space-y-8">
-        <div class="bg-white rounded-xl p-6">
-          <ProductDetail product={product} client:load />
-        </div>
+        />
       </div>
     </div>
+
+    <!-- Columna derecha -->
+    <div class="space-y-8">
+      <ProductDetail product={product} client:load />
+    </div>
+  </div>
 
         {/* Productos Relacionados - Sección independiente */}
     {relatedProducts.length > 0 && (
@@ -150,8 +148,11 @@ const seoData = {
 </BaseLayout>
 
 <style>
+
+
+  /* Optimizar carga de imágenes */
   img {
     content-visibility: auto;
+    contain: paint;
   }
-
 </style>

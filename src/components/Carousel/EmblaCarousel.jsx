@@ -12,52 +12,51 @@ function EmblaCarouselComponent(props) {
   let nextButtonRef;
 
   onMount(() => {
-    // Inicializar carrusel con animación de entrada
-    const container = viewportRef.querySelector('.embla__container');
-    container.classList.add('opacity-0', 'scale-[0.98]');
 
-    // Precargar primera imagen
-    const firstImage = new Image();
-    firstImage.src = images[0];
-    firstImage.onload = () => {
-      // Mostrar contenedor con animación
-      container.classList.remove('opacity-0', 'scale-[0.98]');
-      container.classList.add('opacity-100', 'scale-100');
 
-      // Inicializar Embla
-      emblaInstance = EmblaCarousel(viewportRef, {
-        loop: true,
-        dragFree: false,
-        containScroll: 'keepSnaps',
-        skipSnaps: false,
-        inViewThreshold: 0.7,
-        speed: 8,
-        align: 'center'
-      });
+    // Inicializar Embla
+    emblaInstance = EmblaCarousel(viewportRef, {
+      loop: true,
+      dragFree: false,
+      skipSnaps: false,
+      speed: 8,
+      align: 'center'
+    });
 
-      // Precargar resto de imágenes
-      images.slice(1).forEach(src => {
+
+
+    // Precargar imágenes adyacentes
+    const preloadImages = () => {
+      if (typeof window === 'undefined') return;
+      const currentIndex = emblaInstance.selectedScrollSnap();
+      const nextIndex = (currentIndex + 1) % images.length;
+
+      requestAnimationFrame(() => {
         const img = new Image();
-        img.src = src;
+        img.src = images[nextIndex];
       });
+    };
+
+    emblaInstance.on('select', preloadImages);
+    preloadImages();
 
       // Configurar botones
       const scrollPrev = () => emblaInstance.scrollPrev();
       const scrollNext = () => emblaInstance.scrollNext();
       prevButtonRef?.addEventListener('click', scrollPrev);
       nextButtonRef?.addEventListener('click', scrollNext);
-    };
+
   });
 
 
   return (
     <div class="relative w-full h-full overflow-hidden rounded-lg" >
       <div class="embla w-full h-full" ref={viewportRef}>
-        <div class="embla__container transition-all duration-500 ease-out">
+        <div class="embla__container">
           {images.map((image, index) => (
             <div class="embla__slide min-w-full relative" key={index}>
               <img
-
+                loading="lazy"
                 decoding="async"
                 width="400"
                 height="400"
