@@ -1,59 +1,63 @@
 // components/EmblaCarousel.jsx
-import { onMount, onCleanup } from 'solid-js';
+import { onMount } from 'solid-js';
 import EmblaCarousel from 'embla-carousel';
 import './EmblaCarousel.css';
 
 
 function EmblaCarouselComponent(props) {
-  const { images, name, slug } = props;
+  const { images, name } = props;
   let viewportRef;
   let emblaInstance;
   let prevButtonRef;
   let nextButtonRef;
 
   onMount(() => {
-    emblaInstance = EmblaCarousel(viewportRef, {
-      loop: true,
-      dragFree: false,
-      containScroll: 'keepSnaps',
-      skipSnaps: false,
-      inViewThreshold: 0.7,
-      speed: 8,
-      align: 'center'
-    });
+    // Inicializar carrusel con animación de entrada
+    const container = viewportRef.querySelector('.embla__container');
+    container.classList.add('opacity-0', 'scale-[0.98]');
 
-    const preloadImages = () => {
-      const currentIndex = emblaInstance.selectedScrollSnap();
-      const nextIndex = (currentIndex + 1) % images.length;
-      const prevIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
+    // Precargar primera imagen
+    const firstImage = new Image();
+    firstImage.src = images[0];
+    firstImage.onload = () => {
+      // Mostrar contenedor con animación
+      container.classList.remove('opacity-0', 'scale-[0.98]');
+      container.classList.add('opacity-100', 'scale-100');
 
-      [prevIndex, currentIndex, nextIndex].forEach(index => {
-        const img = new Image();
-        img.src = images[index];
+      // Inicializar Embla
+      emblaInstance = EmblaCarousel(viewportRef, {
+        loop: true,
+        dragFree: false,
+        containScroll: 'keepSnaps',
+        skipSnaps: false,
+        inViewThreshold: 0.7,
+        speed: 8,
+        align: 'center'
       });
+
+      // Precargar resto de imágenes
+      images.slice(1).forEach(src => {
+        const img = new Image();
+        img.src = src;
+      });
+
+      // Configurar botones
+      const scrollPrev = () => emblaInstance.scrollPrev();
+      const scrollNext = () => emblaInstance.scrollNext();
+      prevButtonRef?.addEventListener('click', scrollPrev);
+      nextButtonRef?.addEventListener('click', scrollNext);
     };
-
-    emblaInstance.on('select', preloadImages);
-    preloadImages(); // Carga inicial
-
-
-    const scrollPrev = () => emblaInstance.scrollPrev();
-    const scrollNext = () => emblaInstance.scrollNext();
-    prevButtonRef.addEventListener('click', scrollPrev);
-    nextButtonRef.addEventListener('click', scrollNext);
-
-
-
   });
+
 
   return (
     <div class="relative w-full h-full overflow-hidden rounded-lg" >
       <div class="embla w-full h-full" ref={viewportRef}>
-        <div class="embla__container">
+        <div class="embla__container transition-all duration-500 ease-out">
           {images.map((image, index) => (
             <div class="embla__slide min-w-full relative" key={index}>
               <img
-                loading={index === 0 ? 'eager' : 'lazy'}
+
                 decoding="async"
                 width="400"
                 height="400"

@@ -48,6 +48,19 @@ const seoData = {
 };
 ---
 
+<script>
+  // Restaurar posición y animar entrada
+  const savedPosition = sessionStorage.getItem('scrollPosition');
+  if (savedPosition) {
+    window.scrollTo(0, parseInt(savedPosition));
+    sessionStorage.removeItem('scrollPosition');
+  }
+
+  // Animar entrada con Tailwind
+  document.body.classList.remove('opacity-0');
+  document.body.classList.add('opacity-100', 'transition-opacity', 'duration-300');
+</script>
+
 <!-- Resto de tu código HTML igual que antes -->
 <BaseLayout {...seoData}>
 
@@ -84,9 +97,9 @@ const seoData = {
             slug={product.slug}
             images={product.images}
             name={product.name}
-            showArrows={true}
           />
         </div>
+
       </div>
 
       {/* Columna derecha: Detalles del producto y Productos Relacionados */}
@@ -140,4 +153,5 @@ const seoData = {
   img {
     content-visibility: auto;
   }
+
 </style>

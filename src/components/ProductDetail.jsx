@@ -27,6 +27,33 @@ export default function ProductDetail(props) {
     setSelectedQuantity(1);
   };
 
+  // Función para obtener colores ordenados
+
+
+
+  const handleColorChange = (variant) => {
+    // Guardar posición
+    sessionStorage.setItem('scrollPosition', window.scrollY.toString());
+
+    // Agregar clase para animación de salida
+    document.body.classList.remove('opacity-100');
+    document.body.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+
+    // Navegar después de la animación
+    setTimeout(() => {
+      window.location.href = `/producto/${variant.slug}`;
+    }, 100);
+  };
+
+  const getAllProductColors = (currentProduct, allProducts) => {
+    return allProducts
+      .filter(p => p.name === currentProduct.name)
+      .sort((a, b) => a.color.localeCompare(b.color));
+  };
+
+  // En el componente
+  const allColors = getAllProductColors(product, products);
+
   const updateQuantity = (delta) => {
     setSelectedQuantity(prev =>
       Math.min(Math.max(prev + delta, 1), getSelectedStock())
@@ -35,6 +62,7 @@ export default function ProductDetail(props) {
 
   // Movemos el cálculo del localStorage a onMount
   onMount(() => {
+
     try {
       const storedProducts = JSON.parse(localStorage.getItem("favorites")) || [];
       const storedProduct = storedProducts.find(p => p.slug === product.slug);
@@ -70,13 +98,6 @@ export default function ProductDetail(props) {
 
   // Encuentra los “hermanos” (otros slugs con el mismo name)
   const isBlack = (hex) => hex.toLowerCase() === '#000000';
-  const colorVariants = products.filter(
-    (p) => p.name === product.name && p.slug !== product.slug
-  );
-
-  const totalColors = 1 + colorVariants.filter(variant =>
-    variant.sizes.some(size => size.stock > 0)
-  ).length;
 
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -96,56 +117,48 @@ export default function ProductDetail(props) {
 
     {/* Mostrar el color actual y variantes */}
     <section class="space-y-3">
-    <div class="mt-6 flex flex-col items-center justify-center">
-    <p class="text-sm font-medium text-gray-700 mb-3">
-      {totalColors === 1 ? 'Color disponible' : 'Colores disponibles'}
-    </p>
+      <div class="mt-6 flex flex-col items-center justify-center">
+        <p class="text-sm font-medium text-gray-700 mb-3">
+          {allColors.length === 1 ? 'Color disponible' : 'Colores disponibles'}
+        </p>
 
-    <div class="flex items-center justify-center gap-3">
-    {/* Color actual con SVG */}
-    <div
-      class="relative w-8 h-8"
-      title={`Color actual: ${capitalizeFirstLetter(product.color)}`}
-    >
-      <div
-        class={`relative w-full h-full rounded-full border-2 flex items-center justify-center
-          ${isBlack(product.colorHex) ? 'border-white' : 'border-neutral-900'}`}
-        style={{ "background-color": product.colorHex }}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          class="absolute"
-        >
-          <g
-            fill="none"
-            stroke={isBlack(product.colorHex) ? '#fff' : '#000'}
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="1.5"
-          >
-            <path d="M7.4 7H4.6a.6.6 0 0 0-.6.6v8.8a.6.6 0 0 0 .6.6h2.8a.6.6 0 0 0 .6-.6V7.6a.6.6 0 0 0-.6-.6m12 0h-2.8a.6.6 0 0 0-.6.6v8.8a.6.6 0 0 0 .6.6h2.8a.6.6 0 0 0 .6-.6V7.6a.6.6 0 0 0-.6-.6"/>
-            <path d="M1 14.4V9.6a.6.6 0 0 1 .6-.6h1.8a.6.6 0 0 1 .6.6v4.8a.6.6 0 0 1-.6.6H1.6a.6.6 0 0 1-.6-.6m22 0V9.6a.6.6 0 0 0-.6-.6h-1.8a.6.6 0 0 0-.6.6v4.8a.6.6 0 0 0 .6.6h1.8a.6.6 0 0 0 .6-.6M8 12h8"/>
-          </g>
-        </svg>
+        <div class="flex items-center justify-center gap-3">
+          {allColors.map((colorVariant) => (
+            <button
+              onClick={() => handleColorChange(colorVariant)}
+              class={`w-8 h-8 rounded-full transition-all relative
+                ${colorVariant.slug === product.slug
+                  ? `border-2 ${isBlack(colorVariant.colorHex) ? 'border-white' : 'border-neutral-900'}`
+                  : 'border border-neutral-900/20'
+                }
+                hover:scale-110`}
+              style={{ "background-color": colorVariant.colorHex }}
+              title={`Ver en color ${capitalizeFirstLetter(colorVariant.color)}`}
+            >
+              {colorVariant.slug === product.slug && (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  class="absolute inset-0 m-auto"
+                >
+                  <g
+                    fill="none"
+                    stroke={isBlack(colorVariant.colorHex) ? '#fff' : '#000'}
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                  >
+                    <path d="M7.4 7H4.6a.6.6 0 0 0-.6.6v8.8a.6.6 0 0 0 .6.6h2.8a.6.6 0 0 0 .6-.6V7.6a.6.6 0 0 0-.6-.6m12 0h-2.8a.6.6 0 0 0-.6.6v8.8a.6.6 0 0 0 .6.6h2.8a.6.6 0 0 0 .6-.6V7.6a.6.6 0 0 0-.6-.6"/>
+                    <path d="M1 14.4V9.6a.6.6 0 0 1 .6-.6h1.8a.6.6 0 0 1 .6.6v4.8a.6.6 0 0 1-.6.6H1.6a.6.6 0 0 1-.6-.6m22 0V9.6a.6.6 0 0 0-.6-.6h-1.8a.6.6 0 0 0-.6.6v4.8a.6.6 0 0 0 .6.6h1.8a.6.6 0 0 0 .6-.6M8 12h8"/>
+                  </g>
+                </svg>
+              )}
+            </button>
+          ))}
+        </div>
       </div>
-    </div>
-
-    {/* Variantes de color */}
-    {colorVariants
-      .filter(variant => variant.sizes.some(size => size.stock > 0))
-      .map((variant) => (
-        <a
-          href={`/producto/${variant.slug}`}
-          class="w-8 h-8 rounded-full border border-neutral-900/20 transition-all hover:scale-110"
-          style={{ "background-color": variant.colorHex }}
-          title={`Ver en color ${capitalizeFirstLetter(variant.color)}`}
-        />
-      ))}
-  </div>
-    </div>
     </section>
 
       {/* Descripción sin hover en el summary */}
