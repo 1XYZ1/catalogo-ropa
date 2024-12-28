@@ -6,7 +6,8 @@ import { products } from '../data/products';
 export default function ProductDetail(props) {
   const { product } = props;
 
-  const [selectedSize, setSelectedSize] = createSignal(null);
+  const initialSize = product.sizes.length === 1 ? product.sizes[0].size : null;
+  const [selectedSize, setSelectedSize] = createSignal(initialSize);
   const [selectedQuantity, setSelectedQuantity] = createSignal(1);
   const [dynamicStock, setDynamicStock] = createSignal(
     // Inicializamos el stock directamente

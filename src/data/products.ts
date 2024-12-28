@@ -43,7 +43,7 @@ export const products: Product[] = [
   // === Crest Oversized Fit ===
   {
     color: 'Rosa Vintage',
-    colorHex: '#FFC0CB',
+    colorHex: '#d5596a',
     description: 'DÍA DE DESCANSO AL ESTILO CREST Cómodo y con estilo casual, puedes usar Crest en cualquier lugar y combinarlo con todo. • Interior de forro polar cepillado, suave y cómodo • Logo bordado duradero que resistirá cada uso • Capucha ajustable con cordón • Bolsillo tipo canguro para guardar tus cosas TALLA Y AJUSTE • Corte holgado • El modelo mide 183 cm y usa talla M MATERIALES Y CUIDADO • 80% Algodón, 20% Poliéster',
     discount: false,
     gender: 'hombre',
@@ -66,7 +66,7 @@ export const products: Product[] = [
   },
   {
     color: 'beige',
-    colorHex: '#808080',
+    colorHex: '#dbd5c7',
     description: 'DÍA DE DESCANSO AL ESTILO CREST Cómodo y con estilo casual, puedes usar Crest en cualquier lugar y combinarlo con todo. • Interior de forro polar cepillado, suave y cómodo • Logo bordado duradero que resistirá cada uso • Capucha ajustable con cordón • Bolsillo tipo canguro para guardar tus cosas TALLA Y AJUSTE • Corte holgado • El modelo mide 183 cm y usa talla M MATERIALES Y CUIDADO • 80% Algodón, 20% Poliéster',
     discount: false,
     gender: 'hombre',
@@ -89,7 +89,7 @@ export const products: Product[] = [
   },
   {
     color: 'vino',
-    colorHex: '#722F37',
+    colorHex: '#844447',
     description: 'DÍA DE DESCANSO AL ESTILO CREST Cómodo y con estilo casual, puedes usar Crest en cualquier lugar y combinarlo con todo. • Interior de forro polar cepillado, suave y cómodo • Logo bordado duradero que resistirá cada uso • Capucha ajustable con cordón • Bolsillo tipo canguro para guardar tus cosas TALLA Y AJUSTE • Corte holgado • El modelo mide 183 cm y usa talla M MATERIALES Y CUIDADO • 80% Algodón, 20% Poliéster',
     discount: false,
     gender: 'hombre',
@@ -112,7 +112,7 @@ export const products: Product[] = [
   },
   {
     color: 'azul oscuro',
-    colorHex: '#000080',
+    colorHex: '#232e3c',
     description: 'DÍA DE DESCANSO AL ESTILO CREST Cómodo y con estilo casual, puedes usar Crest en cualquier lugar y combinarlo con todo. • Interior de forro polar cepillado, suave y cómodo • Logo bordado duradero que resistirá cada uso • Capucha ajustable con cordón • Bolsillo tipo canguro para guardar tus cosas TALLA Y AJUSTE • Corte holgado • El modelo mide 183 cm y usa talla M MATERIALES Y CUIDADO • 80% Algodón, 20% Poliéster',
     discount: false,
     gender: 'hombre',
@@ -135,7 +135,7 @@ export const products: Product[] = [
   },
   {
     color: 'azul claro',
-    colorHex: '#ADD8E6',
+    colorHex: '#6594ab',
     description: 'La sudadera con capucha Crest es una capa esencial para ir al gimnasio o complementar cualquier estilo deportivo. Con un interior cálido y extremadamente suave, capucha ajustable para mayor comodidad y un diseño minimalista, es una elección infalible. • Ajuste ceñido • Capucha de tres piezas con cordón ajustable • Bolsillo delantero tipo canguro • Dobladillo y puños acanalados para un ajuste limpio • Logo bordado duradero de Gymshark • Tela suave y cepillada en el interior • 80% Algodón, 20% Poliéster',
     discount: false,
     gender: 'hombre',
@@ -183,7 +183,7 @@ export const products: Product[] = [
   // === Power Zip Hoodie ===
   {
     color: 'café tierra',
-    colorHex: '#8B4513',
+    colorHex: '#a49a87',
     description: 'Poleron con cierre para entrenamiento de alta calidad y durabilidad.',
     discount: false,
     gender: 'hombre',
@@ -231,7 +231,7 @@ export const products: Product[] = [
   },
   {
     color: 'gris',
-    colorHex: '#808080',
+    colorHex: '#d9d9d9',
     description: 'Poleron crew diseñado para máxima comodidad en días de descanso.',
     discount: false,
     gender: 'hombre',
@@ -304,7 +304,7 @@ export const products: Product[] = [
   // === Super Natural Cut Off T-Shirt ===
   {
     color: 'gris',
-    colorHex: '#808080',
+    colorHex: '#7f7f7f',
     description: 'Polera corta de diseño natural para un look casual y cómodo.',
     discount: false,
     gender: 'hombre',
@@ -467,7 +467,7 @@ export const products: Product[] = [
   // === Essential Oversized T-Shirt ===
   {
     color: 'navy',
-    colorHex: '#000080',
+    colorHex: '#213a4b',
     description: 'Polera oversized esencial con un ajuste holgado y cómodo.',
     discount: false,
     gender: 'hombre',
@@ -490,7 +490,7 @@ export const products: Product[] = [
   },
   {
     color: 'azul claro',
-    colorHex: '#ADD8E6',
+    colorHex: '#6f9fbc',
     description: 'Polera oversized esencial con un ajuste holgado y cómodo.',
     discount: false,
     gender: 'hombre',
@@ -562,7 +562,7 @@ export const products: Product[] = [
   },
   {
     color: 'azul',
-    colorHex: '#0000FF',
+    colorHex: '#1f2631',
     description: 'Polera con diseño de letras en la espalda, estilo moderno y deportivo.',
     discount: false,
     gender: 'hombre',
@@ -614,7 +614,7 @@ export const products: Product[] = [
   },
   {
     color: 'azul medianoche',
-    colorHex: '#191970',
+    colorHex: '#2e4761',
     description: 'Shorts sin costuras con diseño camuflado, perfectos para cualquier tipo de entrenamiento.',
     discount: false,
     gender: 'mujer',
@@ -664,7 +664,7 @@ export const products: Product[] = [
   // === Sport 7 Short ===
   {
     color: 'gris',
-    colorHex: '#808080',
+    colorHex: '#6c6b70',
     description: 'Shorts deportivos de 7 pulgadas, diseñados para máximo rendimiento.',
     discount: false,
     gender: 'hombre',
@@ -687,7 +687,7 @@ export const products: Product[] = [
   },
   {
     color: 'naranja',
-    colorHex: '#FFA500',
+    colorHex: '#e2784c',
     description: 'Shorts deportivos de 7 pulgadas, diseñados para máximo rendimiento.',
     discount: false,
     gender: 'hombre',
@@ -712,7 +712,7 @@ export const products: Product[] = [
   // === Arrival 7 Shorts ===
   {
     color: 'navy',
-    colorHex: '#000080',
+    colorHex: '#223649',
     description: 'Shorts deportivos versátiles de 7 pulgadas, perfectos para cualquier actividad.',
     discount: false,
     gender: 'hombre',
@@ -786,8 +786,8 @@ export const products: Product[] = [
 
   // === Active Holdall Medium ===
   {
-    color: 'café',
-    colorHex: '#8B4513',
+    color: 'rosa',
+    colorHex: '#b98987',
     description: 'Bolso deportivo de tamaño mediano, perfecto para el gimnasio.',
     discount: false,
     gender: 'mujer',
@@ -821,7 +821,10 @@ export const products: Product[] = [
     price: 9990,
     shortDescription: 'Calcetas deportivas con logo Gymshark',
     sizes: [
-      { size: 'UNICO', stock: 2 }
+      { size: 'S', stock: 0 },
+      { size: 'M', stock: 2 },
+      { size: 'L', stock: 0 },
+
     ],
     stock: 2,
     type: ProductType.ACCESORIO,
@@ -829,7 +832,7 @@ export const products: Product[] = [
   },
   {
     color: 'gris',
-    colorHex: '#808080',
+    colorHex: '#bfbdba',
     description: 'Calcetas deportivas con logo Gymshark, comodidad y estilo.',
     discount: false,
     gender: 'unisex',
@@ -841,7 +844,10 @@ export const products: Product[] = [
     price: 9990,
     shortDescription: 'Calcetas deportivas con logo Gymshark',
     sizes: [
-      { size: 'UNICO', stock: 1 }
+      { size: 'S', stock: 0 },
+      { size: 'M', stock: 1 },
+      { size: 'L', stock: 0 },
+
     ],
     stock: 1,
     type: ProductType.ACCESORIO,
@@ -861,7 +867,10 @@ export const products: Product[] = [
     price: 9990,
     shortDescription: 'Calcetas deportivas con logo Gymshark',
     sizes: [
-      { size: 'UNICO', stock: 3 }
+      { size: 'S', stock: 0 },
+      { size: 'M', stock: 3 },
+      { size: 'L', stock: 0 },
+
     ],
     stock: 3,
     type: ProductType.ACCESORIO,
