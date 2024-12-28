@@ -5,7 +5,8 @@ import { products } from '../../data/products';
 import FilterControls from '../../components/buttons/FilterControls.astro';
 
 export async function getStaticPaths() {
-  return products.map(({gender}) => ({
+  // Solo generamos rutas para hombre y mujer (unisex se mostrará en ambas)
+  return ['hombre', 'mujer'].map(gender => ({
     params: { genderAll: gender },
     props: { gender }
   }));
@@ -15,7 +16,10 @@ const {gender="" } = Astro.props;
 
 // FILTRO SEGUN SEXO Y CATEGORIA
 
-const filteredProducts = products.filter(p =>  p.gender === gender);
+// Modificamos el filtro para incluir unisex
+const filteredProducts = products.filter(p =>
+  p.gender === gender || p.gender === 'unisex'
+);
 
 
 ---

@@ -1,22 +1,51 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ProductGrid from '../../../components/ProductGrid.astro';
-import { products } from '../../../data/products';
+import { products, ProductType } from '../../../data/products';
 import FilterControls from '../../../components/buttons/FilterControls.astro';
 import IconType from '../../../components/IconType.astro';
 
 export async function getStaticPaths() {
-  return products.map(({ gender, type }) => ({
-    params: { gender, type },
-    props: { gender, type },
-  }));
+  const uniquePaths = new Set();
+  const paths: { params: { gender: string; type: ProductType | undefined; } | { gender: "hombre" | "mujer" | undefined; type: ProductType | undefined; }; props: { gender: string; type: ProductType | undefined; } | { gender: "hombre" | "mujer" | undefined; type: ProductType | undefined; }; }[] = [];
+
+  products.forEach(product => {
+    // Si el producto es unisex, crear rutas para hombre y mujer
+    if (product.gender === 'unisex') {
+      ['hombre', 'mujer'].forEach(gender => {
+        const pathKey = `${gender}-${product.type}`;
+        if (!uniquePaths.has(pathKey)) {
+          uniquePaths.add(pathKey);
+          paths.push({
+            params: { gender, type: product.type },
+            props: { gender, type: product.type }
+          });
+        }
+      });
+    } else {
+      // Para productos con género específico
+      const pathKey = `${product.gender}-${product.type}`;
+      if (!uniquePaths.has(pathKey)) {
+        uniquePaths.add(pathKey);
+        paths.push({
+          params: { gender: product.gender, type: product.type },
+          props: { gender: product.gender, type: product.type }
+        });
+      }
+    }
+  });
+
+  return paths;
 }
 
 const { gender = '', type= '' } = Astro.props;
 
 // FILTRO SEGUN SEXO Y CATEGORIA
 
-const filteredProducts = products.filter(p => p.gender === gender && p.type === type);
+// Modificamos el filtro para incluir productos unisex
+const filteredProducts = products.filter(p =>
+  (p.gender === gender || p.gender === 'unisex') && p.type === type
+);
 
 const isAccessory = type === 'accesorio';
 const titleText = isAccessory

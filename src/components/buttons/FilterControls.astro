@@ -15,7 +15,9 @@ const currentGender = currentUrl.includes('/hombre') ? 'hombre' : currentUrl.inc
 const shouldBeOpen = currentUrl !== '/';
 
 const genderExists = (gender: string) => {
-  return products.some(product => product.gender === gender);
+  return products.some(product =>
+    product.gender === gender || product.gender === 'unisex'
+  );
 };
 
 const currentCategory = categories.find(category => currentUrl.includes(`/${category}`)) || '';
@@ -105,7 +107,10 @@ const isCategoryActive = currentCategory && (currentUrl.includes('/categoria/') 
         <div class="flex flex-wrap justify-center gap-3 pb-2">
           {categories.map((category) => {
             const isActive = currentUrl.endsWith(`/${category}`) || (isCategoryActive && currentCategory === category);
-            const isDisabled = !products.some(product => product.gender === currentGender && product.type === category) && isGenderRoute;
+            const isDisabled = isGenderRoute && !products.some(product =>
+    (product.type === category) && (product.gender === currentGender || product.gender === 'unisex')
+  );
+
             const href = isDisabled ? '#' : isGenderRoute ? `/categoria/${currentGender}/${category}` : `/${baseRoute}/${category}`;
 
             return isDisabled ? (
