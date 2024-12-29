@@ -238,22 +238,21 @@ const [itemToRemove, setItemToRemove] = createSignal(null);
 
 {showConfirmDialog() && (
   <div
-    class="fixed inset-0 flex items-center justify-center"
-    style={{
-      "background-color": "rgba(0, 0, 0, 0.75)",
-      "z-index": "999999",
-      "position": "fixed",
-      "top": "0",
-      "left": "0",
-      "right": "0",
-      "bottom": "0",
-      "display": "flex",
-      "align-items": "center",
-      "justify-content": "center",
-      "isolation": "isolate"
-    }}
-    onClick={() => setShowConfirmDialog(false)}
-  >
+  class="fixed inset-0 flex items-center justify-center"
+  style={{
+    "background-color": "rgba(0, 0, 0, 0.5)", // Opacidad fija
+    "z-index": "999999",
+    "position": "fixed",
+    "top": "0",
+    "left": "0",
+    "right": "0",
+    "bottom": "0",
+  }}
+  onClick={() => {
+    setShowConfirmDialog(false);
+    setItemToRemove(null);
+  }}
+>
     <div
       class="bg-white p-6 rounded-lg shadow-xl"
       style={{
