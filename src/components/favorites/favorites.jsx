@@ -380,7 +380,7 @@ const [itemToRemove, setItemToRemove] = createSignal(null);
               setSelectedSize(prev => ({ ...prev, [product.slug]: size.size }));
             }}
             disabled={size.stock === 0}
-            class={`inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-medium transition-colors
+            class={`inline-flex items-center justify-center w-8 h-8 rounded-lg text-xs font-medium transition-colors
               ${isSelected
                 ? 'bg-black text-white'
                 : hasQuantity
@@ -402,33 +402,41 @@ const [itemToRemove, setItemToRemove] = createSignal(null);
 
   {/* Control de cantidad - Más compacto */}
   <div class="flex items-center justify-between bg-white rounded-lg border shadow-sm p-2">
-    <span class="text-sm font-medium text-gray-800 ml-2">
-      Talla {selectedSize()[product.slug] || "---"}
+  <span class="text-sm font-medium text-gray-800 ml-2">
+    Talla {selectedSize()[product.slug] || "---"}
+  </span>
+  <div class="flex items-center gap-2">
+    <button
+      class="w-6 h-6 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-full text-gray-600 text-sm
+             disabled:bg-gray-50 disabled:text-gray-300 disabled:cursor-not-allowed"
+      onClick={() => updateQuantity(product.slug, selectedSize()[product.slug], -1)}
+      disabled={!selectedSize()[product.slug] || !product.compra.some(c => c.talla === selectedSize()[product.slug])}
+    >
+      -
+    </button>
+    <span class="text-sm font-medium w-6 text-center">
+      {product.compra.find(c => c.talla === selectedSize()[product.slug])?.cantidad || 0}
     </span>
-    <div class="flex items-center gap-2">
-      <button
-        class="w-6 h-6 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-full text-gray-600 text-sm"
-        onClick={() => updateQuantity(product.slug, selectedSize()[product.slug], -1)}
-        disabled={!selectedSize()[product.slug] || !product.compra.some(c => c.talla === selectedSize()[product.slug])}
-      >
-        -
-      </button>
-      <span class="text-sm font-medium w-6 text-center">
-        {product.compra.find(c => c.talla === selectedSize()[product.slug])?.cantidad || 0}
-      </span>
-      <button
-        class="w-6 h-6 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-full text-gray-600 text-sm"
-        onClick={() => updateQuantity(product.slug, selectedSize()[product.slug], 1)}
-        disabled={
-          !selectedSize()[product.slug] ||
-          (product.compra.find(c => c.talla === selectedSize()[product.slug])?.cantidad || 0) >=
-          (product.sizes.find(s => s.size === selectedSize()[product.slug])?.stock || 0)
-        }
-      >
-        +
-      </button>
-    </div>
+    <button
+      class="w-6 h-6 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-full text-gray-600 text-sm
+             disabled:bg-gray-50 disabled:text-gray-300 disabled:cursor-not-allowed"
+      onClick={() => updateQuantity(product.slug, selectedSize()[product.slug], 1)}
+      disabled={
+        !selectedSize()[product.slug] ||
+        (product.compra.find(c => c.talla === selectedSize()[product.slug])?.cantidad || 0) >=
+        (product.sizes.find(s => s.size === selectedSize()[product.slug])?.stock || 0)
+      }
+      title={
+        (product.compra.find(c => c.talla === selectedSize()[product.slug])?.cantidad || 0) >=
+        (product.sizes.find(s => s.size === selectedSize()[product.slug])?.stock || 0)
+          ? "Stock máximo alcanzado"
+          : ""
+      }
+    >
+      +
+    </button>
   </div>
+</div>
 </div>
 
 
