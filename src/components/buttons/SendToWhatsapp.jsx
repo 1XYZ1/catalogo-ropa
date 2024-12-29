@@ -1,35 +1,49 @@
 import { createSignal, createEffect } from "solid-js";
 
 export default function SendToWhatsApp({ summary, class: className }) {
-  const [whatsappMessage, setWhatsappMessage] = createSignal(""); // Mensaje dinámico
-  const [isButtonDisabled, setIsButtonDisabled] = createSignal(true); // Estado del botón
+  const [whatsappMessage, setWhatsappMessage] = createSignal("");
+  const [isButtonDisabled, setIsButtonDisabled] = createSignal(true);
 
-  // Escuchar cambios en summary
   createEffect(() => {
-    const currentSummary = summary(); // Accede al valor reactivo
+    const currentSummary = summary();
     if (!currentSummary.details || currentSummary.details.length === 0) {
-      setWhatsappMessage(""); // Limpia mensaje si no hay datos
+      setWhatsappMessage("");
       setIsButtonDisabled(true);
       return;
     }
 
     const summaryDetails = currentSummary.details
-      .map(
-        (detail) =>
-          `Producto: ${detail.name}\n` +
-          detail.compra
-            .map(
-              (compra) =>
-                `- Talla: ${compra.talla}, Cantidad: ${compra.cantidad}, Subtotal: $${(
-                  compra.cantidad * detail.price
-                ).toLocaleString("es-ES")}`
-            )
-            .join("\n")
-      )
+      .map((detail) => {
+        // Cabecera del producto
+        let productText = `Producto: ${detail.name}\n`;
+        productText += `Color: ${detail.color}\n`;
+
+        // Detalles de compra con precios
+        const compraDetails = detail.compra
+          .map((compra) => {
+            const precioOriginal = compra.cantidad * detail.price;
+
+            if (detail.discount > 0) {
+              const precioConDescuento = precioOriginal * (1 - detail.discount/100);
+              return `- Talla: ${compra.talla}
+- Cantidad: ${compra.cantidad}
+- Precio original: $${precioOriginal.toLocaleString("es-ES")}
+- Descuento: ${detail.discount}% OFF
+- Subtotal final: $${precioConDescuento.toLocaleString("es-ES")}`;
+            } else {
+              return `- Talla: ${compra.talla}
+- Cantidad: ${compra.cantidad}
+- Subtotal: $${precioOriginal.toLocaleString("es-ES")}`;
+            }
+          })
+          .join("\n");
+
+        return `${productText}${compraDetails}`;
+      })
       .join("\n\n");
 
-    const total = `Total: $${currentSummary.total.toLocaleString("es-ES")}`;
-    setWhatsappMessage(`Resumen de Pedido:\n\n${summaryDetails}\n\n${total}`);
+    const total = `Total a pagar: $${currentSummary.total.toLocaleString("es-ES")}`;
+    setWhatsappMessage(`¡Hola! Me interesa el siguiente pedido:\n\n${summaryDetails}\n\n${total}`);
     setIsButtonDisabled(false);
   });
 

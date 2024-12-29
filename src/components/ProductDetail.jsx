@@ -3,6 +3,8 @@ import { createSignal, onMount } from "solid-js";
 import AddToLocalStorage from "./buttons/AddToLocalStorage";
 import { products } from '../data/products';
 
+import { formatPrice, calculateDiscountedPrice } from '../utils/formatters';
+
 export default function ProductDetail(props) {
   const { product } = props;
 
@@ -104,12 +106,32 @@ export default function ProductDetail(props) {
 <div class="space-y-6 min-h-[400px]">
   {/* Encabezado */}
   <header class="space-y-2 text-center">
-    <h1 class="text-2xl font-bold">{product.name}</h1>
-    <p class="text-2xl font-medium text-gray-900">${product.price.toLocaleString("es-ES")}</p>
-  </header>
+  <h1 class="text-2xl font-bold">{product.name}</h1>
+  <div class="h-14 flex flex-col items-center justify-center">
+    {product.discount && product.discount > 0 ? (
+      <div class="space-y-1">
+        <div class="flex items-center justify-center gap-2">
+          <span class="text-2xl text-gray-400 line-through">
+            ${formatPrice(product.price)}
+          </span>
+          <span class="text-3xl font-bold text-red-500">
+            ${formatPrice(calculateDiscountedPrice(product.price, product.discount))}
+          </span>
+        </div>
+        <span class="inline-block px-2 py-0.5 bg-red-100 text-red-600 text-sm font-medium rounded-full">
+          {product.discount}% OFF
+        </span>
+      </div>
+    ) : (
+      <p class="text-2xl font-medium text-gray-900">
+        ${formatPrice(product.price)}
+      </p>
+    )}
+  </div>
+</header>
 
     {/* Mostrar el color actual y variantes */}
-    <section class="space-y-3 min-h-[100px]">
+    <section class="space-y-3 min-h-[70px]">
     <div class="mt-6 flex flex-col items-center justify-center">
   <div class="flex items-center justify-center gap-2 mb-3">
     <p class="text-sm font-medium text-gray-700">

@@ -1,5 +1,7 @@
 import { createSignal, onMount, createMemo } from "solid-js";
 import { createStore } from "solid-js/store"; // Importamos createStore
+
+import { formatPrice, calculateDiscountedPrice, capitalizeFirstLetter } from '../../utils/formatters';
 import SendToWhatsApp from "../buttons/SendToWhatsapp";
 import GeneratePDF from "../buttons/GeneratePdf";
 
@@ -111,16 +113,22 @@ export default function FavoritesPage() {
     return favorites.reduce(
       (acc, product) => {
         const totalPerProduct = product.compra.reduce((subtotal, compra) => {
-          const subtotalPorTalla = compra.cantidad * product.price;
+          // Calcula el precio con descuento si existe
+          const precioUnitario = product.discount > 0
+            ? product.price * (1 - product.discount / 100) // Aplica el descuento
+            : product.price;
+
+          const subtotalPorTalla = compra.cantidad * precioUnitario;
           return subtotal + subtotalPorTalla;
         }, 0);
 
         acc.total += totalPerProduct;
         acc.details.push({
           name: product.name,
-          color:product.color,
+          color: product.color,
           compra: product.compra,
           price: product.price,
+          discount: product.discount,
         });
         return acc;
       },
@@ -165,15 +173,42 @@ export default function FavoritesPage() {
                     ✕
                   </button>
                 </div>
-                <div class="p-4 flex flex-col flex-1">
-                  <h3 class="text-lg font-bold text-center mb-2">{product.name} - {capitalizeFirstLetter(product.color)}</h3>
-                  <p
-                    class={`text-sm text-center mb-4 ${
-                      product.discount ? "text-red-500" : "text-gray-500"
-                    }`}
-                  >
-                    ${product.price.toLocaleString("es-ES")}
-                  </p>
+                <div class="p-4 flex-1 space-y-3 text-center">
+                <div class="flex-1 space-y-2 text-center"> {/* Añadido text-center */}
+      <h3 class="font-medium text-gray-800 text-lg leading-tight line-clamp-2 group-hover:text-black" title={product.name}>
+        {product.name}
+      </h3>
+      {product.color && (
+        <p class="text-sm text-gray-500">
+          Color: <span class="text-gray-700">{capitalizeFirstLetter(product.color)}</span>
+        </p>
+      )}
+    </div>
+  <div class="h-14 flex flex-col items-center justify-center">
+    {product.discount > 0 ? (
+      <div class="space-y-1">
+        <div class="flex items-center justify-center gap-2">
+  <span class="text-xl font-bold text-gray-400 line-through">
+    ${formatPrice(product.price)}
+  </span>
+  <span class="text-xl font-bold text-red-500">
+    ${formatPrice(calculateDiscountedPrice(product.price, product.discount))}
+  </span>
+</div>
+        <span class="inline-block px-2 py-0.5 bg-red-100 text-red-600 text-xs font-medium rounded-full">
+          {product.discount}% OFF
+        </span>
+      </div>
+    ) : (
+<div class="flex items-center justify-center gap-2">
+<span class="text-xl font-bold text-gray-900">
+    ${formatPrice(product.price)}
+  </span>
+</div>
+
+
+    )}
+  </div>
                   <div class="mb-4 relative z-20" onClick={(e) => e.stopPropagation()}>
                     <select
                       class="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none"
@@ -269,15 +304,27 @@ export default function FavoritesPage() {
       <tbody class="divide-y divide-gray-200">
         {summary().details.map((detail) =>
           detail.compra.map((compra) => (
-
             <tr class="hover:bg-gray-50 transition-colors">
-
-              <td class="px-1 py-3 text-sm text-gray-900">{detail.name} </td>
-              <td class="px-1 py-3 text-sm text-gray-900">{capitalizeFirstLetter(detail.color)} </td>
+              <td class="px-1 py-3 text-sm text-gray-900">{detail.name}</td>
+              <td class="px-1 py-3 text-sm text-gray-900">{capitalizeFirstLetter(detail.color)}</td>
               <td class="px-2 py-3 text-sm text-gray-900 text-center">{compra.talla}</td>
               <td class="px-2 py-3 text-sm text-gray-900 text-center">{compra.cantidad}</td>
-              <td class="px-2 py-3 text-sm font-medium text-gray-900 text-right">
-                ${(compra.cantidad * detail.price).toLocaleString("es-ES")}
+              <td class="px-2 py-3 text-right">
+                {detail.discount > 0 ? (
+                  <div class="flex flex-col items-end">
+                    <span class="text-sm text-gray-500 line-through">
+                      ${(compra.cantidad * detail.price).toLocaleString("es-ES")}
+                    </span>
+                    <span class="text-sm font-medium text-red-500">
+                      ${(compra.cantidad * detail.price * (1 - detail.discount/100)).toLocaleString("es-ES")}
+                    </span>
+
+                  </div>
+                ) : (
+                  <span class="text-sm font-medium text-gray-900">
+                    ${(compra.cantidad * detail.price).toLocaleString("es-ES")}
+                  </span>
+                )}
               </td>
             </tr>
           ))
@@ -286,45 +333,66 @@ export default function FavoritesPage() {
     </table>
   </div>
 
-  {/* Versión Mobile: Cards */}
-  <div class="md:hidden space-y-3">
-    {summary().details.map((detail) =>
-      detail.compra.map((compra) => (
-        <div class="bg-gray-50 rounded-lg p-3">
-          <div class="space-y-2">
-            {/* Nombre del producto con line-clamp */}
-            <h3 class="font-medium text-gray-900 line-clamp-2 leading-tight">
-              {detail.name}
-            </h3>
+{/* Versión Mobile: Cards */}
+<div class="md:hidden space-y-4">
+  {summary().details.map((detail) =>
+    detail.compra.map((compra) => (
 
-            <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
-              <div class="flex items-center gap-1 text-gray-500">
-                <span>Talla:</span>
-                <span class="font-medium text-gray-900">{compra.talla}</span>
+      <div class="bg-gray-50 rounded-lg p-4">
+        {/* Nombre del producto */}
+        <h3 class="font-semibold text-gray-900 text-base mb-3">
+          {detail.name}
+        </h3>
 
-              </div>
-
-              <div class="flex items-center gap-1 text-gray-500">
-                <span>Color:</span>
-                <span class="font-medium text-gray-900">{capitalizeFirstLetter(detail.color)}</span>
-              </div>
-              <div class="flex items-center gap-1 text-gray-500">
-                <span>Cant:</span>
-                <span class="font-medium text-gray-900">{compra.cantidad}</span>
-              </div>
-
+        <div class="flex justify-between">
+          {/* Columna izquierda: Detalles */}
+          <div class="space-y-1.5">
+            <div class="flex items-center gap-2 text-sm">
+              <span class="text-gray-500">Talla:</span>
+              <span class="font-medium text-gray-900">{compra.talla}</span>
             </div>
 
-            <div class="flex justify-end">
-              <span class="font-bold text-gray-900">
-                ${(compra.cantidad * detail.price).toLocaleString("es-ES")}
-              </span>
+            <div class="flex items-center gap-2 text-sm">
+              <span class="text-gray-500">Color:</span>
+              <span class="font-medium text-gray-900">{capitalizeFirstLetter(detail.color)}</span>
+            </div>
+            <div class="flex items-center gap-2 text-sm">
+              <span class="text-gray-500">Precio unidad:</span>
+              <span class="font-medium text-gray-900">{formatPrice(calculateDiscountedPrice(detail.price, detail.discount))}</span>
+            </div>
+
+            <div class="flex items-center gap-2 text-sm">
+              <span class="text-gray-500">Cant:</span>
+              <span class="font-medium text-gray-900">{compra.cantidad}</span>
             </div>
           </div>
+
+          {/* Columna derecha: Precios */}
+          <div class="text-right">
+            <span class="text-xs text-gray-500 block mb-1">Subtotal</span>
+            {detail.discount > 0 ? (
+              <>
+                <span class="text-sm text-gray-500 line-through block">
+                  ${formatPrice(compra.cantidad * detail.price)}
+                </span>
+                <span class="font-bold text-lg text-red-500 block">
+                  ${formatPrice(compra.cantidad * calculateDiscountedPrice(detail.price, detail.discount))}
+                </span>
+                <span class="text-xs font-medium text-red-600 bg-red-50 px-2 py-0.5 rounded-full inline-block mt-1">
+                  {detail.discount}% OFF
+                </span>
+              </>
+            ) : (
+              <span class="font-bold text-lg text-gray-900 block">
+                ${formatPrice(compra.cantidad * detail.price)}
+              </span>
+            )}
+          </div>
         </div>
-      ))
-    )}
-  </div>
+      </div>
+    ))
+  )}
+</div>
 
   {/* Total  */}
 
@@ -333,6 +401,7 @@ export default function FavoritesPage() {
       <span class="text-base font-semibold text-gray-900">Total a pagar</span>
       <span class="text-2xl font-bold text-green-600">
         ${summary().total.toLocaleString("es-ES")}
+
       </span>
     </div>
 

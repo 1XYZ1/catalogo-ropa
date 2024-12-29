@@ -19,7 +19,7 @@ export interface Product {
   color?: string;
   colorHex?: string;
   description: string;
-  discount?: boolean;
+  discount?: number;
   gender?: 'hombre' | 'mujer' | 'unisex';
   images: string[];
   ogimage?: string;
@@ -40,12 +40,38 @@ export const products: Product[] = [
   //          PRODUCTOS SUPERIORES
   // ==========================================
 
+
+  // === Impact Drop Arm Tank ===
+  {
+    color: 'negro',
+    colorHex: '#000000',
+    description: 'Tank top con diseño de manga caída para entrenamientos intensos. Material ligero y transpirable.',
+    discount: 20,
+    gender: 'hombre',
+    images: ['/images/impact-tank/BLACK/1.webp', '/images/impact-tank/BLACK/2.webp', '/images/impact-tank/BLACK/3.webp', '/images/impact-tank/BLACK/4.webp', '/images/impact-tank/BLACK/5.webp',  '/images/impact-tank/BLACK/6.webp'],
+    ogimage: '/images/impact-tank/BLACK/jpg/1.jpg',
+    link: 'https://row.gymshark.com/products/gymshark-impact-drop-arm-tank-black-ss24',
+    measurements: '',
+    name: 'Impact Drop Arm Tank',
+    price: 30000,
+    shortDescription: 'Tank top con diseño de manga caída para entrenamientos intensos',
+    sizes: [
+      { size: 'S', stock: 1 },
+      { size: 'M', stock: 4 },
+      { size: 'L', stock: 2 },
+      { size: 'XL', stock: 0 }
+    ],
+    stock: 7,
+    type: ProductType.SUPERIOR,
+    slug: 'impact-drop-arm-tank'
+  },
+
   // === Crest Oversized Fit ===
   {
     color: 'Rosa Vintage',
     colorHex: '#d5596a',
     description: 'DÍA DE DESCANSO AL ESTILO CREST Cómodo y con estilo casual, puedes usar Crest en cualquier lugar y combinarlo con todo. • Interior de forro polar cepillado, suave y cómodo • Logo bordado duradero que resistirá cada uso • Capucha ajustable con cordón • Bolsillo tipo canguro para guardar tus cosas TALLA Y AJUSTE • Corte holgado • El modelo mide 183 cm y usa talla M MATERIALES Y CUIDADO • 80% Algodón, 20% Poliéster',
-    discount: false,
+    discount: 0,
     gender: 'hombre',
     images: ['/images/hoodie-oversized/ROSA/1.webp', '/images/hoodie-oversized/ROSA/2.webp', '/images/hoodie-oversized/ROSA/3.webp', '/images/hoodie-oversized/ROSA/4.webp'],
     ogimage: '/images/hoodie-oversized/ROSA//jpg/1.jpg',
@@ -68,7 +94,7 @@ export const products: Product[] = [
     color: 'beige',
     colorHex: '#dbd5c7',
     description: 'DÍA DE DESCANSO AL ESTILO CREST Cómodo y con estilo casual, puedes usar Crest en cualquier lugar y combinarlo con todo. • Interior de forro polar cepillado, suave y cómodo • Logo bordado duradero que resistirá cada uso • Capucha ajustable con cordón • Bolsillo tipo canguro para guardar tus cosas TALLA Y AJUSTE • Corte holgado • El modelo mide 183 cm y usa talla M MATERIALES Y CUIDADO • 80% Algodón, 20% Poliéster',
-    discount: false,
+    discount: 0,
     gender: 'hombre',
     images: ['/images/hoodie-oversized/BEIGE/1.webp', '/images/hoodie-oversized/BEIGE/2.webp', '/images/hoodie-oversized/BEIGE/3.webp', '/images/hoodie-oversized/BEIGE/4.webp', '/images/hoodie-oversized/BEIGE/5.webp', '/images/hoodie-oversized/BEIGE/6.webp'],
     ogimage: '/images/hoodie-oversized/BEIGE/jpg/1.jpg',
@@ -91,7 +117,7 @@ export const products: Product[] = [
     color: 'vino',
     colorHex: '#844447',
     description: 'DÍA DE DESCANSO AL ESTILO CREST Cómodo y con estilo casual, puedes usar Crest en cualquier lugar y combinarlo con todo. • Interior de forro polar cepillado, suave y cómodo • Logo bordado duradero que resistirá cada uso • Capucha ajustable con cordón • Bolsillo tipo canguro para guardar tus cosas TALLA Y AJUSTE • Corte holgado • El modelo mide 183 cm y usa talla M MATERIALES Y CUIDADO • 80% Algodón, 20% Poliéster',
-    discount: false,
+    discount: 0,
     gender: 'hombre',
     images: ['/images/hoodie-oversized/VINO/1.webp', '/images/hoodie-oversized/VINO/2.webp', '/images/hoodie-oversized/VINO/3.webp', '/images/hoodie-oversized/VINO/4.webp'],
     ogimage: '/images/hoodie-oversized/VINO/jpg/1.jpg',
@@ -114,7 +140,7 @@ export const products: Product[] = [
     color: 'navy',
     colorHex: '#232e3c',
     description: 'DÍA DE DESCANSO AL ESTILO CREST Cómodo y con estilo casual, puedes usar Crest en cualquier lugar y combinarlo con todo. • Interior de forro polar cepillado, suave y cómodo • Logo bordado duradero que resistirá cada uso • Capucha ajustable con cordón • Bolsillo tipo canguro para guardar tus cosas TALLA Y AJUSTE • Corte holgado • El modelo mide 183 cm y usa talla M MATERIALES Y CUIDADO • 80% Algodón, 20% Poliéster',
-    discount: false,
+    discount: 0,
     gender: 'hombre',
     images: ['/images/hoodie-oversized/NAVY/1.webp', '/images/hoodie-oversized/NAVY/2.webp', '/images/hoodie-oversized/NAVY/3.webp', '/images/hoodie-oversized/NAVY/4.webp', '/images/hoodie-oversized/NAVY/5.webp'],
     ogimage: '/images/hoodie-oversized/NAVY/jpg/1.jpg',
@@ -137,7 +163,7 @@ export const products: Product[] = [
     color: 'azul claro',
     colorHex: '#6594ab',
     description: 'La sudadera con capucha Crest es una capa esencial para ir al gimnasio o complementar cualquier estilo deportivo. Con un interior cálido y extremadamente suave, capucha ajustable para mayor comodidad y un diseño minimalista, es una elección infalible. • Ajuste ceñido • Capucha de tres piezas con cordón ajustable • Bolsillo delantero tipo canguro • Dobladillo y puños acanalados para un ajuste limpio • Logo bordado duradero de Gymshark • Tela suave y cepillada en el interior • 80% Algodón, 20% Poliéster',
-    discount: false,
+    discount: 0,
     gender: 'hombre',
     images: ['/images/hoodie-slim/BLUE/1.webp', '/images/hoodie-slim/BLUE/2.webp', '/images/hoodie-slim/BLUE/3.webp', '/images/hoodie-slim/BLUE/4.webp'],
     ogimage: '/images/hoodie-slim/BLUE/jpg/1.jpg',
@@ -160,7 +186,7 @@ export const products: Product[] = [
     color: 'negro',
     colorHex: '#000000',
     description: 'DÍA DE DESCANSO AL ESTILO CREST Cómodo y con estilo casual, puedes usar Crest en cualquier lugar y combinarlo con todo. • Interior de forro polar cepillado, suave y cómodo • Logo bordado duradero que resistirá cada uso • Capucha ajustable con cordón • Bolsillo tipo canguro para guardar tus cosas TALLA Y AJUSTE • Corte holgado • El modelo mide 183 cm y usa talla M MATERIALES Y CUIDADO • 80% Algodón, 20% Poliéster',
-    discount: false,
+    discount: 0,
     gender: 'hombre',
     images: ['/images/hoodie-oversized/NEGRO/1.webp', '/images/hoodie-oversized/NEGRO/2.webp', '/images/hoodie-oversized/NEGRO/3.webp', '/images/hoodie-oversized/NEGRO/4.webp', '/images/hoodie-oversized/NEGRO/5.webp'],
     ogimage: '/images/hoodie-oversized/NEGRO/jpg/1.jpg',
@@ -185,7 +211,7 @@ export const products: Product[] = [
     color: 'café tierra',
     colorHex: '#a49a87',
     description: 'Poleron con cierre para entrenamiento de alta calidad y durabilidad.',
-    discount: false,
+    discount: 0,
     gender: 'hombre',
     images: ['/images/hoodie-zip-power/MARRON/1.webp', '/images/hoodie-zip-power/MARRON/2.webp', '/images/hoodie-zip-power/MARRON/3.webp', '/images/hoodie-zip-power/MARRON/4.webp', '/images/hoodie-zip-power/MARRON/5.webp', '/images/hoodie-zip-power/MARRON/6.webp',],
     ogimage: '/images/hoodie-zip-power/MARRON/jpg/1.jpg',
@@ -210,7 +236,7 @@ export const products: Product[] = [
     color: 'negro',
     colorHex: '#000000',
     description: 'Poleron crew diseñado para máxima comodidad en días de descanso.',
-    discount: false,
+    discount: 0,
     gender: 'hombre',
     images: ['/images/rest-day/NEGRO/1.webp', '/images/rest-day/NEGRO/2.webp', '/images/rest-day/NEGRO/3.webp','/images/rest-day/NEGRO/4.webp','/images/rest-day/NEGRO/5.webp',],
     ogimage: '/images/rest-day/NEGRO/jpg/1.jpg',
@@ -233,7 +259,7 @@ export const products: Product[] = [
     color: 'gris',
     colorHex: '#d9d9d9',
     description: 'Poleron crew diseñado para máxima comodidad en días de descanso.',
-    discount: false,
+    discount: 0,
     gender: 'hombre',
     images: ['/images/rest-day/GRIS/1.webp', '/images/rest-day/GRIS/2.webp', '/images/rest-day/GRIS/3.webp','/images/rest-day/GRIS/4.webp','/images/rest-day/GRIS/5.webp', '/images/rest-day/GRIS/6.webp'],
     ogimage: '/images/rest-day/GRIS/jpg/1.jpg',
@@ -258,7 +284,7 @@ export const products: Product[] = [
     color: 'negro',
     colorHex: '#000000',
     description: 'Poleron con diseño de manga caída para un look moderno y deportivo.',
-    discount: false,
+    discount: 0,
     gender: 'hombre',
     images: ['/images/legacy-tank-hoodie/NEGRO/1.webp','/images/legacy-tank-hoodie/NEGRO/2.webp','/images/legacy-tank-hoodie/NEGRO/3.webp','/images/legacy-tank-hoodie/NEGRO/4.webp','/images/legacy-tank-hoodie/NEGRO/5.webp','/images/legacy-tank-hoodie/NEGRO/6.webp','/images/legacy-tank-hoodie/NEGRO/7.webp','/images/legacy-tank-hoodie/NEGRO/8.webp',],
     ogimage: '/images/legacy-tank-hoodie/NEGRO/jpg/1.jpg',
@@ -281,7 +307,7 @@ export const products: Product[] = [
   //   color: 'rojo',
   //   colorHex: '#FF0000',
   //   description: 'Poleron con diseño de manga caída para un look moderno y deportivo.',
-  //   discount: false,
+  //   discount: 0,
   //   gender: 'hombre',
   //   images: [],
   //   ogimage: '',
@@ -306,7 +332,7 @@ export const products: Product[] = [
     color: 'gris',
     colorHex: '#7f7f7f',
     description: 'Polera corta de diseño natural para un look casual y cómodo.',
-    discount: false,
+    discount: 0,
     gender: 'hombre',
     images: ['/images/super-natural-cutoff/GRIS/1.webp','/images/super-natural-cutoff/GRIS/2.webp','/images/super-natural-cutoff/GRIS/3.webp','/images/super-natural-cutoff/GRIS/4.webp','/images/super-natural-cutoff/GRIS/5.webp','/images/super-natural-cutoff/GRIS/6.webp','/images/super-natural-cutoff/GRIS/7.webp','/images/super-natural-cutoff/GRIS/8.webp',],
     ogimage: '/images/super-natural-cutoff/GRIS/jpg/1.jpg',
@@ -326,30 +352,7 @@ export const products: Product[] = [
     slug: 'super-natural-cutoff-grey'
   },
 
-  // === Impact Drop Arm Tank ===
-  {
-    color: 'negro',
-    colorHex: '#000000',
-    description: 'Tank top con diseño de manga caída para entrenamientos intensos. Material ligero y transpirable.',
-    discount: true,
-    gender: 'hombre',
-    images: ['/images/impact-tank/BLACK/1.webp', '/images/impact-tank/BLACK/2.webp', '/images/impact-tank/BLACK/3.webp', '/images/impact-tank/BLACK/4.webp', '/images/impact-tank/BLACK/5.webp',  '/images/impact-tank/BLACK/6.webp'],
-    ogimage: '/images/impact-tank/BLACK/jpg/1.jpg',
-    link: 'https://row.gymshark.com/products/gymshark-impact-drop-arm-tank-black-ss24',
-    measurements: '',
-    name: 'Impact Drop Arm Tank',
-    price: 24000,
-    shortDescription: 'Tank top con diseño de manga caída para entrenamientos intensos',
-    sizes: [
-      { size: 'S', stock: 1 },
-      { size: 'M', stock: 4 },
-      { size: 'L', stock: 2 },
-      { size: 'XL', stock: 0 }
-    ],
-    stock: 7,
-    type: ProductType.SUPERIOR,
-    slug: 'impact-drop-arm-tank'
-  },
+
 
   // === Crest Long Sleeve T-Shirt ===
   {
@@ -462,7 +465,7 @@ export const products: Product[] = [
       type: ProductType.SUPERIOR,
       color: "azul",
       colorHex: "#6699ae",
-      discount: true
+      discount: 0
     },
 
   // === Essential Oversized T-Shirt ===
@@ -470,7 +473,7 @@ export const products: Product[] = [
     color: 'navy',
     colorHex: '#213a4b',
     description: 'Polera oversized esencial con un ajuste holgado y cómodo.',
-    discount: false,
+    discount: 0,
     gender: 'hombre',
     images: ['/images/essential-oversized/NAVY/1.webp', '/images/essential-oversized/NAVY/2.webp', '/images/essential-oversized/NAVY/3.webp', '/images/essential-oversized/NAVY/4.webp'],
     ogimage: '',
@@ -493,7 +496,7 @@ export const products: Product[] = [
     color: 'azul claro',
     colorHex: '#6f9fbc',
     description: 'Polera oversized esencial con un ajuste holgado y cómodo.',
-    discount: false,
+    discount: 0,
     gender: 'hombre',
     images: ['/images/essential-oversized/BLUE/1.webp', '/images/essential-oversized/BLUE/2.webp', '/images/essential-oversized/BLUE/3.webp', '/images/essential-oversized/BLUE/4.webp'],
     ogimage: '/images/essential-oversized/BLUE/jpg/1.jpg',
@@ -517,7 +520,7 @@ export const products: Product[] = [
     color: 'negro',
     colorHex: '#000000',
     description: 'Polera oversized esencial con un ajuste holgado y cómodo.',
-    discount: true,
+    discount: 0,
     gender: 'hombre',
     images: ['/images/essential-oversized/NEGRO/1.webp', '/images/essential-oversized/NEGRO/2.webp', '/images/essential-oversized/NEGRO/3.webp', '/images/essential-oversized/NEGRO/4.webp'],
     ogimage: '/images/essential-oversized/NEGRO/jpg/1.jpg',
@@ -542,7 +545,7 @@ export const products: Product[] = [
     color: 'negro',
     colorHex: '#000000',
     description: 'Polera con diseño de letras en la espalda, estilo moderno y deportivo.',
-    discount: true,
+    discount: 0,
     gender: 'hombre',
     images: ['/images/power-tshirt/NEGRO/1.webp', '/images/power-tshirt/NEGRO/2.webp', '/images/power-tshirt/NEGRO/3.webp', '/images/power-tshirt/NEGRO/4.webp', '/images/power-tshirt/NEGRO/5.webp', '/images/power-tshirt/NEGRO/6.webp', ],
     ogimage: '/images/power-tshirt/NEGRO/jpg/1.jpg',
@@ -565,7 +568,7 @@ export const products: Product[] = [
     color: 'azul',
     colorHex: '#1f2631',
     description: 'Polera con diseño de letras en la espalda, estilo moderno y deportivo.',
-    discount: true,
+    discount: 0,
     gender: 'hombre',
     images: ['/images/power-tshirt/NAVY/1.webp', '/images/power-tshirt/NAVY/2.webp', '/images/power-tshirt/NAVY/3.webp', '/images/power-tshirt/NAVY/4.webp', '/images/power-tshirt/NAVY/5.webp', '/images/power-tshirt/NAVY/6.webp', ],
     ogimage: '/images/power-tshirt/NAVY/jpg/1.jpg',
@@ -594,7 +597,7 @@ export const products: Product[] = [
     color: 'negro',
     colorHex: '#000000',
     description: 'Shorts sin costuras con diseño camuflado, perfectos para cualquier tipo de entrenamiento.',
-    discount: true,
+    discount: 0,
     gender: 'mujer',
     images: ['/images/short-leggins-camo/NEGRO/1.webp', '/images/short-leggins-camo/NEGRO/2.webp', '/images/short-leggins-camo/NEGRO/3.webp','/images/short-leggins-camo/NEGRO/4.webp','/images/short-leggins-camo/NEGRO/5.webp',],
     ogimage: '/images/short-leggins-camo/NEGRO/jpg/1.jpg',
@@ -617,7 +620,7 @@ export const products: Product[] = [
     color: 'azul medianoche',
     colorHex: '#2e4761',
     description: 'Shorts sin costuras con diseño camuflado, perfectos para cualquier tipo de entrenamiento.',
-    discount: false,
+    discount: 0,
     gender: 'mujer',
     images: ['/images/short-leggins-camo/BLUE/1.webp', '/images/short-leggins-camo/BLUE/2.webp', '/images/short-leggins-camo/BLUE/3.webp','/images/short-leggins-camo/BLUE/4.webp','/images/short-leggins-camo/BLUE/5.webp',],
     ogimage: '/images/short-leggins-camo/BLUE/jpg/1.jpg',
@@ -642,7 +645,7 @@ export const products: Product[] = [
     color: 'negro',
     colorHex: '#000000',
     description: 'Shorts de algodón con logo Crest, comodidad y estilo para tu entrenamiento.',
-    discount: true,
+    discount: 0,
     gender: 'hombre',
     images: ['/images/shorts/crest/NEGRO/1.webp', '/images/shorts/crest/NEGRO/2.webp', '/images/shorts/crest/NEGRO/3.webp', '/images/shorts/crest/NEGRO/4.webp', '/images/shorts/crest/NEGRO/5.webp',],
     ogimage: '/images/shorts/crest/NEGRO/1.jpg',
@@ -667,7 +670,7 @@ export const products: Product[] = [
     color: 'gris',
     colorHex: '#6c6b70',
     description: 'Shorts deportivos de 7 pulgadas, diseñados para máximo rendimiento.',
-    discount: false,
+    discount: 0,
     gender: 'hombre',
     images: ['/images/shorts/sport7/GRIS/1.webp', '/images/shorts/sport7/GRIS/2.webp', '/images/shorts/sport7/GRIS/3.webp', '/images/shorts/sport7/GRIS/4.webp', '/images/shorts/sport7/GRIS/5.webp',],
     ogimage: '/images/shorts/sport7/GRIS/1.jpg',
@@ -690,7 +693,7 @@ export const products: Product[] = [
     color: 'naranja',
     colorHex: '#e2784c',
     description: 'Shorts deportivos de 7 pulgadas, diseñados para máximo rendimiento.',
-    discount: false,
+    discount: 0,
     gender: 'hombre',
     images: ['/images/shorts/sport7/NARANJA/1.webp', '/images/shorts/sport7/NARANJA/2.webp', '/images/shorts/sport7/NARANJA/3.webp', '/images/shorts/sport7/NARANJA/4.webp', '/images/shorts/sport7/NARANJA/5.webp',],
     ogimage: '/images/shorts/sport7/NARANJA/1.jpg',
@@ -715,7 +718,7 @@ export const products: Product[] = [
     color: 'navy',
     colorHex: '#223649',
     description: 'Shorts deportivos versátiles de 7 pulgadas, perfectos para cualquier actividad.',
-    discount: false,
+    discount: 0,
     gender: 'hombre',
     images: ['/images/shorts/arrival7/NAVY/1.webp', '/images/shorts/arrival7/NAVY/2.webp', '/images/shorts/arrival7/NAVY/3.webp'],
     ogimage: '/images/shorts/arrival7/NAVY/1.jpg',
@@ -738,7 +741,7 @@ export const products: Product[] = [
     color: 'negro',
     colorHex: '#000000',
     description: 'Shorts deportivos versátiles de 7 pulgadas, perfectos para cualquier actividad.',
-    discount: false,
+    discount: 0,
     gender: 'hombre',
     images: ['/images/shorts/arrival7/NEGRO/1.webp', '/images/shorts/arrival7/NEGRO/2.webp', '/images/shorts/arrival7/NEGRO/3.webp', '/images/shorts/arrival7/NEGRO/4.webp', '/images/shorts/arrival7/NEGRO/5.webp', '/images/shorts/arrival7/NEGRO/6.webp'],
     ogimage: '/images/shorts/arrival7/NEGRO/1.jpg',
@@ -768,7 +771,7 @@ export const products: Product[] = [
     color: 'negro',
     colorHex: '#000000',
     description: 'Straps de silicona para levantamiento de peso, máximo agarre y durabilidad.',
-    discount: false,
+    discount: 0,
     gender: 'unisex',
     images: ['/images/straps/NEGRO/1.webp', '/images/straps/NEGRO/2.webp','/images/straps/NEGRO/3.webp'],
     ogimage: '/images/straps/NEGRO/jpg/1.jpg',
@@ -790,7 +793,7 @@ export const products: Product[] = [
     color: 'rosa',
     colorHex: '#b98987',
     description: 'Bolso deportivo de tamaño mediano, perfecto para el gimnasio.',
-    discount: false,
+    discount: 0,
     gender: 'mujer',
     images: ['/images/bags/active-medium/ROSA/1.webp', '/images/bags/active-medium/ROSA/2.webp', '/images/bags/active-medium/ROSA/3.webp', '/images/bags/active-medium/ROSA/4.webp', '/images/bags/active-medium/ROSA/5.webp', '/images/bags/active-medium/ROSA/6.webp',],
     ogimage: '/images/bags/active-medium/ROSA/jpg/1.jpg',
@@ -812,7 +815,7 @@ export const products: Product[] = [
     color: 'negro',
     colorHex: '#000000',
     description: 'Calcetas deportivas con logo Gymshark, comodidad y estilo.',
-    discount: false,
+    discount: 0,
     gender: 'unisex',
     images: ['/images/socks/crew/NEGRO/1.webp', '/images/socks/crew/NEGRO/2.webp',],
     ogimage: '/images/socks/crew/NEGRO/jpg/1.jpg',
@@ -823,7 +826,7 @@ export const products: Product[] = [
     shortDescription: 'Calcetas deportivas con logo Gymshark',
     sizes: [
       { size: 'S', stock: 0 },
-      { size: 'M', stock: 2 },
+      { size: 'M', stock: 0 },
       { size: 'L', stock: 0 },
 
     ],
@@ -835,7 +838,7 @@ export const products: Product[] = [
     color: 'gris',
     colorHex: '#bfbdba',
     description: 'Calcetas deportivas con logo Gymshark, comodidad y estilo.',
-    discount: false,
+    discount: 0,
     gender: 'unisex',
     images: ['/images/socks/crew/GRIS/1.webp', '/images/socks/crew/GRIS/2.webp',],
     ogimage: '/images/socks/crew/GRIS/jpg/1.jpg',
@@ -846,7 +849,7 @@ export const products: Product[] = [
     shortDescription: 'Calcetas deportivas con logo Gymshark',
     sizes: [
       { size: 'S', stock: 0 },
-      { size: 'M', stock: 1 },
+      { size: 'M', stock: 0 },
       { size: 'L', stock: 0 },
 
     ],
@@ -858,7 +861,7 @@ export const products: Product[] = [
     color: 'blanco',
     colorHex: '#FFFFFF',
     description: 'Calcetas deportivas con logo Gymshark, comodidad y estilo.',
-    discount: false,
+    discount: 0,
     gender: 'unisex',
     images: ['/images/socks/crew/BLANCO/1.webp', '/images/socks/crew/BLANCO/2.webp',],
     ogimage: '/images/socks/crew/BLANCO/jpg/1.jpg',
@@ -869,7 +872,7 @@ export const products: Product[] = [
     shortDescription: 'Calcetas deportivas con logo Gymshark',
     sizes: [
       { size: 'S', stock: 0 },
-      { size: 'M', stock: 3 },
+      { size: 'M', stock: 0 },
       { size: 'L', stock: 0 },
 
     ],

@@ -5,6 +5,8 @@ import EmblaIsla from '../../components/Carousel/EmblaIsla.astro';
 import ProductDetail from '../../components/ProductDetail';
 import { siteInfo } from '../../constantes/site-info';
 
+import { formatPrice, calculateDiscountedPrice } from '../../utils/formatters';
+
 // Primero definimos los tipos base (opcional pero recomendado)
 
 
@@ -110,39 +112,57 @@ const seoData = {
   </div>
 
         {/* Productos Relacionados - Sección independiente */}
-    {relatedProducts.length > 0 && (
-      <section class="mt-12 bg-white rounded-xl p-6 text-center">
-        <h2 class="text-xl font-bold mb-6 ">Productos Similares</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {relatedProducts.map(related => (
+        {relatedProducts.length > 0 && (
+          <section class="mt-12 bg-white rounded-xl p-6 text-center">
+            <h2 class="text-xl font-bold mb-6 ">Productos Similares</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {relatedProducts.map(related => (
 
-             <a href={`/producto/${related.slug}`}
-              class="group space-y-2"
-              transition:name={`product-card-${related.slug}`}
-            >
-              <div class=" overflow-hidden rounded-lg">
-                <img
-                  src={related.images[0]}
-                  alt={related.name}
-                  class="w-full h-full object-cover transition duration-300 hover:scale-110"
-                  loading="lazy"
-                  transition:name={`product-image-${related.slug}`}
-                />
-              </div>
-              <div class="space-y-1">
-                <h3 class="text-sm font-medium line-clamp-2 group-hover:text-blue-600 transition-colors">
-                  {related.name}
-                </h3>
-                <p class="text-sm font-medium text-gray-900">
-                  ${related.price.toLocaleString('es-ES')}
-                </p>
-              </div>
-            </a>
-          ))}
-        </div>
-      </section>
-        )}
-      </div>
+                 <a href={`/producto/${related.slug}`}
+                  class="group space-y-2"
+
+                >
+                  <div class=" overflow-hidden rounded-lg">
+                    <img
+                      src={related.images[0]}
+                      alt={related.name}
+                      class="w-full h-full object-cover transition duration-300 hover:scale-110"
+                      loading="lazy"
+
+                    />
+                  </div>
+                  <div class="space-y-1">
+                    <h3 class="text-sm font-medium line-clamp-2 group-hover:text-blue-600 transition-colors">
+                      {related.name}
+                    </h3>
+                    <div class="h-14 flex flex-col items-center justify-center">
+                  {related.discount && related.discount > 0 ? (
+                    <div class="space-y-1">
+                      <div class="flex items-center justify-center gap-2">
+                        <span class="text-base text-gray-400 line-through">
+                          ${formatPrice(related.price)}
+                        </span>
+                        <span class="text-xl font-bold text-red-500">
+                          ${formatPrice(calculateDiscountedPrice(related.price, related.discount))}
+                        </span>
+                      </div>
+                      <span class="inline-block px-2 py-0.5 bg-red-100 text-red-600 text-xs font-medium rounded-full">
+                        {related.discount}% OFF
+                      </span>
+                    </div>
+                  ) : (
+                    <p class="text-xl font-bold text-gray-900">
+                      ${formatPrice(related.price)}
+                    </p>
+                  )}
+                </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
+            )}
+          </div>
 
   </main>
 </BaseLayout>

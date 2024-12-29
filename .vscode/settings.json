@@ -1,4 +1,17 @@
 {
-  "accessibility.signalOptions.volume": 70,
-  "editor.accessibilitySupport": "on"
+  "accessibility.signalOptions.volume": 0,
+  "editor.accessibilitySupport": "on",
+  "accessibility.signals.diffLineDeleted": {
+    "sound": "off"
+  },
+  "accessibility.signals.diffLineInserted": {
+    "sound": "off"
+  },
+  "accessibility.signals.diffLineModified": {
+    "sound": "off"
+  },
+  "accessibility.signals.terminalCommandSucceeded": {
+    "announcement": "off",
+    "sound": "off"
+  }
 }

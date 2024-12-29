@@ -78,7 +78,7 @@ export default function AddToLocalStorage(props) {
           setModalVisible(false);
           setFadeOut(false);
         }, 300);
-      }, 3000);
+      }, 4000);
     } catch (error) {
       console.error("Error al actualizar el localStorage:", error);
     }
@@ -131,7 +131,7 @@ export default function AddToLocalStorage(props) {
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <h2 class="text-xl font-bold text-gray-900">¡Agregado al carrito!</h2>
+                <h2 class="text-xl font-bold text-gray-900">¡Agregado a favoritos!</h2>
               </div>
               <button
                 class="text-gray-400 hover:text-gray-600 p-1 rounded-full hover:bg-gray-100 transition-colors"
@@ -151,47 +151,83 @@ export default function AddToLocalStorage(props) {
           </div>
 
           {/* Contenido */}
-          <div class="p-6">
-            <div class="flex gap-4">
-              <img
-                src={product.images[0]}
-                alt={product.name}
-                class="w-20 h-20 object-cover rounded-lg"
-              />
-              <div class="flex-1">
-                <h3 class="font-medium text-gray-900">{product.name}</h3>
-                <div class="mt-1 space-y-1">
-                  <p class="text-sm text-gray-500">Talla: <span class="font-medium text-gray-900">{seleccion().talla}</span></p>
-                  <p class="text-sm text-gray-500">Cantidad: <span class="font-medium text-gray-900">{seleccion().cantidad}</span></p>
-                  <p class="text-sm text-gray-500">Precio: <span class="font-medium text-gray-900">${product.price.toLocaleString('es-ES')}</span></p>
-                </div>
-              </div>
+          <div class="p-4">
+  <div class="flex gap-4">
+    {/* Contenedor de imagen */}
+    <div class="relative w-24 aspect-[3/4] overflow-hidden rounded-lg shadow-sm bg-gray-50">
+      <img
+        src={product.images[0]}
+        alt={product.name}
+        class="w-full h-full object-cover"
+      />
+    </div>
+
+    {/* Información del producto */}
+    <div class="flex-1 min-w-0"> {/* min-w-0 para evitar overflow */}
+      <h3 class="font-medium text-gray-900 truncate">{product.name}</h3>
+
+      <div class="mt-1 space-y-0.5">
+        <p class="text-sm text-gray-500">
+          Color: <span class="text-gray-900">{product.color}</span>
+        </p>
+        <p class="text-sm text-gray-500">
+          Talla: <span class="text-gray-900">{seleccion().talla}</span>
+        </p>
+        <p class="text-sm text-gray-500">
+          Cantidad: <span class="text-gray-900">{seleccion().cantidad}</span>
+        </p>
+
+        {/* Precios */}
+        {product.discount > 0 ? (
+          <div class="mt-2">
+            <div class="flex items-center gap-2">
+              <span class="text-sm text-gray-500 line-through">
+                ${product.price.toLocaleString('es-ES')}
+              </span>
+              <span class="text-xs font-medium text-red-600 bg-red-50 px-1.5 py-0.5 rounded">
+                {product.discount}% OFF
+              </span>
             </div>
+            <p class="text-base font-medium text-red-600 mt-0.5">
+              ${(product.price * (1 - product.discount/100)).toLocaleString('es-ES')}
+            </p>
           </div>
+        ) : (
+          <p class="mt-2 text-base font-medium text-gray-900">
+            ${product.price.toLocaleString('es-ES')}
+          </p>
+        )}
+      </div>
+    </div>
+  </div>
+
+  {/* Botones */}
+
+</div>
 
           {/* Acciones */}
-          <div class="p-6 bg-gray-50 rounded-b-2xl">
-            <div class="flex gap-3 justify-end">
-              <button
-                class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-                onClick={() => {
-                  setFadeOut(true);
-                  setTimeout(() => {
-                    setModalVisible(false);
-                    setFadeOut(false);
-                  }, 500);
-                }}
-              >
-                Aceptar
-              </button>
-              <button
-                class="px-4 py-2 text-sm font-medium text-white bg-black rounded-lg hover:bg-gray-900 transition-colors"
-                onClick={() => (window.location.href = "/favorites")}
-              >
-                Ver favoritos
-              </button>
-            </div>
-          </div>
+          <div class="p-6 bg-gray-50 rounded-b-2xl border-t border-gray-100">
+  <div class="flex gap-3 justify-end">
+    <button
+      class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+      onClick={() => {
+        setFadeOut(true);
+        setTimeout(() => {
+          setModalVisible(false);
+          setFadeOut(false);
+        }, 500);
+      }}
+    >
+      Seguir comprando
+    </button>
+    <button
+      class="px-5 py-2.5 text-sm font-medium text-white bg-black rounded-lg hover:bg-gray-900 transition-colors duration-200"
+      onClick={() => (window.location.href = "/favorites")}
+    >
+      Ver favoritos
+    </button>
+  </div>
+</div>
         </div>
       )}
     </div>

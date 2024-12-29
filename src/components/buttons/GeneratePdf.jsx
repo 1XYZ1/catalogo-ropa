@@ -12,53 +12,98 @@ export default function GeneratePDF({ favorites, fileName = "document.pdf", titl
       const { jsPDF } = await import("jspdf");
       const doc = new jsPDF();
 
-      const margin = 10;
-      let cursorY = margin;
+      const margin = 4;
+      const marginTop = 20;
+      const colProducto = margin + 25;
+      const colColor = margin + 75;
+      const colTalla = margin + 110;
+      const colCant = margin + 130;
+      const colPrecio = margin + 150;
+      const colTotal = margin + 180;
+
+      let cursorY = marginTop;
+      let totalFinal = 0;
 
       // Título del PDF
       doc.setFontSize(22);
       doc.setFont("helvetica", "bold");
       doc.text("Resumen Favoritos", doc.internal.pageSize.width / 2, cursorY, { align: "center" });
-      cursorY += 25; // Espaciado debajo del título
+      cursorY += 25;
 
       // Cabecera de la tabla
-      doc.setFontSize(14);
+      doc.setFontSize(12);
       doc.setFont("helvetica", "normal");
-      doc.setFillColor(240); // Fondo gris claro
+      doc.setFillColor(240);
       doc.rect(margin, cursorY - 8, doc.internal.pageSize.width - 2 * margin, 12, "F");
-      doc.text("Producto", margin + 5, cursorY);
-      doc.text("Color", margin + 90, cursorY);
-      doc.text("Talla", margin + 110, cursorY);
-      doc.text("Cantidad", margin + 130, cursorY);
-      doc.text("Subtotal", margin + 160, cursorY);
+      doc.text("Producto", colProducto, cursorY);
+      doc.text("Color", colColor, cursorY);
+      doc.text("Talla", colTalla, cursorY);
+      doc.text("Cant.", colCant, cursorY);
+      doc.text("Precio", colPrecio, cursorY);
+      doc.text("Total", colTotal, cursorY);
       cursorY += 18;
 
       // Iterar sobre los productos
-      let total = 0;
       favorites().forEach((product) => {
         product.compra.forEach((compra) => {
           const ogImage = product.ogimage || "";
-          const subtotal = compra.cantidad * product.price;
-          total += subtotal;
+          const precioUnitario = product.discount > 0
+            ? product.price * (1 - product.discount/100)
+            : product.price;
+          const precioTotal = compra.cantidad * precioUnitario;
 
+          totalFinal += precioTotal;
+
+          // Imagen del producto
           if (ogImage) {
             doc.addImage(ogImage, "JPEG", margin, cursorY - 10, 15, 15);
           }
 
-          const productName = product.name.length > 30
-            ? doc.splitTextToSize(product.name, 70)
-            : product.name;
-          const color = product.color
-
+          // Información del producto
+          doc.setFontSize(11);
           doc.setFont("helvetica", "normal");
-          doc.text(productName, margin + 20, cursorY);
-          doc.text(color, margin + 95, cursorY);
-          doc.text(compra.talla, margin + 115, cursorY);
-          doc.text(String(compra.cantidad), margin + 140, cursorY);
-          doc.setFont("helvetica", "bold");
-          doc.text(`$${subtotal.toLocaleString("es-ES")}`, margin + 160, cursorY);
+          doc.setTextColor(0);
 
-          cursorY += productName.length > 1 ? 20 : 15;
+          // Nombre del producto con límite de ancho
+          const productName = doc.splitTextToSize(product.name, 45);
+          doc.text(productName, colProducto, cursorY);
+
+          // Color con manejo de texto largo
+          const color = product.color;
+          if (color.length > 12) {
+            const colorLines = doc.splitTextToSize(color, 30);
+            doc.text(colorLines, colColor, cursorY);
+          } else {
+            doc.text(color, colColor, cursorY);
+          }
+
+          doc.text(compra.talla, colTalla, cursorY);
+          doc.text(String(compra.cantidad), colCant, cursorY);
+
+          // Precios
+          if (product.discount > 0) {
+            // Precio original tachado
+            doc.setTextColor(128, 128, 128);
+            doc.text(`$${product.price.toLocaleString("es-ES")}`, colPrecio, cursorY);
+            doc.line(colPrecio, cursorY - 1, colPrecio + 15, cursorY - 1);
+
+            // Precio con descuento
+            doc.setTextColor(220, 38, 38);
+            doc.setFont("helvetica", "bold");
+            doc.text(`$${precioUnitario.toLocaleString("es-ES")}`, colPrecio, cursorY + 5);
+            doc.text(`$${precioTotal.toLocaleString("es-ES")}`, colTotal, cursorY);
+
+            // Etiqueta de descuento
+            doc.setFontSize(8);
+
+            cursorY += 15;
+          } else {
+            doc.setTextColor(0);
+            doc.setFont("helvetica", "bold");
+            doc.text(`$${precioUnitario.toLocaleString("es-ES")}`, colPrecio, cursorY);
+            doc.text(`$${precioTotal.toLocaleString("es-ES")}`, colTotal, cursorY);
+            cursorY += 15;
+          }
 
           if (cursorY > doc.internal.pageSize.height - margin - 20) {
             doc.addPage();
@@ -67,13 +112,16 @@ export default function GeneratePDF({ favorites, fileName = "document.pdf", titl
         });
       });
 
-      // Total
+      // Total a pagar
       cursorY += 10;
-      doc.setFontSize(20);
+      doc.setFontSize(16);
       doc.setFont("helvetica", "bold");
-      doc.text("Total: ", margin + 130, cursorY);
+      doc.setTextColor(0);
+
+      const totalStartX = colPrecio - 20;
+      doc.text("Total a pagar:", totalStartX, cursorY);
       doc.setTextColor(0, 128, 0);
-      doc.text(`$${total.toLocaleString("es-ES")}`, margin + 155, cursorY);
+      doc.text(`$${totalFinal.toLocaleString("es-ES")}`, colTotal, cursorY);
 
       try {
         await doc.save(fileName);
@@ -82,23 +130,23 @@ export default function GeneratePDF({ favorites, fileName = "document.pdf", titl
         alert("Ocurrió un error al generar el PDF. Intenta nuevamente.");
       } finally {
         setIsGenerating(false);
-        setTimeout(() => setModalVisible(false), 3000); // Ocultar modal después de 3 segundos
+        setTimeout(() => setModalVisible(false), 3000);
       }
     }
   };
 
   return (
     <>
-      {/* Botón para generar el PDF */}
       <button
-        class="w-full py-3 h-12 flex items-center justify-center text-lg border-2 border-black text-black font-semibold rounded-lg hover:bg-gray-100 focus:ring focus:ring-gray-300 transition"
+        class={`w-full py-3 h-12 flex items-center justify-center text-lg border-2 border-black text-black font-semibold rounded-lg hover:bg-gray-100 focus:ring focus:ring-gray-300 transition ${
+          isGenerating() ? "opacity-50 cursor-not-allowed" : ""
+        }`}
         onClick={generatePDF}
         disabled={isGenerating()}
       >
         {isGenerating() ? "Generando PDF..." : title}
       </button>
 
-      {/* Modal de feedback */}
       {modalVisible() && (
         <div
           class={`fixed top-0 left-0 w-full bg-green-300 shadow-md rounded-b-md p-5 transform transition-transform duration-300 translate-y-0 opacity-100`}

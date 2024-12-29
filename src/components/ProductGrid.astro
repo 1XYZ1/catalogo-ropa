@@ -24,7 +24,7 @@ const { products = [] } = Astro.props;
         images={product.images}
         price={product.price}
         type={product.type || ''}
-        discount={product.discount || false}
+        discount={product.discount || 0}
         sizes={product.sizes || ['S', 'M', 'L']}
         color={product.color}
       />
