@@ -1,4 +1,4 @@
-import { createSignal, onMount, createMemo } from "solid-js";
+import { createSignal, onMount, createMemo, onCleanup } from "solid-js";
 import { createStore } from "solid-js/store"; // Importamos createStore
 
 import { formatPrice, calculateDiscountedPrice, capitalizeFirstLetter } from '../../utils/formatters';
@@ -12,45 +12,119 @@ export default function FavoritesPage() {
   const [favorites, setFavorites] = createStore([]);
   const [selectedSize, setSelectedSize] = createSignal({});
   const [quantities, setQuantities] = createSignal({});
+  const [showConfirmDialog, setShowConfirmDialog] = createSignal(false);
+const [itemToRemove, setItemToRemove] = createSignal(null);
+
 
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
-  // Cargar favoritos y establecer señales iniciales
-  const loadFavorites = () => {
-    const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    // Usamos setFavorites para establecer el estado inicial
-    setFavorites(storedFavorites);
 
-    const initialSizes = {};
-    const initialQuantities = {};
-
-    storedFavorites.forEach((product) => {
-      initialSizes[product.slug] = product.compra[0]?.talla || product.sizes[0]?.size || "";
-      initialQuantities[product.slug] = {};
-      product.compra.forEach((compra) => {
-        initialQuantities[product.slug][compra.talla] = compra.cantidad;
-      });
-    });
-
-    setSelectedSize(initialSizes);
-    setQuantities(initialQuantities);
+  // Validación de datos
+  const validateFavorites = (data) => {
+    return Array.isArray(data) &&
+      data.every(item =>
+        item.slug &&
+        item.name &&
+        Array.isArray(item.sizes) &&
+        Array.isArray(item.compra)
+      );
   };
 
+  // Guardar favoritos con manejo de errores mejorado
+  const saveFavorites = (favorites) => {
+    try {
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+      window.dispatchEvent(new Event("favorites-updated"));
+      return true;
+    } catch (error) {
+      console.error('Error al guardar favoritos:', error);
+      // Aquí podrías implementar una notificación al usuario
+      return false;
+    }
+  };
+
+  // Cargar favoritos con validación y manejo de errores
+  const loadFavorites = () => {
+    try {
+      const stored = localStorage.getItem("favorites");
+      if (stored) {
+        const parsedFavorites = JSON.parse(stored);
+        if (validateFavorites(parsedFavorites)) {
+          setFavorites(parsedFavorites);
+
+          // Inicializar tallas y cantidades
+          const initialSizes = {};
+          const initialQuantities = {};
+
+          parsedFavorites.forEach((product) => {
+            initialSizes[product.slug] = product.compra[0]?.talla || product.sizes[0]?.size || "";
+            initialQuantities[product.slug] = {};
+            product.compra.forEach((compra) => {
+              initialQuantities[product.slug][compra.talla] = compra.cantidad;
+            });
+          });
+
+          setSelectedSize(initialSizes);
+          setQuantities(initialQuantities);
+        } else {
+          console.warn('Datos de favoritos inválidos');
+          setFavorites([]);
+        }
+      }
+    } catch (error) {
+      console.error('Error al cargar favoritos:', error);
+      setFavorites([]);
+      // Aquí podrías implementar una notificación al usuario
+    }
+  };
+
+  // Inicialización y configuración de eventos
   onMount(() => {
     loadFavorites();
+
+    // Escuchar cambios en otras pestañas
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'favorites') {
+        loadFavorites();
+      }
+    });
+
+    // Escuchar cambios en la misma pestaña
+    window.addEventListener('favorites-updated', () => {
+      loadFavorites();
+    });
+
+    // Limpiar listeners al desmontar
+    onCleanup(() => {
+      window.removeEventListener('storage', loadFavorites);
+      window.removeEventListener('favorites-updated', loadFavorites);
+    });
   });
 
   // Eliminar un producto de favoritos
   const removeFavorite = (slug) => {
-    // Filtrar sin recrear todo manualmente:
-    // createStore soporta asignaciones directas con una nueva array
     setFavorites(f => f.filter(product => product.slug !== slug));
-    localStorage.setItem("favorites", JSON.stringify(favorites));
+    if (!saveFavorites(favorites)) {
+      // Si falla el guardado, podrías mostrar un mensaje de error
+      console.error('Error al eliminar el producto de favoritos');
+    }
+  };
 
-    const event = new Event("favorites-updated");
-    window.dispatchEvent(event);
+  const handleRemoveFavorite = (slug) => {
+    setItemToRemove(slug);
+    setShowConfirmDialog(true);
+  };
+
+  const confirmRemove = () => {
+    const slug = itemToRemove();
+    setFavorites(f => f.filter(product => product.slug !== slug));
+    if (!saveFavorites(favorites)) {
+      console.error('Error al eliminar el producto de favoritos');
+    }
+    setShowConfirmDialog(false);
+    setItemToRemove(null);
   };
 
   // Actualizar cantidad de un producto
@@ -67,21 +141,19 @@ export default function FavoritesPage() {
       const currentQty = product.compra[compraIndex].cantidad;
       let newQty = currentQty + delta;
 
-      // Aplicar las reglas
-      if (newQty <= 0 && product.compra.length > 1) {
-        // Eliminar la talla
+      // Si es la última talla y quiere reducir a 0, mostrar modal de eliminar
+      if (newQty <= 0 && product.compra.length === 1) {
+        handleRemoveFavorite(slug);
+        return;
+      }
+
+      // Si no es la última talla y quiere reducir a 0, eliminar la talla
+      if (newQty <= 0) {
         setFavorites(
           productIndex,
           "compra",
-          c => {
-            const newCompra = [...c];
-            newCompra.splice(compraIndex, 1);
-            return newCompra;
-          }
+          c => c.filter(item => item.talla !== talla)
         );
-      } else if (newQty <= 0 && product.compra.length === 1) {
-        // Mantener al menos 1 si es la última talla
-        setFavorites(productIndex, "compra", compraIndex, "cantidad", 1);
       } else {
         // Actualizar cantidad normal
         setFavorites(productIndex, "compra", compraIndex, "cantidad", newQty);
@@ -97,15 +169,6 @@ export default function FavoritesPage() {
 
     // Actualizar localStorage después de mutar con createStore
     localStorage.setItem("favorites", JSON.stringify(favorites));
-
-    // Actualizar quantities
-    setQuantities((prev) => {
-      const newQuantities = { ...prev };
-      if (!newQuantities[slug]) newQuantities[slug] = {};
-      const currentQty = newQuantities[slug][talla] || 0;
-      newQuantities[slug][talla] = currentQty + delta;
-      return newQuantities;
-    });
   };
 
   // Calcular el resumen del pago total dinámicamente
@@ -148,9 +211,9 @@ export default function FavoritesPage() {
             favorites.map((product) => (
               <div
                 key={product.slug}
-                class="flex flex-col border rounded-xl overflow-hidden bg-white shadow-md hover:shadow-lg transition-shadow duration-300 h-full relative max-h-[800px]"
+                class="flex flex-col border rounded-xl overflow-hidden bg-white shadow-md hover:shadow-lg transition-shadow duration-300 h-full relative max-h-[1000px]"
               >
-                <a href={`/producto/${product.slug}`} class="absolute inset-0 z-0" />
+
                 <div class="relative z-10">
                   <a href={`/producto/${product.slug}`}>
                     <img
@@ -164,120 +227,213 @@ export default function FavoritesPage() {
                     />
                   </a>
                   <button
-                    class="absolute top-2 right-2 bg-transparent text-black text-lg font-bold rounded-full w-8 h-8 flex items-center justify-center border border-gray-300 hover:bg-gray-100 hover:border-gray-400 transition-all duration-300"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      removeFavorite(product.slug);
-                    }}
-                  >
-                    ✕
-                  </button>
+  class="absolute top-2 right-2 bg-transparent text-black text-lg font-bold rounded-full w-8 h-8 flex items-center justify-center border border-gray-300 hover:bg-gray-100 hover:border-gray-400 transition-all duration-300"
+  onClick={(e) => {
+    e.stopPropagation();
+    handleRemoveFavorite(product.slug);
+  }}
+>
+  ✕
+</button>
+
+{showConfirmDialog() && (
+  <div
+    class="fixed inset-0 flex items-center justify-center"
+    style={{
+      "background-color": "rgba(0, 0, 0, 0.75)",
+      "z-index": "999999",
+      "position": "fixed",
+      "top": "0",
+      "left": "0",
+      "right": "0",
+      "bottom": "0",
+      "display": "flex",
+      "align-items": "center",
+      "justify-content": "center",
+      "isolation": "isolate"
+    }}
+    onClick={() => setShowConfirmDialog(false)}
+  >
+    <div
+      class="bg-white p-6 rounded-lg shadow-xl"
+      style={{
+        "z-index": "1000000",
+        "position": "relative",
+        "width": "90%",
+        "max-width": "320px"
+      }}
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div class="text-center">
+        <svg
+          class="mx-auto mb-4 w-12 h-12 text-red-500"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+          />
+        </svg>
+        <h3 class="text-xl font-semibold text-gray-900 mb-2">
+          ¿Eliminar de favoritos?
+        </h3>
+        <div class="text-sm text-gray-500 mb-4">
+          {/* Producto a eliminar */}
+          {(() => {
+            const product = favorites.find(p => p.slug === itemToRemove());
+            if (!product) return null;
+
+            return (
+              <>
+                <p class="font-medium text-gray-900">{product.name}</p>
+                {product.color && (
+                  <p class="text-xs mt-1">
+                    Color: {capitalizeFirstLetter(product.color)}
+                  </p>
+                )}
+                {/* Mostrar tallas y cantidades */}
+                <div class="mt-3 space-y-1">
+                  {product.compra.map((item) => (
+                    <p class="text-xs">
+                      Talla {item.talla}: <span class="font-medium">{item.cantidad} {item.cantidad === 1 ? 'unidad' : 'unidades'}</span>
+                    </p>
+                  ))}
                 </div>
-                <div class="p-4 flex-1 space-y-3 text-center">
-                <div class="flex-1 space-y-2 text-center"> {/* Añadido text-center */}
-      <h3 class="font-medium text-gray-800 text-lg leading-tight line-clamp-2 group-hover:text-black" title={product.name}>
-        {product.name}
-      </h3>
-      {product.color && (
-        <p class="text-sm text-gray-500">
-          Color: <span class="text-gray-700">{capitalizeFirstLetter(product.color)}</span>
-        </p>
-      )}
+              </>
+            );
+          })()}
+        </div>
+      </div>
+      <div class="flex gap-3 justify-center">
+        <button
+          onClick={() => setShowConfirmDialog(false)}
+          class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+        >
+          Cancelar
+        </button>
+        <button
+          onClick={confirmRemove}
+          class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-medium"
+        >
+          Eliminar
+        </button>
+      </div>
     </div>
+  </div>
+)}
+
+                </div>
+
+<div class="p-4 flex-1 space-y-3 text-center">
+  {/* Info básica del producto */}
+  <div class="flex-1 space-y-2">
+    <h3 class="font-medium text-gray-800 text-lg leading-tight line-clamp-2">
+      {product.name}
+    </h3>
+    {product.color && (
+      <p class="text-sm text-gray-500">
+        Color: <span class="text-gray-700">{capitalizeFirstLetter(product.color)}</span>
+      </p>
+    )}
+  </div>
+
+  {/* Precio con descuento */}
   <div class="h-14 flex flex-col items-center justify-center">
     {product.discount > 0 ? (
       <div class="space-y-1">
         <div class="flex items-center justify-center gap-2">
-  <span class="text-xl font-bold text-gray-400 line-through">
-    ${formatPrice(product.price)}
-  </span>
-  <span class="text-xl font-bold text-red-500">
-    ${formatPrice(calculateDiscountedPrice(product.price, product.discount))}
-  </span>
-</div>
+          <span class="text-xl font-bold text-gray-400 line-through">
+            ${formatPrice(product.price)}
+          </span>
+          <span class="text-xl font-bold text-red-500">
+            ${formatPrice(calculateDiscountedPrice(product.price, product.discount))}
+          </span>
+        </div>
         <span class="inline-block px-2 py-0.5 bg-red-100 text-red-600 text-xs font-medium rounded-full">
           {product.discount}% OFF
         </span>
       </div>
     ) : (
-<div class="flex items-center justify-center gap-2">
-<span class="text-xl font-bold text-gray-900">
-    ${formatPrice(product.price)}
-  </span>
+      <span class="text-xl font-bold text-gray-900">
+        ${formatPrice(product.price)}
+      </span>
+    )}
+  </div>
+
+  {/* Nueva sección de gestión de tallas */}
+  {/* Nueva sección de gestión de tallas */}
+
+
+  <div class="border rounded-lg p-3 bg-gray-50">
+  {/* Selector de tallas con botones - Ahora arriba y más compacto */}
+  <div class="flex items-center justify-between mb-2">
+    <div class="flex gap-1.5">
+      {product.sizes.map((size) => {
+        const isSelected = selectedSize()[product.slug] === size.size;
+        const hasQuantity = product.compra.some(c => c.talla === size.size);
+        return (
+          <button
+            onClick={() => {
+              setSelectedSize(prev => ({ ...prev, [product.slug]: size.size }));
+            }}
+            disabled={size.stock === 0}
+            class={`inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-medium transition-colors
+              ${isSelected
+                ? 'bg-black text-white'
+                : hasQuantity
+                  ? 'bg-gray-200 text-gray-900'
+                  : size.stock > 0
+                    ? 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                    : 'bg-gray-50 text-gray-400 cursor-not-allowed'
+              }`}
+          >
+            {size.size}
+          </button>
+        );
+      })}
+    </div>
+    <span class="text-xs text-gray-500">
+      Stock: {product.sizes.find(s => s.size === selectedSize()[product.slug])?.stock || 0}
+    </span>
+  </div>
+
+  {/* Control de cantidad - Más compacto */}
+  <div class="flex items-center justify-between bg-white rounded-lg border shadow-sm p-2">
+    <span class="text-sm font-medium text-gray-800 ml-2">
+      Talla {selectedSize()[product.slug] || "---"}
+    </span>
+    <div class="flex items-center gap-2">
+      <button
+        class="w-6 h-6 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-full text-gray-600 text-sm"
+        onClick={() => updateQuantity(product.slug, selectedSize()[product.slug], -1)}
+        disabled={!selectedSize()[product.slug] || !product.compra.some(c => c.talla === selectedSize()[product.slug])}
+      >
+        -
+      </button>
+      <span class="text-sm font-medium w-6 text-center">
+        {product.compra.find(c => c.talla === selectedSize()[product.slug])?.cantidad || 0}
+      </span>
+      <button
+        class="w-6 h-6 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-full text-gray-600 text-sm"
+        onClick={() => updateQuantity(product.slug, selectedSize()[product.slug], 1)}
+        disabled={
+          !selectedSize()[product.slug] ||
+          (product.compra.find(c => c.talla === selectedSize()[product.slug])?.cantidad || 0) >=
+          (product.sizes.find(s => s.size === selectedSize()[product.slug])?.stock || 0)
+        }
+      >
+        +
+      </button>
+    </div>
+  </div>
 </div>
 
 
-    )}
-  </div>
-                  <div class="mb-4 relative z-20" onClick={(e) => e.stopPropagation()}>
-                    <select
-                      class="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none"
-                      value={selectedSize()[product.slug]}
-                      onChange={(e) => {
-                        const newSize = e.target.value;
-
-                        // Actualizar la talla seleccionada
-                        setSelectedSize((prev) => ({ ...prev, [product.slug]: newSize }));
-
-                        // Sincronizar cantidades si la talla no existe en el estado
-                        setQuantities((prev) => {
-                          const updatedQuantities = { ...prev };
-                          if (!updatedQuantities[product.slug])
-                            updatedQuantities[product.slug] = {};
-                          if (!updatedQuantities[product.slug][newSize]) {
-                            updatedQuantities[product.slug][newSize] = 0;
-                          }
-                          return updatedQuantities;
-                        });
-                      }}
-                    >
-                      {product.sizes.map((size) => (
-                        <option
-                          key={size.size}
-                          value={size.size}
-                          disabled={size.stock === 0}
-                        >
-                          {size.size} {size.stock === 0 ? "(Sin stock)" : ""}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div
-                    class="flex items-center justify-center space-x-4 relative z-20"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <button
-                      class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 active:bg-gray-400 transition-all duration-200"
-                      onClick={() =>
-                        updateQuantity(product.slug, selectedSize()[product.slug], -1)
-                      }
-                      disabled={
-                        quantities()[product.slug]?.[selectedSize()[product.slug]] <= 0 ||
-                        (product.compra.length === 1 &&
-                          quantities()[product.slug]?.[selectedSize()[product.slug]] === 1)
-                      }
-                    >
-                      -
-                    </button>
-                    <span class="px-4 py-2 border rounded text-center">
-                      {quantities()[product.slug]?.[selectedSize()[product.slug]] || 0}
-                    </span>
-                    <button
-                      class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 active:bg-gray-400 transition-all duration-200"
-                      onClick={() =>
-                        updateQuantity(product.slug, selectedSize()[product.slug], 1)
-                      }
-                      disabled={
-                        (quantities()[product.slug]?.[selectedSize()[product.slug]] || 0) >=
-                        product.sizes.find(
-                          (s) => s.size === selectedSize()[product.slug]
-                        )?.stock
-                      }
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
+</div>
               </div>
             ))
           )}
