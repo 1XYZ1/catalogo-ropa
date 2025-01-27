@@ -4,7 +4,7 @@ import FavoritesIcon from "./buttons/FavoritesIcon.jsx";
 
 const MENU_ITEMS = [
  { path: '/', label: 'Inicio' },
- { path: '/reviews', label: 'Reseñas' },
+//  { path: '/reviews', label: 'Reseñas' },
  { path: '/contacto', label: 'Contacto' },
  { path: '/faqs', label: 'Preguntas Frecuentes' }
 ];

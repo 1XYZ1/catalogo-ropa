@@ -2,13 +2,74 @@
 // src/pages/reviews.astro
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { reviews } from '../data/reviews';
-import ReviewsComponent from '../components/Reviews.jsx';
+import ReviewsComponent from '../components/Reviews';
+
+const title = "Reseñas de Clientes | Crest";
+const description = "Descubre las experiencias reales de nuestros clientes con nuestras prendas. Reviews detalladas con fotos y comentarios sobre cada producto.";
+
+// Cálculos para las estadísticas
+const totalReviews = reviews.length;
+const totalProductsReviewed = reviews.reduce((acc, review) => acc + review.productReviews.length, 0);
+const averageRating = (reviews.reduce((acc, review) => acc + review.generalRating, 0) / totalReviews).toFixed(1);
+const fiveStarReviews = reviews.filter(review => review.generalRating === 5).length;
 ---
 
-<BaseLayout title="Reseñas de Clientes" description="Comentarios y opiniones de nuestros clientes.">
-  <h2 class="text-3xl font-bold text-center my-8">Reseñas de Clientes</h2>
+<BaseLayout title={title} description={description}>
+  <div class="max-w-6xl mx-auto px-4 py-12">
+    <!-- Header Section -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-bold mb-4">Experiencias de Nuestros Clientes</h1>
+      <p class="text-gray-600 max-w-2xl mx-auto">
+        Conoce las historias reales de quienes han elegido nuestras prendas.
+        Cada review incluye detalles sobre el fit, tallas y fotos de los productos en uso.
+      </p>
+    </div>
 
-  <div class="max-w-4xl mx-auto px-4">
-    <ReviewsComponent client:visible reviews={reviews} />
+    <!-- Stats Summary -->
+    <div class="grid grid-cols-2 md:grid-cols-2 gap-4 mb-12">
+      <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+        <div class="text-3xl font-bold text-gray-900">
+          {totalReviews}
+        </div>
+        <div class="text-sm text-gray-600">Clientes Satisfechos</div>
+      </div>
+      <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+        <div class="text-3xl font-bold text-gray-900">
+          {totalProductsReviewed}
+        </div>
+        <div class="text-sm text-gray-600">Productos Evaluados</div>
+      </div>
+
+    </div>
+
+    <!-- Reviews Component -->
+    <div class="bg-gray-50 rounded-xl p-6 shadow-sm">
+      <ReviewsComponent client:load reviews={reviews} />
+    </div>
+
+    <!-- CTA Section -->
+    <div class="text-center mt-12 py-8 border-t">
+      <h2 class="text-2xl font-semibold mb-4">¿Compraste Recientemente?</h2>
+      <p class="text-gray-600 mb-6">
+        Tu experiencia es valiosa para nuestra comunidad. Comparte fotos y
+        comentarios sobre los productos que has probado.
+      </p>
+
+    <a href="/write-review"
+        class="inline-block bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-800 transition-colors"
+      >
+        Compartir Mi Experiencia
+      </a>
+    </div>
   </div>
 </BaseLayout>
+
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+
+  .grid > div {
+    height: 100%;
+  }
+</style>
