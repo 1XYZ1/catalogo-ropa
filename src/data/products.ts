@@ -83,7 +83,7 @@ export const products: Product[] = [
     sizes: [
       { size: 'S', stock: 0 },
       { size: 'M', stock: 0 },
-      { size: 'L', stock: 2 },
+      { size: 'L', stock: 1 },
       { size: 'XL', stock: 0 }
     ],
     stock: 7,
@@ -556,7 +556,7 @@ export const products: Product[] = [
     shortDescription: 'Polera oversized esencial',
     sizes: [
       { size: 'S', stock: 0 },
-      { size: 'M', stock: 6 },
+      { size: 'M', stock: 5 },
       { size: 'L', stock: 1 },
       { size: 'XL', stock: 0 }
     ],
@@ -777,8 +777,8 @@ export const products: Product[] = [
     shortDescription: 'Shorts deportivos versátiles de 7 pulgadas',
     sizes: [
       { size: 'S', stock: 0 },
-      { size: 'M', stock: 1 },
-      { size: 'L', stock: 3 },
+      { size: 'M', stock: 0 },
+      { size: 'L', stock: 2 },
       { size: 'XL', stock: 1 }
     ],
     stock: 6,
@@ -806,7 +806,7 @@ export const products: Product[] = [
     price: 20000,
     shortDescription: 'Straps de silicona para levantamiento de peso',
     sizes: [
-      { size: 'UNICO', stock: 1 }
+      { size: 'UNICO', stock: 0 }
     ],
     stock: 1,
     type: ProductType.ACCESORIO,
@@ -873,7 +873,7 @@ export const products: Product[] = [
     shortDescription: 'Ropa interior suave, elástica y cómoda con cintura ajustable, disponible en pack de 5.',
     sizes: [
       { size: 'S', stock: 0 },
-      { size: 'M', stock: 5 },
+      { size: 'M', stock: 0 },
       { size: 'L', stock: 0 },
 
     ],
