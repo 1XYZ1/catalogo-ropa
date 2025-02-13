@@ -14,6 +14,7 @@ export enum ProductType {
   ACCESORIO = 'accesorio'
 }
 
+
 // Interfaz para los productos
 export interface Product {
   color?: string;
