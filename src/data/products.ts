@@ -581,7 +581,7 @@ export const products: Product[] = [
     shortDescription: 'Polera con diseño de letras en la espalda',
     sizes: [
       { size: 'S', stock: 0 },
-      { size: 'M', stock: 1 },
+      { size: 'M', stock: 0 },
       { size: 'L', stock: 0 },
       { size: 'XL', stock: 0 }
     ],
